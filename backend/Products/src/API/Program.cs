@@ -5,7 +5,7 @@ using MediatR;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddMediatR(typeof(ApplicationAssemblyPointer));
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<ApplicationAssemblyPointer>());
 builder.Services.AddSingleton<IRepository, ProductRepository>();
 var app = builder.Build();
 
