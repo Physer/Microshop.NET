@@ -1,5 +1,5 @@
 ﻿using MediatR;
 
-namespace Application.Queries;
+namespace Application.Queries.GetProducts;
 
 public class GetProductsQuery : IRequest<IEnumerable<ProductResponse>> { }

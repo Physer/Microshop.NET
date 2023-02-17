@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Queries;
+namespace Application.Queries.GetProducts;
 
 public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, IEnumerable<ProductResponse>>
 {
@@ -8,6 +8,6 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, IEnumer
 
     public GetProductsQueryHandler(IRepository repository) => _repository = repository;
 
-    public Task<IEnumerable<ProductResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken) => 
+    public Task<IEnumerable<ProductResponse>> Handle(GetProductsQuery request, CancellationToken cancellationToken) =>
         Task.FromResult(_repository.GetProducts().Select(product => new ProductResponse { Description = product.Description, Name = product.Name }));
 }
