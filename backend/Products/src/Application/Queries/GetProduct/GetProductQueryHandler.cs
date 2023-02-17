@@ -2,7 +2,7 @@
 
 namespace Application.Queries.GetProduct;
 
-public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductResponse>
+public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductResponse?>
 {
     private readonly IRepository _repository;
 
@@ -11,17 +11,17 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductRe
         _repository = repository;
     }
 
-    public Task<ProductResponse> Handle(GetProductQuery request, CancellationToken cancellationToken)
+    public Task<ProductResponse?> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
         var product = _repository.GetProductById(request.ProductId);
         if (product is null)
-            throw new Exception("Temporary exception");
+            return Task.FromResult<ProductResponse?>(null);
 
         var response = new ProductResponse
         {
             Description = product.Description,
             Name = product.Name
         };
-        return Task.FromResult(response);
+        return Task.FromResult<ProductResponse?>(response);
     }
 }
