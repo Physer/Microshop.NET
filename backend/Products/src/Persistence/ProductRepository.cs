@@ -5,43 +5,36 @@ namespace Persistence;
 
 public class ProductRepository : IRepository
 {
-    private readonly IEnumerable<ProductData> _fakeProducts = new List<ProductData>
+    private HashSet<ProductData> _databaseProducts = new()
     {
         new ProductData
-            {
-                Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                Description= "Test",
-                Name = "Test",
-                ProductCode = "Test",
-            },
-            new ProductData
-            {
-                Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                Description= "Test2",
-                Name = "Test2",
-                ProductCode = "Test2",
-            },
+        {
+            Description = "A product description",
+            Name = "Productus marvelous",
+            ProductCode = "978020137962",
+            Id = Guid.Empty,
+        }
     };
 
     public Product? GetProductById(Guid id)
     {
-        var fakeProduct = _fakeProducts.FirstOrDefault(fake => fake.Id.Equals(id));
-        if (fakeProduct is null)
+        var databaseProduct = _databaseProducts.FirstOrDefault(entry => entry.Id.Equals(id));
+        if (databaseProduct is null)
             return null;
 
         return new Product
         {
-            Description = fakeProduct.Description,
-            Name = fakeProduct.Name,
-            ProductCode = fakeProduct.ProductCode
+            Description = databaseProduct.Description,
+            Name = databaseProduct.Name,
+            ProductCode = databaseProduct.ProductCode
         };
     }
 
     public IEnumerable<Product> GetProducts() =>
-        _fakeProducts.Select(fake => new Product
+        _databaseProducts.Select(entry => new Product
         {
-            Description = fake.Description,
-            Name = fake.Name,
-            ProductCode = fake.ProductCode
+            Description = entry.Description,
+            Name = entry.Name,
+            ProductCode = entry.ProductCode
         });
 }
