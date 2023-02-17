@@ -1,5 +1,6 @@
-﻿using MediatR;
+﻿using Domain;
+using MediatR;
 
 namespace Application.Queries.GetProducts;
 
-public class GetProductsQuery : IRequest<IEnumerable<ProductResponse>> { }
+public class GetProductsQuery : IRequest<IEnumerable<Product>> { }

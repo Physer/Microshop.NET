@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using Domain;
+using MediatR;
 
 namespace Application.Queries.GetProduct;
 
-public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductResponse?>
+public class GetProductQueryHandler : IRequestHandler<GetProductQuery, Product?>
 {
     private readonly IRepository _repository;
 
@@ -11,17 +12,6 @@ public class GetProductQueryHandler : IRequestHandler<GetProductQuery, ProductRe
         _repository = repository;
     }
 
-    public Task<ProductResponse?> Handle(GetProductQuery request, CancellationToken cancellationToken)
-    {
-        var product = _repository.GetProductById(request.ProductId);
-        if (product is null)
-            return Task.FromResult<ProductResponse?>(null);
-
-        var response = new ProductResponse
-        {
-            Description = product.Description,
-            Name = product.Name
-        };
-        return Task.FromResult<ProductResponse?>(response);
-    }
+    public Task<Product?> Handle(GetProductQuery request, CancellationToken cancellationToken) => 
+        Task.FromResult(_repository.GetProductById(request.ProductId));
 }

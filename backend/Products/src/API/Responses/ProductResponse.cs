@@ -1,4 +1,4 @@
-﻿namespace Application.Queries;
+﻿namespace API.Responses;
 
 public class ProductResponse
 {
