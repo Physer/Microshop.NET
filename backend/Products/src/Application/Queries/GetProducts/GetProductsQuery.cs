@@ -2,4 +2,4 @@
 
 namespace Application.Queries.GetProducts;
 
-public class GetProductsQuery : IRequest<IEnumerable<ProductResponse>> { }
+public readonly record struct GetProductsQuery : IRequest<IEnumerable<ProductResponse>>;

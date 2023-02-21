@@ -2,7 +2,7 @@
 
 namespace Application.Queries.GetProduct;
 
-public class GetProductQuery : IRequest<ProductResponse>
+public readonly record struct GetProductQuery : IRequest<ProductResponse>
 {
     public required Guid ProductId { get; init; }
 }
