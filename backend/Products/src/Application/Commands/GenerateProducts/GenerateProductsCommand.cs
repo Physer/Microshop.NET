@@ -2,4 +2,4 @@
 
 namespace Application.Commands.GenerateProducts;
 
-public readonly record struct GenerateProductsCommand(int AmountToGenerate = 1000) : IRequest;
+public readonly record struct GenerateProductsCommand(int AmountToGenerate) : IRequest;

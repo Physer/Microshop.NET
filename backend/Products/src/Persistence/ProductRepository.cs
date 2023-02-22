@@ -5,7 +5,7 @@ namespace Persistence;
 
 public class ProductRepository : IRepository
 {
-    private HashSet<ProductData> _databaseProducts = new()
+    private readonly HashSet<ProductData> _databaseProducts = new()
     {
         new ProductData
         {
@@ -19,22 +19,15 @@ public class ProductRepository : IRepository
     public Product? GetProductById(Guid id)
     {
         var databaseProduct = _databaseProducts.FirstOrDefault(entry => entry.Id.Equals(id));
-        if (databaseProduct is null)
-            return null;
-
-        return new Product
-        {
-            Description = databaseProduct.Description,
-            Name = databaseProduct.Name,
-            ProductCode = databaseProduct.ProductCode
-        };
+        return databaseProduct is not null ? MapDatabaseEntryToProduct(databaseProduct) : null;
     }
 
-    public IEnumerable<Product> GetProducts() =>
-        _databaseProducts.Select(entry => new Product
-        {
-            Description = entry.Description,
-            Name = entry.Name,
-            ProductCode = entry.ProductCode
-        });
+    public IEnumerable<Product> GetProducts() => _databaseProducts.Select(MapDatabaseEntryToProduct);
+
+    public void CreateProduct(Product product) => _databaseProducts.Add(MapProductToDatabaseEntry(product));
+
+    public void CreateProducts(IEnumerable<Product> products) => _databaseProducts.UnionWith(products.Select(MapProductToDatabaseEntry));
+
+    private ProductData MapProductToDatabaseEntry(Product product) => new() { Description = product.Description, Id = Guid.NewGuid(), Name = product.Name, ProductCode = product.ProductCode };
+    private Product MapDatabaseEntryToProduct(ProductData productData) => new Product { Description = productData.Description, Name = productData.Name, ProductCode = productData.ProductCode };
 }
