@@ -29,5 +29,5 @@ public class ProductRepository : IRepository
     public void CreateProducts(IEnumerable<Product> products) => _databaseProducts.UnionWith(products.Select(MapProductToDatabaseEntry));
 
     private ProductData MapProductToDatabaseEntry(Product product) => new() { Description = product.Description, Id = Guid.NewGuid(), Name = product.Name, ProductCode = product.ProductCode };
-    private Product MapDatabaseEntryToProduct(ProductData productData) => new Product { Description = productData.Description, Name = productData.Name, ProductCode = productData.ProductCode };
+    private Product MapDatabaseEntryToProduct(ProductData productData) => new() { Description = productData.Description, Name = productData.Name, ProductCode = productData.ProductCode };
 }
