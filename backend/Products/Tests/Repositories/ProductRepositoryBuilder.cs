@@ -7,17 +7,17 @@ namespace Tests.Repositories;
 internal class ProductRepositoryBuilder
 {
     private readonly IProductMapper _productMapperMock;
-    private readonly List<ProductData> _data;
+    private readonly IEnumerable<ProductData> _data;
 
     public ProductRepositoryBuilder()
     {
         _productMapperMock = Substitute.For<IProductMapper>();
-        _data = new List<ProductData>();
+        _data = Substitute.For<IEnumerable<ProductData>>();
     }
 
     public ProductRepositoryBuilder WithProductData(IEnumerable<ProductData> data)
     {
-        _data.AddRange(data);
+        _data.GetEnumerator().Returns(_ => { return data.GetEnumerator(); });
 
         return this;
     }

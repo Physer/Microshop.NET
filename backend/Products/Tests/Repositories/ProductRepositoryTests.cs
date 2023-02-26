@@ -11,7 +11,6 @@ public class ProductRepositoryTests
     public void GetProductById_WithExistingId_ReturnsProduct(ProductData productData, Product output)
     {
         // Arrange
-
         var productRepository = new ProductRepositoryBuilder()
             .WithProductData(new[] { productData })
             .WithMapDatabaseEntryReturns(productData, output)
