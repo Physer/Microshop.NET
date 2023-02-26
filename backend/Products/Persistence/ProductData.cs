@@ -1,6 +1,6 @@
 ﻿namespace Persistence;
 
-internal record ProductData
+public record ProductData
 {
     public required Guid Id { get; init; }
     public required string ProductCode { get; init; }

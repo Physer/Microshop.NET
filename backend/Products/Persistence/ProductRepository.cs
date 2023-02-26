@@ -5,29 +5,25 @@ namespace Persistence;
 
 public class ProductRepository : IRepository
 {
-    private readonly HashSet<ProductData> _databaseProducts = new()
+    private readonly HashSet<ProductData> _databaseProducts;
+    private readonly IProductMapper _mapper;
+
+    public ProductRepository(IProductMapper productMapper, IEnumerable<ProductData> data)
     {
-        new ProductData
-        {
-            Description = "A product description",
-            Name = "Productus marvelous",
-            ProductCode = "978020137962",
-            Id = Guid.Empty,
-        }
-    };
+        _mapper = productMapper;
+        _databaseProducts = data?.ToHashSet() ?? new HashSet<ProductData>();
+    }
 
     public Product? GetProductById(Guid id)
     {
         var databaseProduct = _databaseProducts.FirstOrDefault(entry => entry.Id.Equals(id));
-        return databaseProduct is not null ? MapDatabaseEntryToProduct(databaseProduct) : null;
+        return databaseProduct is not null ? _mapper.MapDatabaseEntryToProduct(databaseProduct) : null;
     }
 
-    public IEnumerable<Product> GetProducts() => _databaseProducts.Select(MapDatabaseEntryToProduct);
+    public IEnumerable<Product> GetProducts() => _databaseProducts.Select(_mapper.MapDatabaseEntryToProduct);
 
-    public void CreateProduct(Product product) => _databaseProducts.Add(MapProductToDatabaseEntry(product));
+    public void CreateProduct(Product product) => _databaseProducts.Add(_mapper.MapProductToDatabaseEntry(product));
 
-    public void CreateProducts(IEnumerable<Product> products) => _databaseProducts.UnionWith(products.Select(MapProductToDatabaseEntry));
+    public void CreateProducts(IEnumerable<Product> products) => _databaseProducts.UnionWith(products.Select(_mapper.MapProductToDatabaseEntry));
 
-    private ProductData MapProductToDatabaseEntry(Product product) => new() { Description = product.Description, Id = Guid.NewGuid(), Name = product.Name, ProductCode = product.ProductCode };
-    private Product MapDatabaseEntryToProduct(ProductData productData) => new() { Description = productData.Description, Name = productData.Name, ProductCode = productData.ProductCode };
 }
