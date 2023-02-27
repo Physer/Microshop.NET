@@ -29,5 +29,12 @@ internal class ProductRepositoryBuilder
         return this;
     }
 
+    public ProductRepositoryBuilder WithMappingProductToDatabaseEntryReturns(Product input, ProductData output)
+    {
+        _productMapperMock.MapProductToDatabaseEntry(input).Returns(output);
+
+        return this;
+    }
+
     public ProductRepository Build() => new(_productMapperMock, _data);
 }

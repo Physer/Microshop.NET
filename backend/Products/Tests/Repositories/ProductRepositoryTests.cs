@@ -1,6 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using Domain;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Persistence;
 
 namespace Tests.Repositories;
@@ -65,10 +66,41 @@ public class ProductRepositoryTests
         var result = productRepository.GetProducts();
 
         // Assert
-        var resultItem = result.First();
         result.Should().HaveSameCount(products);
-        resultItem.Should().NotBeNull();
-        resultItem.Should().Be(product);
+        result.Should().Contain(product);
 
+    }
+
+    [Theory, AutoData]
+    public void CreateProduct_WithProduct_AddsToDatabase(ProductData databaseEntry, Product product)
+    {
+        // Arrange
+        var productRepository = new ProductRepositoryBuilder()
+            .WithProductData(new[] { databaseEntry })
+            .WithMappingDatabaseEntryToProductReturns(databaseEntry, product)
+            .WithMappingProductToDatabaseEntryReturns(product, databaseEntry)
+            .Build();
+
+        // Act
+        productRepository.CreateProduct(product);
+
+        // Assert
+        var products = productRepository.GetProducts();
+        products.Should().HaveCount(1);
+        products.Should().Contain(product);
+    }
+
+    [Fact]
+    public void CreateProducts_WithoutProducts_AddsNothingToDatabase()
+    {
+        // Arrange
+        var productRepository = new ProductRepositoryBuilder().Build();
+
+        // Act
+        productRepository.CreateProducts(Enumerable.Empty<Product>());
+
+        // Assert
+        var products = productRepository.GetProducts();
+        products.Should().BeEmpty();
     }
 }
