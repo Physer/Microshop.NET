@@ -13,7 +13,7 @@ public class ProductRepositoryTests
         // Arrange
         var productRepository = new ProductRepositoryBuilder()
             .WithProductData(new[] { productData })
-            .WithMapDatabaseEntryReturns(productData, output)
+            .WithMappingDatabaseEntryToProductReturns(productData, output)
             .Build();
 
         // Act
@@ -21,6 +21,54 @@ public class ProductRepositoryTests
 
         // Assert
         result.Should().Be(output);
+    }
+
+    [Theory, AutoData]
+    public void GetProductById_WithoutExistingId_ReturnsNull(Guid randomGuid)
+    {
+        // Arrange
+        var productRepository = new ProductRepositoryBuilder().Build();
+
+        // Act
+        var result = productRepository.GetProductById(randomGuid);
+
+        // Assert
+        result.Should().BeNull();
+
+    }
+
+    [Fact]
+    public void GetProducts_WithoutDatabaseEntries_ReturnsEmptyCollection()
+    {
+        // Arrange
+        var productRepository = new ProductRepositoryBuilder().Build();
+
+        // Act
+        var result = productRepository.GetProducts();
+
+        // Assert
+        result.Should().BeEmpty();
+    }
+
+    [Theory, AutoData]
+    public void GetProducts_WithDatabaseEntries_ReturnsProducts(IEnumerable<ProductData> productData, IEnumerable<Product> products)
+    {
+        // Arrange
+        var product = products.First();
+        var productDataItem = productData.First();
+        var productRepository = new ProductRepositoryBuilder()
+            .WithProductData(productData)
+            .WithMappingDatabaseEntryToProductReturns(productDataItem, product)
+            .Build();
+
+        // Act
+        var result = productRepository.GetProducts();
+
+        // Assert
+        var resultItem = result.First();
+        result.Should().HaveSameCount(products);
+        resultItem.Should().NotBeNull();
+        resultItem.Should().Be(product);
 
     }
 }
