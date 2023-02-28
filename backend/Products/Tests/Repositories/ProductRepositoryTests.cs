@@ -1,7 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using Domain;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using Persistence;
 
 namespace Tests.Repositories;
