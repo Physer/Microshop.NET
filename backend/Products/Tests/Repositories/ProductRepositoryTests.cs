@@ -100,7 +100,7 @@ public class ProductRepositoryTests
     }
 
     [Theory, AutoData]
-    public void CreateProducts_WithProducts_AddsProductsToDatabase(List<ProductData> databaseEntries,  List<Product> products)
+    public void CreateProducts_WithProducts_AddsProductsToDatabase(IEnumerable<ProductData> databaseEntries,  IEnumerable<Product> products)
     {
         // Arrange
         var productRepository = new ProductRepositoryBuilder()
