@@ -12,8 +12,8 @@ public class ProductRepositoryTests
     {
         // Arrange
         var productRepository = new ProductRepositoryBuilder()
-            .WithProductData(new[] { productData })
-            .WithMappingDatabaseEntryToProductReturns(productData, output)
+            .WithProductData(productData)
+            .WithMappingDatabaseEntryToProductReturns(output)
             .Build();
 
         // Act
@@ -54,20 +54,16 @@ public class ProductRepositoryTests
     public void GetProducts_WithDatabaseEntries_ReturnsProducts(IEnumerable<ProductData> productData, IEnumerable<Product> products)
     {
         // Arrange
-        var product = products.First();
-        var productDataItem = productData.First();
         var productRepository = new ProductRepositoryBuilder()
             .WithProductData(productData)
-            .WithMappingDatabaseEntryToProductReturns(productDataItem, product)
+            .WithMappingDatabaseEntriesToProductsReturns(products)
             .Build();
 
         // Act
         var result = productRepository.GetProducts();
 
         // Assert
-        result.Should().HaveSameCount(products);
-        result.Should().Contain(product);
-
+        result.Should().BeEquivalentTo(products);
     }
 
     [Theory, AutoData]
@@ -75,9 +71,9 @@ public class ProductRepositoryTests
     {
         // Arrange
         var productRepository = new ProductRepositoryBuilder()
-            .WithProductData(new[] { databaseEntry })
-            .WithMappingDatabaseEntryToProductReturns(databaseEntry, product)
-            .WithMappingProductToDatabaseEntryReturns(product, databaseEntry)
+            .WithProductData(databaseEntry)
+            .WithMappingDatabaseEntriesToProductsReturns(new[] { product })
+            .WithMappingProductToDatabaseEntryReturns(databaseEntry)
             .Build();
 
         // Act
@@ -101,5 +97,23 @@ public class ProductRepositoryTests
         // Assert
         var products = productRepository.GetProducts();
         products.Should().BeEmpty();
+    }
+
+    [Theory, AutoData]
+    public void CreateProducts_WithProducts_AddsProductsToDatabase(List<ProductData> databaseEntries,  List<Product> products)
+    {
+        // Arrange
+        var productRepository = new ProductRepositoryBuilder()
+            .WithProductData(databaseEntries)
+            .WithMappingProductsToDatabaseEntriesReturns(databaseEntries)
+            .WithMappingDatabaseEntriesToProductsReturns(products)
+            .Build();
+
+        // Act
+        productRepository.CreateProducts(products);
+
+        // Assert
+        var productsResult = productRepository.GetProducts();
+        productsResult.Should().BeEquivalentTo(products);
     }
 }

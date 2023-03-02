@@ -20,10 +20,10 @@ public class ProductRepository : IRepository
         return databaseProduct is not null ? _mapper.MapDatabaseEntryToProduct(databaseProduct) : null;
     }
 
-    public IEnumerable<Product> GetProducts() => _databaseProducts.Select(_mapper.MapDatabaseEntryToProduct);
+    public IEnumerable<Product> GetProducts() => _mapper.MapDatabaseEntriesToProducts(_databaseProducts);
 
     public void CreateProduct(Product product) => _databaseProducts.Add(_mapper.MapProductToDatabaseEntry(product));
 
-    public void CreateProducts(IEnumerable<Product> products) => _databaseProducts.UnionWith(products.Select(_mapper.MapProductToDatabaseEntry));
+    public void CreateProducts(IEnumerable<Product> products) => _databaseProducts.UnionWith(_mapper.MapProductsToDatabaseEntries(products));
 
 }
