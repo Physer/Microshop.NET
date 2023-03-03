@@ -11,7 +11,7 @@ builder.Services.AddSingleton<IRepository, ProductRepository>();
 
 builder.Services.AddTransient<IProductGenerator, ProductGenerator>();
 
-builder.Services.AddAutoMapper(typeof(MapperAssemblyPointer));
+builder.Services.RegisterMapperDependencies();
 
 var app = builder.Build();
 
