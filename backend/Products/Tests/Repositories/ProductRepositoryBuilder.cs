@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using AutoMapper;
+using Domain;
 using NSubstitute;
 using Persistence;
 
@@ -6,12 +7,12 @@ namespace Tests.Repositories;
 
 internal class ProductRepositoryBuilder
 {
-    private readonly IProductMapper _productMapperMock;
+    private readonly IMapper _mapperMock;
     private readonly IEnumerable<ProductData> _data;
 
     public ProductRepositoryBuilder()
     {
-        _productMapperMock = Substitute.For<IProductMapper>();
+        _mapperMock = Substitute.For<IMapper>();
         _data = Substitute.For<IEnumerable<ProductData>>();
     }
 
@@ -28,31 +29,31 @@ internal class ProductRepositoryBuilder
 
     public ProductRepositoryBuilder WithMappingDatabaseEntriesToProductsReturns(IEnumerable<Product> output)
     {
-        _productMapperMock.MapDatabaseEntriesToProducts(Arg.Any<IEnumerable<ProductData>>()).ReturnsForAnyArgs(output);
+        _mapperMock.Map<IEnumerable<Product>>(Arg.Any<IEnumerable<ProductData>>()).ReturnsForAnyArgs(output);
 
         return this;
     }
 
     public ProductRepositoryBuilder WithMappingDatabaseEntryToProductReturns(Product output)
     {
-        _productMapperMock.MapDatabaseEntryToProduct(Arg.Any<ProductData>()).ReturnsForAnyArgs(output);
+        _mapperMock.Map<Product>(Arg.Any<ProductData>()).ReturnsForAnyArgs(output);
 
         return this;
     }
 
     public ProductRepositoryBuilder WithMappingProductsToDatabaseEntriesReturns(IEnumerable<ProductData> output)
     {
-        _productMapperMock.MapProductsToDatabaseEntries(Arg.Any<IEnumerable<Product>>()).ReturnsForAnyArgs(output);
+        _mapperMock.Map<IEnumerable<ProductData>>(Arg.Any<IEnumerable<Product>>()).ReturnsForAnyArgs(output);
 
         return this;
     }
 
     public ProductRepositoryBuilder WithMappingProductToDatabaseEntryReturns(ProductData output)
     {
-        _productMapperMock.MapProductToDatabaseEntry(Arg.Any<Product>()).ReturnsForAnyArgs(output);
+        _mapperMock.Map<ProductData>(Arg.Any<Product>()).ReturnsForAnyArgs(output);
 
         return this;
     }
 
-    public ProductRepository Build() => new(_productMapperMock, _data);
+    public ProductRepository Build() => new(_mapperMock, _data);
 }

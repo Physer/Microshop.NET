@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indexing", "Indexing\Indexi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductsClient", "ProductsClient\ProductsClient.csproj", "{9719BC91-0316-4E83-81DA-4C8B3F2AFD30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mapper", "Mapper\Mapper.csproj", "{1568DAAB-9AEA-408F-B8FC-A6CDA9298C9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{9719BC91-0316-4E83-81DA-4C8B3F2AFD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9719BC91-0316-4E83-81DA-4C8B3F2AFD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9719BC91-0316-4E83-81DA-4C8B3F2AFD30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1568DAAB-9AEA-408F-B8FC-A6CDA9298C9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1568DAAB-9AEA-408F-B8FC-A6CDA9298C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1568DAAB-9AEA-408F-B8FC-A6CDA9298C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1568DAAB-9AEA-408F-B8FC-A6CDA9298C9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{11B146C9-B241-4C28-BF5D-7EA5E4A2DB84} = {70D96A9A-9281-46FD-B11C-0F3C39E1445A}
 		{1D70FE3D-3FC5-4243-8EBB-3C085713DD23} = {C0434576-9040-4E59-A5BD-B1911FF69843}
 		{9719BC91-0316-4E83-81DA-4C8B3F2AFD30} = {7DC67F05-0916-463F-9350-5D02774E3EE1}
+		{1568DAAB-9AEA-408F-B8FC-A6CDA9298C9E} = {7DC67F05-0916-463F-9350-5D02774E3EE1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9CA2E463-8133-4529-98DB-D984BCBC5967}

@@ -1,6 +1,7 @@
 using API;
 using Application;
 using Generator;
+using Mapper;
 using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ builder.Services.AddSingleton<IRepository, ProductRepository>();
 
 builder.Services.AddTransient<IProductGenerator, ProductGenerator>();
 
-builder.Services.AddSingleton<IProductMapper, ProductDataMapper>();
+builder.Services.AddAutoMapper(typeof(MapperAssemblyPointer));
 
 var app = builder.Build();
 
