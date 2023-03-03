@@ -1,13 +1,9 @@
-﻿{
+{
   "profiles": {
-    "Indexing (Kestrel)": {
+    "Indexing (Function)": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7281;http://localhost:5079",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      "commandLineArgs": "--port 7187",
+      "launchBrowser": false
     }
   }
 }
