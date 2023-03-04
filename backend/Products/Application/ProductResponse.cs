@@ -1,4 +1,4 @@
-namespace API;
+namespace Application;
 
 public record ProductResponse
 {

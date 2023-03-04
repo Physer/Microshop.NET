@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application;
+using AutoMapper;
 using Domain;
 using Persistence;
 
@@ -8,6 +9,7 @@ public class ProductProfile : Profile
 {
     public ProductProfile() 
     {
+        CreateMap<Product, ProductResponse>();
         CreateMap<Product, ProductData>();
         CreateMap<ProductData, Product>();
     }
