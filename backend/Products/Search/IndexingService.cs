@@ -19,7 +19,7 @@ public class IndexingService : IIndexingService
 
     public async Task IndexProductsAsync()
     {
-        var products = await _productsClient.GetProductsAsync() as IEnumerable<IndexableProduct>;
+        var products = await _productsClient.GetProductsAsync();
         var index = _meilisearchClient.Index("products");
         await index.DeleteAllDocumentsAsync();
         await index.AddDocumentsAsync(products);

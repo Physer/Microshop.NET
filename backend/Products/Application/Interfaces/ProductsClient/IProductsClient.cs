@@ -1,8 +1,9 @@
-﻿using Domain;
+﻿using Application.Models;
+using Domain;
 
 namespace Application.Interfaces.ProductsClient;
 
 public interface IProductsClient
 {
-    Task<IEnumerable<Product>> GetProductsAsync();
+    Task<IEnumerable<ProductResponse>> GetProductsAsync();
 }
