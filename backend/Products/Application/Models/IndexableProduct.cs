@@ -1,8 +1,6 @@
-﻿using Domain;
+﻿namespace Application.Models;
 
-namespace Application.Models;
-
-public class IndexableProduct : Product
+public record IndexableProduct : ProductResponse
 {
     public static Guid Id => Guid.NewGuid();
 }

@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces.Indexing;
 using Application.Interfaces.ProductsClient;
-using Application.Models;
 using Meilisearch;
 
 namespace Search;
