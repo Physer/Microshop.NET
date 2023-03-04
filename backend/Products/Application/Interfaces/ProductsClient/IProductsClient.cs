@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace Application;
+namespace Application.Interfaces.ProductsClient;
 
 public interface IProductsClient
 {

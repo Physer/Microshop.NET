@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Interfaces.Generator;
+using Application.Interfaces.Repositories;
+using MediatR;
 
 namespace Application.Commands.GenerateProducts;
 

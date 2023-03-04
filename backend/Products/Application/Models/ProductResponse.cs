@@ -1,4 +1,4 @@
-namespace Application;
+namespace Application.Models;
 
 public record ProductResponse
 {

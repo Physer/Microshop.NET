@@ -1,5 +1,7 @@
 using API;
 using Application;
+using Application.Interfaces.Generator;
+using Application.Interfaces.Repositories;
 using Generator;
 using Mapper;
 using Persistence;

@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Application.Models;
 using AutoMapper;
 using Domain;
 using Persistence;

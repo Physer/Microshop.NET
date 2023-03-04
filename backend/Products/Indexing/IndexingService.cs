@@ -1,4 +1,5 @@
-﻿using Application;
+﻿using Application.Interfaces.Indexing;
+using Application.Interfaces.ProductsClient;
 using Meilisearch;
 
 namespace Indexing;

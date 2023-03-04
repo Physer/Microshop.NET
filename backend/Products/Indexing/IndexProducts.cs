@@ -1,4 +1,4 @@
-using Application;
+using Application.Interfaces.Indexing;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;

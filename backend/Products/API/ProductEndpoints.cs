@@ -1,5 +1,5 @@
-using Application;
 using Application.Commands.GenerateProducts;
+using Application.Models;
 using Application.Queries.GetProduct;
 using Application.Queries.GetProducts;
 using AutoMapper;

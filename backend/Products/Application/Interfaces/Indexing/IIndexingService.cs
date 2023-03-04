@@ -1,4 +1,4 @@
-﻿namespace Application;
+﻿namespace Application.Interfaces.Indexing;
 
 public interface IIndexingService
 {

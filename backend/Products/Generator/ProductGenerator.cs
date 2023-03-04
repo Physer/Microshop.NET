@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Application.Interfaces.Generator;
 using AutoBogus;
 using Bogus;
 using Domain;

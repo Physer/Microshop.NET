@@ -1,4 +1,4 @@
-﻿using Application;
+﻿using Application.Interfaces.Repositories;
 using AutoMapper;
 using Domain;
 
