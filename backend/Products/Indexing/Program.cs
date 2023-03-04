@@ -1,12 +1,12 @@
 using Application.Interfaces.Indexing;
 using Application.Interfaces.ProductsClient;
-using Indexing;
 using Indexing.Options;
 using Meilisearch;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProductsClient;
+using Search;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
