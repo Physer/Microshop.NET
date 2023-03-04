@@ -1,6 +1,8 @@
-﻿namespace Application;
+﻿using Domain;
+
+namespace Application;
 
 public interface IProductsClient
 {
-    Task<IEnumerable<ProductResponse>> GetProductsAsync();
+    Task<IEnumerable<Product>> GetProductsAsync();
 }

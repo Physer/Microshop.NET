@@ -1,4 +1,5 @@
 ﻿using Application;
+using Domain;
 using System.Net.Http.Json;
 
 namespace ProductsClient;
@@ -9,5 +10,5 @@ public class ProductsHttpClient : IProductsClient
 
     public ProductsHttpClient(HttpClient httpClient) => _httpClient = httpClient;
 
-    public async Task<IEnumerable<ProductResponse>> GetProductsAsync() => await _httpClient.GetFromJsonAsync<IEnumerable<ProductResponse>>("/products") ?? Enumerable.Empty<ProductResponse>();
+    public async Task<IEnumerable<Product>> GetProductsAsync() => await _httpClient.GetFromJsonAsync<IEnumerable<Product>>("/products") ?? Enumerable.Empty<Product>();
 }
