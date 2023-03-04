@@ -2,5 +2,5 @@
 
 public record IndexableProduct : ProductResponse
 {
-    public static Guid Id => Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.NewGuid();
 }

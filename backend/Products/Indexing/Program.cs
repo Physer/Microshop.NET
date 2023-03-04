@@ -1,6 +1,7 @@
 using Application.Interfaces.Indexing;
 using Application.Interfaces.ProductsClient;
 using Indexing.Options;
+using Mapper;
 using Meilisearch;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,9 @@ var host = new HostBuilder()
         // Indexing
         services.AddSingleton<IIndexingService, IndexingService>();
         services.AddSingleton(_ => new MeilisearchClient(indexingOptions.BaseUrl, indexingOptions.ApiKey));
+
+        // Mapper
+        services.RegisterMapperDependencies();
     })
     .Build();
 

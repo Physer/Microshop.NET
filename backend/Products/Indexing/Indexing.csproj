@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Mapper\Mapper.csproj" />
     <ProjectReference Include="..\ProductsClient\ProductsClient.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
