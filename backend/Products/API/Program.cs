@@ -13,7 +13,7 @@ builder.Services.AddSingleton<IRepository, ProductRepository>();
 
 builder.Services.AddTransient<IProductGenerator, ProductGenerator>();
 
-builder.Services.RegisterMapperDependencies();
+builder.Services.AddAutoMapper(typeof(ProductProfile));
 
 var app = builder.Build();
 

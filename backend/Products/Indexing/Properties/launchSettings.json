@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Indexing (Function)": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7187",
-      "launchBrowser": false
-    }
-  }
-}
