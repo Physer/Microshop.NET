@@ -28,8 +28,8 @@ var host = new HostBuilder()
         services.AddSingleton<IIndexingService, IndexingService>();
         services.AddSingleton(_ => new MeilisearchClient(indexingOptions.BaseUrl, indexingOptions.ApiKey));
 
-        // Automapper
-        services.AddAutoMapper(typeof(ProductProfile));
+        // Mapper
+        services.RegisterMapperDependencies();
     })
     .Build();
 

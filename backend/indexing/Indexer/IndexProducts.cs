@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
-namespace Indexing;
+namespace Indexer;
 
 public class IndexProducts
 {
