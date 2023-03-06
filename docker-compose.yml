@@ -1,0 +1,9 @@
+---
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: masstransit/rabbitmq:latest
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
