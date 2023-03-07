@@ -1,6 +1,5 @@
 using Application.Interfaces.Indexing;
-using Application.Interfaces.ProductsClient;
-using Indexing.Options;
+using Application.Options;
 using Mapper;
 using Meilisearch;
 using Microsoft.Extensions.Configuration;
@@ -14,15 +13,15 @@ var host = new HostBuilder()
     .ConfigureServices((context, services) =>
     {
         // Options
-        var productsOptions = new ProductsOptions();
+        ProductsOptions productsOptions = new();
         var productsOptionsConfigurationSection = context.Configuration.GetSection(ProductsOptions.ConfigurationEntry);
         productsOptionsConfigurationSection.Bind(productsOptions);
-        var indexingOptions = new IndexingOptions();
+        IndexingOptions indexingOptions = new();
         var indexingOptionsConfigurationSection = context.Configuration.GetSection(IndexingOptions.ConfigurationEntry);
         indexingOptionsConfigurationSection.Bind(indexingOptions);
 
-        // Products HTTP Client
-        services.AddHttpClient<IProductsClient, ProductsHttpClient>(configuration => configuration.BaseAddress = new Uri(productsOptions?.BaseUrl ?? string.Empty));
+        // Products AMQP Client
+        services.RegisterAmqpDependencies(productsOptions);
 
         // Indexing
         services.AddSingleton<IIndexingService, IndexingService>();

@@ -10,5 +10,5 @@ public class IndexProducts
     public IndexProducts(IIndexingService indexingService) => _indexingService = indexingService;
 
     [Function(nameof(IndexProducts))]
-    public async Task RunAsync([TimerTrigger("0 */30 * * * *", RunOnStartup = true)] TimerInfo _) => await _indexingService.IndexProductsAsync();
+    public async Task RunAsync([TimerTrigger("0 */30 * * * *", RunOnStartup = true)] TimerInfo timer) => await _indexingService.IndexProductsAsync();
 }

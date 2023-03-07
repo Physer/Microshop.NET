@@ -1,4 +1,4 @@
-﻿namespace Indexing.Options;
+﻿namespace Application.Options;
 
 public class IndexingOptions
 {
