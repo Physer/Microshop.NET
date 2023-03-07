@@ -1,5 +1,4 @@
-﻿using Application.Models;
-using Domain;
+﻿using Domain;
 
 namespace Application.Interfaces.ProductsClient;
 

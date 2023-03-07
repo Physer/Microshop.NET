@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces.ProductsClient;
-using Application.Models;
 using Domain;
 using System.Net.Http.Json;
 
