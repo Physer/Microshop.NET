@@ -21,8 +21,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Indexer\Indexer.csproj" />
-  </ItemGroup>
-
 </Project>
