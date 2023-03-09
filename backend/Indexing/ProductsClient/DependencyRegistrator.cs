@@ -7,8 +7,11 @@ namespace ProductsClient;
 
 public static class DependencyRegistrator
 {
-    public static void RegisterAmqpDependencies(this IServiceCollection services, ProductsOptions productOptions)
+    public static void RegisterAmqpDependencies(this IServiceCollection services, ProductsOptions? productOptions)
     {
+        if (productOptions is null)
+            return;
+
         services.AddMassTransit(busConfigurator =>
         {
             busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>

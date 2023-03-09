@@ -5,8 +5,5 @@ namespace ProductsClient;
 
 public class ProductsAmqpClient : IProductsClient
 {
-    public Task<IEnumerable<Product>> GetProductsAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public Task<IEnumerable<Product>> GetProductsAsync() => Task.FromResult(Enumerable.Empty<Product>());
 }
