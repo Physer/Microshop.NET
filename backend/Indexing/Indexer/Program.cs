@@ -1,8 +1,6 @@
-using Application.Interfaces.Indexing;
 using Application.Options;
 using Indexer;
 using Mapper;
-using Meilisearch;
 using ProductsClient;
 using Search;
 
@@ -22,11 +20,10 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.RegisterAmqpDependencies(productOptions);
 
         // Indexing
-        services.AddSingleton<IIndexingService, IndexingService>();
-        services.AddSingleton(_ => new MeilisearchClient(indexingOptions?.BaseUrl, indexingOptions?.ApiKey));
+        services.RegisterSearchDependencies(indexingOptions);
 
         // Automapper
-        services.AddAutoMapper(typeof(ProductProfile));
+        services.RegisterMapperDependencies();
 
         // Background service
         services.AddHostedService<IndexingWorker>();
