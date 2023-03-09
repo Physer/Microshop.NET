@@ -6,4 +6,5 @@ public class IndexingOptions
 
     public string? BaseUrl { get; set; }
     public string? ApiKey { get; set; }
+    public int? IndexingIntervalInSeconds { get; set; }
 }
