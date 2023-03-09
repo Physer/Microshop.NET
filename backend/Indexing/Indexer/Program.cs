@@ -3,7 +3,7 @@ using Indexer;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddHostedService<Worker>();
+        services.AddHostedService<IndexService>();
     })
     .Build();
 
