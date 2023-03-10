@@ -21,9 +21,9 @@ public class IndexingService : IIndexingService
         _meilisearchClient = meilisearchClient;
     }
 
-    public async Task IndexProductsAsync()
+    public async Task IndexProductsAsync(CancellationToken cancellationToken = default)
     {
-        var indexableProducts = _mapper.Map<IEnumerable<IndexableProduct>>(await _productsClient.GetProductsAsync());
+        var indexableProducts = _mapper.Map<IEnumerable<IndexableProduct>>(await _productsClient.GetProductsAsync(cancellationToken));
         var index = _meilisearchClient.Index("products");
         await index.DeleteAllDocumentsAsync();
         await index.AddDocumentsAsync(indexableProducts);

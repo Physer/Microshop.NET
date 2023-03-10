@@ -2,5 +2,5 @@
 
 public interface IIndexingService
 {
-    Task IndexProductsAsync();
+    Task IndexProductsAsync(CancellationToken cancellationToken);
 }

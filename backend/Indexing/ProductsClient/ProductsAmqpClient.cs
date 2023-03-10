@@ -19,9 +19,9 @@ public class ProductsAmqpClient : IProductsClient
         _requestClient = scope.ServiceProvider.GetRequiredService<IRequestClient<GetProductsRequest>>();
     }
 
-    public async Task<IEnumerable<Product>> GetProductsAsync()
+    public async Task<IEnumerable<Product>> GetProductsAsync(CancellationToken cancellationToken = default)
     {
-        var response = await _requestClient.GetResponse<GetProductsResponse>(new GetProductsRequest());
+        var response = await _requestClient.GetResponse<GetProductsResponse>(new GetProductsRequest(), cancellationToken);
         return response?.Message?.Products?.Select(_mapper.Map<Product>) ?? Enumerable.Empty<Product>();
     }
 }

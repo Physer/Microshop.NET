@@ -31,7 +31,7 @@ public class IndexingWorker : IHostedService, IDisposable
     {
         var interval = _indexingOptions.IndexingIntervalInSeconds ?? 3600;
         _logger.LogInformation("Triggering service every {interval} seconds", interval);
-        _timer = new Timer(async _ => await IndexAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(interval));
+        _timer = new Timer(async _ => await IndexAsync(cancellationToken), null, TimeSpan.Zero, TimeSpan.FromSeconds(interval));
         return Task.CompletedTask;
     }
 
@@ -41,10 +41,10 @@ public class IndexingWorker : IHostedService, IDisposable
         return Task.CompletedTask;
     }
 
-    private async Task IndexAsync()
+    private async Task IndexAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Starting indexing");
-        await _indexingService.IndexProductsAsync();
+        await _indexingService.IndexProductsAsync(cancellationToken);
         _logger.LogInformation("Done indexing");
     }
 }
