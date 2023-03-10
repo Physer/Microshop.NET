@@ -1,0 +1,3 @@
+# Repository-wide ignore file
+# Environment variables
+.env

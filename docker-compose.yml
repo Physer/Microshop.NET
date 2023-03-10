@@ -7,3 +7,11 @@ services:
       - 15672:15672
       - 5672:5672
     restart: always
+  meilisearch:
+    container_name: meilisearch
+    image: getmeili/meilisearch:v1.0.2
+    environment:
+      - MEILI_MASTER_KEY=${MEILISEARCH_MASTER_KEY}
+    ports:
+      - 7700:7700
+    restart: always
