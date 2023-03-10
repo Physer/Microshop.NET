@@ -23,6 +23,6 @@ public static class DependencyRegistrator
                 factoryConfigurator.ConfigureEndpoints(context);
             });
         });
-        services.AddScoped<IProductsClient, ProductsAmqpClient>();
+        services.AddSingleton<IProductsClient, ProductsAmqpClient>();
     }
 }

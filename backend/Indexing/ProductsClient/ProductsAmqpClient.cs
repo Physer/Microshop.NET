@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain;
 using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 using ProductsClient.Contracts;
 
 namespace ProductsClient;
@@ -11,11 +12,11 @@ public class ProductsAmqpClient : IProductsClient
     private readonly IRequestClient<GetProductsRequest> _requestClient;
     private readonly IMapper _mapper;
 
-    public ProductsAmqpClient(IRequestClient<GetProductsRequest> requestClient, 
-        IMapper mapper)
+    public ProductsAmqpClient(IMapper mapper, IServiceScopeFactory serviceScopeFactory)
     {
-        _requestClient = requestClient;
         _mapper = mapper;
+        using var scope = serviceScopeFactory.CreateScope();
+        _requestClient = scope.ServiceProvider.GetRequiredService<IRequestClient<GetProductsRequest>>();
     }
 
     public async Task<IEnumerable<Product>> GetProductsAsync()
