@@ -13,6 +13,7 @@ public static class DependencyRegistrator
 
         services.AddMassTransit(busConfigurator =>
         {
+            busConfigurator.AddConsumer<ProductsRequestConsumer>();
             busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>
             {
                 factoryConfigurator.Host(productsOptions.BaseUrl, "/", hostConfigurator => {

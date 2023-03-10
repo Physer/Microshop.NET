@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain;
 using Persistence;
+using ProductsClient.Contracts;
 
 namespace Mapper;
 
@@ -12,5 +13,6 @@ public class ProductProfile : Profile
         CreateMap<Product, ProductResponse>();
         CreateMap<Product, ProductData>();
         CreateMap<ProductData, Product>();
+        CreateMap<Product, GetProductsResponse>();
     }
 }
