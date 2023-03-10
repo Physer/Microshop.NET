@@ -22,6 +22,6 @@ public class ProductsAmqpClient : IProductsClient
     public async Task<IEnumerable<Product>> GetProductsAsync()
     {
         var response = await _requestClient.GetResponse<GetProductsResponse>(new GetProductsRequest());
-        return response.Message.Products.Select(_mapper.Map<Product>);
+        return response?.Message?.Products?.Select(_mapper.Map<Product>) ?? Enumerable.Empty<Product>();
     }
 }
