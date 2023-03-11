@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+CONVENTIONAL_COMMIT_REGEX='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\(.*\))?: .*$'
+COMMIT_MESSAGE="$(cat $1)"
+if [[ $COMMIT_MESSAGE =~ $CONVENTIONAL_COMMIT_REGEX ]]; then
+    exit 0
+else
+    echo 'Please write your commit message according to the Conventional Commit specification (https://www.conventionalcommits.org/en/v1.0.0/)'
+    exit 1
+fi
