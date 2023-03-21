@@ -2,7 +2,6 @@
 using Application.Interfaces.ProductsClient;
 using Application.Models;
 using AutoMapper;
-using Meilisearch;
 
 namespace Search;
 
