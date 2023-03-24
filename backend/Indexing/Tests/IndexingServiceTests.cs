@@ -4,7 +4,7 @@ using Domain;
 using NSubstitute;
 using Xunit;
 
-namespace Tests.Indexing;
+namespace Tests;
 
 public class IndexingServiceTests
 {
