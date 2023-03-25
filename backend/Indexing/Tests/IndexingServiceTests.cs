@@ -1,5 +1,4 @@
 ﻿using Application.Models;
-using AutoFixture;
 using AutoFixture.Xunit2;
 using Domain;
 using NSubstitute;
