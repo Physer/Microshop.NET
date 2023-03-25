@@ -1,5 +1,6 @@
 ﻿using Application.Models;
 using AutoFixture;
+using AutoFixture.Xunit2;
 using Domain;
 using NSubstitute;
 using Tests.Builders;
@@ -9,17 +10,12 @@ namespace Tests;
 
 public class IndexingServiceTests
 {
-    private readonly IFixture _fixture;
 
-    public IndexingServiceTests() => _fixture = new Fixture();
-
-    [Fact]
-    public async Task IndexProductsAsync_ShouldCallDependencies()
+    [Theory]
+    [AutoData]
+    public async Task IndexProductsAsync_ShouldCallDependencies(IEnumerable<Product> products, IEnumerable<IndexableProduct> indexableProducts)
     {
         // Arrange
-        var products = _fixture.Create<IEnumerable<Product>>();
-        var indexableProducts = _fixture.Create<IEnumerable<IndexableProduct>>();
-
         var indexingServiceBuilder = new IndexingServiceBuilder();
         var indexingService = indexingServiceBuilder
             .WithProductsClientReturningProducts(products)
