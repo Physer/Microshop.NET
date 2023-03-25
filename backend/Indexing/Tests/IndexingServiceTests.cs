@@ -2,6 +2,7 @@
 using AutoFixture;
 using Domain;
 using NSubstitute;
+using Tests.Builders;
 using Xunit;
 
 namespace Tests;
