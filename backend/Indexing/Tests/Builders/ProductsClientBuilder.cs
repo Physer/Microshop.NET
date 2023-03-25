@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
@@ -31,7 +32,31 @@ internal class ProductsClientBuilder
 
     public ProductsClientBuilder WithRequestClientUnreachable()
     {
-        _requestClient.When(client => client.GetResponse<GetProductsResponse>(new GetProductsRequest(), Arg.Any<CancellationToken>())).Do(_ => { throw new BrokerUnreachableException(Arg.Any<Exception>()); });
+        _requestClient.When(client => client.GetResponse<GetProductsResponse>(new GetProductsRequest(), CancellationToken.None)).Do(_ => { throw new BrokerUnreachableException(new Exception()); });
+
+        return this;
+    }
+
+    public ProductsClientBuilder WithRequestClientTimingOut()
+    {
+        _requestClient.When(client => client.GetResponse<GetProductsResponse>(new GetProductsRequest(), CancellationToken.None)).Do(_ => { throw new RequestTimeoutException(); });
+
+        return this;
+    }
+
+    public ProductsClientBuilder WithMapperMappingProduct(ProductResponse responseProduct, Product productToMapTo)
+    {
+        _mapper.Map<Product>(responseProduct).ReturnsForAnyArgs(productToMapTo);
+
+        return this;
+    }
+
+    public ProductsClientBuilder WithRequestClientReturningProducts(IEnumerable<ProductResponse>? responseProducts)
+    {
+        var response = Substitute.For<Response<GetProductsResponse>>();
+        response.Message.Returns(new GetProductsResponse { Products = responseProducts });
+
+        _requestClient.GetResponse<GetProductsResponse>(new GetProductsRequest(), CancellationToken.None).Returns(response);
 
         return this;
     }
