@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces.Indexing;
 using Meilisearch;
+using System.Diagnostics.CodeAnalysis;
 using Index = Meilisearch.Index;
 
 namespace Search;
 
+[ExcludeFromCodeCoverage]
 public class MicroshopIndex : IMicroshopIndex
 {
     private readonly Index _index;

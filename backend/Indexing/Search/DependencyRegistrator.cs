@@ -2,9 +2,11 @@
 using Application.Options;
 using Meilisearch;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Search;
 
+[ExcludeFromCodeCoverage]
 public static class DependencyRegistrator
 {
     public static void RegisterSearchDependencies(this IServiceCollection services, IndexingOptions? indexingOptions)
