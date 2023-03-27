@@ -3,6 +3,9 @@ name: Indexing - Continuous Integration
 on:
   workflow_dispatch:
   push:
+    paths:
+      - 'backend/indexing/**'
+      - '.github/**'
 
 jobs:
   products_continuous_integration:

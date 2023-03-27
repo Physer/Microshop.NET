@@ -3,6 +3,9 @@ name: Products - Continuous Integration
 on:
   workflow_dispatch:
   push:
+    paths:
+      - 'backend/products/**'
+      - '.github/**'
 
 jobs:
   products_continuous_integration:
