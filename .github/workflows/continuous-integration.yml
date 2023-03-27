@@ -1,5 +1,8 @@
 name: Continuous Integration
 
+env:
+  WORKING_DIRECTORY: ${{ inputs.service-directory }}
+
 on:
   workflow_call:
     inputs:
@@ -9,7 +12,7 @@ on:
 
 defaults:
   run:
-    working-directory: ${{ inputs.service-directory }}
+    working-directory: $WORKING_DIRECTORY
 
 jobs:
   build:
