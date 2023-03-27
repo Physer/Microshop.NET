@@ -1,8 +1,5 @@
 name: Continuous Integration
 
-env:
-  WORKING_DIRECTORY: ${{ inputs.service-directory }}
-
 on:
   workflow_call:
     inputs:
@@ -10,12 +7,11 @@ on:
         required: true
         type: string
 
-defaults:
-  run:
-    working-directory: $WORKING_DIRECTORY
-
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ${{ inputs.service-directory }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
