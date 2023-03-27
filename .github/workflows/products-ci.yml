@@ -6,6 +6,6 @@ on:
 
 jobs:
   products_continuous_integration:
-    uses: Physer/Microshop.NET/.github/workflows/continuous-integration.yml
+    uses: Physer/Microshop.NET/.github/workflows/continuous-integration.yml@main
     with:
       service-directory: backend/Products
