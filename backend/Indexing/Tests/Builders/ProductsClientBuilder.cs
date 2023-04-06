@@ -54,7 +54,7 @@ internal class ProductsClientBuilder
     public ProductsClientBuilder WithRequestClientReturningProducts(IEnumerable<ProductResponse>? responseProducts)
     {
         var response = Substitute.For<Response<GetProductsResponse>>();
-        response.Message.Returns(new GetProductsResponse { Products = responseProducts });
+        response.Message.Returns(new GetProductsResponse { Products = responseProducts ?? Enumerable.Empty<ProductResponse>() });
 
         _requestClient.GetResponse<GetProductsResponse>(new GetProductsRequest(), CancellationToken.None).Returns(response);
 
