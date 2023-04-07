@@ -24,7 +24,9 @@ services:
         - SERVICE_NAME=Gateway
         - SERVICE_DLL=Proxy.dll
     ports:
-      - 8001:80
+      - 8080:80
+    environment:
+      - Proxy__Clusters__products__Destinations__productsApi__Address=${PRODUCTS_ADDRESS}
   products:
     container_name: products
     build: 
@@ -33,8 +35,6 @@ services:
       args:
         - SERVICE_NAME=Products
         - SERVICE_DLL=API.dll
-    ports:
-      - 8002:80
   indexing:
     container_name: indexing
     build: 
@@ -43,5 +43,3 @@ services:
       args:
         - SERVICE_NAME=Indexing
         - SERVICE_DLL=Indexer.dll
-    ports:
-      - 8003:80
