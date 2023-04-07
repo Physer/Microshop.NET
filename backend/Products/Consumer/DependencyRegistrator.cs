@@ -6,7 +6,7 @@ namespace Consumer;
 
 public static class DependencyRegistrator
 {
-    public static void RegisterConsumerDependencies(this IServiceCollection services, ProductsOptions? productsOptions)
+    public static void RegisterConsumerDependencies(this IServiceCollection services, ServicebusOptions? productsOptions)
     {
         if (productsOptions is null)
             return;

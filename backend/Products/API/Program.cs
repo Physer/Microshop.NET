@@ -11,9 +11,9 @@ using Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Options
-var productOptionsSection = builder.Configuration.GetSection(ProductsOptions.ConfigurationEntry);
-var productOptions = productOptionsSection.Get<ProductsOptions>();
-builder.Services.Configure<ProductsOptions>(productOptionsSection);
+var productOptionsSection = builder.Configuration.GetSection(ServicebusOptions.ConfigurationEntry);
+var productOptions = productOptionsSection.Get<ServicebusOptions>();
+builder.Services.Configure<ServicebusOptions>(productOptionsSection);
 
 // MediatR
 builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<ApplicationAssemblyPointer>());
