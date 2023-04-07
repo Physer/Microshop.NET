@@ -15,3 +15,13 @@ services:
     ports:
       - 7700:7700
     restart: always
+  gateway:
+    container_name: gateway
+    build: 
+      context: .
+      dockerfile: infrastructure/Dockerfile.backend
+      args:
+        - SERVICE_NAME=Gateway
+        - SERVICE_DLL=Proxy.dll
+    ports:
+      - 8001:80
