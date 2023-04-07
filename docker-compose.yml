@@ -25,3 +25,23 @@ services:
         - SERVICE_DLL=Proxy.dll
     ports:
       - 8001:80
+  products:
+    container_name: products
+    build: 
+      context: .
+      dockerfile: infrastructure/Dockerfile.backend
+      args:
+        - SERVICE_NAME=Products
+        - SERVICE_DLL=API.dll
+    ports:
+      - 8002:80
+  indexing:
+    container_name: indexing
+    build: 
+      context: .
+      dockerfile: infrastructure/Dockerfile.backend
+      args:
+        - SERVICE_NAME=Indexing
+        - SERVICE_DLL=Indexer.dll
+    ports:
+      - 8003:80

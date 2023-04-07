@@ -2,7 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 as build-env
 ARG SERVICE_NAME
 
 WORKDIR /src
-COPY  backend/${SERVICE_NAME} .
+COPY backend/Directory.Packages.props .
+COPY backend/${SERVICE_NAME} .
 RUN dotnet publish -c Release -o /publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 as runtime
