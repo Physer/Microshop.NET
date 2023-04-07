@@ -26,7 +26,7 @@ services:
     ports:
       - 8080:80
     environment:
-      - Proxy__Clusters__products__Destinations__productsApi__Address=${PRODUCTS_ADDRESS}
+      - Proxy__Clusters__products__Destinations__productsApi__Address=${GATEWAY_PRODUCTS_ADDRESS}
   products:
     container_name: products
     build: 
@@ -35,6 +35,10 @@ services:
       args:
         - SERVICE_NAME=Products
         - SERVICE_DLL=API.dll
+    environment:
+      - Servicebus__BaseUrl=${SERVICEBUS_BASEURL}
+      - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
+      - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
   indexing:
     container_name: indexing
     build: 
