@@ -8,9 +8,9 @@ IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((context, services) =>
     {
         // Options
-        var productOptionsSection = context.Configuration.GetSection(ProductsOptions.ConfigurationEntry);
-        var productOptions = productOptionsSection.Get<ProductsOptions>();
-        services.Configure<ProductsOptions>(productOptionsSection);
+        var productOptionsSection = context.Configuration.GetSection(ServicebusOptions.ConfigurationEntry);
+        var productOptions = productOptionsSection.Get<ServicebusOptions>();
+        services.Configure<ServicebusOptions>(productOptionsSection);
 
         var indexingOptionsSection = context.Configuration.GetSection(IndexingOptions.ConfigurationEntry);
         var indexingOptions = indexingOptionsSection.Get<IndexingOptions>();

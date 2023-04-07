@@ -1,8 +1,8 @@
 ﻿namespace Application.Options;
 
-public class ProductsOptions
+public class ServicebusOptions
 {
-    public const string ConfigurationEntry = "Products";
+    public const string ConfigurationEntry = "Servicebus";
 
     public string? BaseUrl { get; set; }
     public string? ManagementUsername { get; set; }

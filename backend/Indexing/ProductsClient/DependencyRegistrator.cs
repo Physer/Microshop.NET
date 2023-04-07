@@ -9,7 +9,7 @@ namespace ProductsClient;
 [ExcludeFromCodeCoverage]
 public static class DependencyRegistrator
 {
-    public static void RegisterAmqpDependencies(this IServiceCollection services, ProductsOptions? productOptions)
+    public static void RegisterAmqpDependencies(this IServiceCollection services, ServicebusOptions? productOptions)
     {
         if (productOptions is null)
             return;
