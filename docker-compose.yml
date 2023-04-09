@@ -26,7 +26,7 @@ services:
     ports:
       - 8080:80
     environment:
-      - Proxy__Clusters__products__Destinations__productsApi__Address=${GATEWAY_PRODUCTS_ADDRESS}
+      - Proxy__Clusters__products__Destinations__productsApi__Address=http://products
   products:
     container_name: products
     build: 
@@ -36,7 +36,7 @@ services:
         - SERVICE_NAME=Products
         - SERVICE_DLL=API.dll
     environment:
-      - Servicebus__BaseUrl=${SERVICEBUS_BASEURL}
+      - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
   indexing:
@@ -47,3 +47,10 @@ services:
       args:
         - SERVICE_NAME=Indexing
         - SERVICE_DLL=Indexer.dll
+    environment:
+      - Servicebus__BaseUrl=rabbitmq
+      - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
+      - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
+      - Indexing__BaseUrl=http://meilisearch:7700/
+      - Indexing__ApiKey=${MEILISEARCH_MASTER_KEY}
+      - Indexing__IndexingIntervalInSeconds=3600
