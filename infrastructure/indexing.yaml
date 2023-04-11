@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: indexing-deployment
+spec:
+  selector:
+    matchLabels:
+      app: indexing-app
+  template:
+    metadata:
+      labels:
+        app: indexing-app
+    spec:
+      containers:
+        - name: indexing
+          image: crphyser.azurecr.io/microshopnet/indexing:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: Servicebus__BaseUrl
+              value: "rabbitmq"
+            - name: Servicebus__ManagementUsername
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-management-username
+                  key: rabbitmq-management-username
+            - name: Servicebus__ManagementPassword
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-management-password
+                  key: rabbitmq-management-password
+            - name: Indexing__BaseUrl
+              value: "http://meilisearch-app:7700/"
+            - name: Indexing__ApiKey
+              valueFrom:
+                secretKeyRef:
+                  name: meilisearch-api-key
+                  key: meilisearch-api-key
+            - name: Indexing__IndexingIntervalInSeconds
+              value: "3600"

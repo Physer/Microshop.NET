@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meilisearch-deployment
+spec:
+  selector:
+    matchLabels:
+      app: meilisearch-app
+  template:
+    metadata:
+      labels:
+        app: meilisearch-app
+    spec:
+      containers:
+        - name: meilisearch
+          image: getmeili/meilisearch:v1.0.2
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 7700
+          env:
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: meilisearch-api-key
+                  key: meilisearch-api-key
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq-deployment
+spec:
+  selector:
+    matchLabels:
+      app: rabbitmq-app
+  template:
+    metadata:
+      labels:
+        app: rabbitmq-app
+    spec:
+      containers:
+        - name: rabbitmq
+          image: masstransit/rabbitmq:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 15672
+            - containerPort: 5672

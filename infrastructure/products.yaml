@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-deployment
+spec:
+  selector:
+    matchLabels:
+      app: products-app
+  template:
+    metadata:
+      labels:
+        app: products-app
+    spec:
+      containers:
+        - name: products
+          image: crphyser.azurecr.io/microshopnet/products:latest
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: Servicebus__BaseUrl
+              value: "rabbitmq"
+            - name: Servicebus__ManagementUsername
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-management-username
+                  key: rabbitmq-management-username
+            - name: Servicebus__ManagementPassword
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-management-password
+                  key: rabbitmq-management-password
