@@ -10,6 +10,7 @@ spec:
     metadata:
       labels:
         app: meilisearch-app
+        dns: dns-service
     spec:
       containers:
         - name: meilisearch
