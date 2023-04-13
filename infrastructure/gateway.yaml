@@ -23,3 +23,14 @@ spec:
           env:
             - name: Proxy__Clusters__products__Destinations__productsApi__Address
               value: "http://products-app"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    app: gateway-app
+  ports:
+    - port: 3000
+      targetPort: 80
