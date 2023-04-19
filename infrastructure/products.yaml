@@ -22,7 +22,7 @@ spec:
             - containerPort: 80
           env:
             - name: Servicebus__BaseUrl
-              value: "rabbitmq"
+              value: "rabbitmq-service"
             - name: Servicebus__ManagementUsername
               valueFrom:
                 secretKeyRef:
@@ -42,5 +42,4 @@ spec:
   selector:
     app: products-app
   ports:
-    - port: 3001
-      targetPort: 80
+    - port: 80

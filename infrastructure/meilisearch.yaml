@@ -17,7 +17,7 @@ spec:
           image: getmeili/meilisearch:v1.0.2
           resources:
             limits:
-              memory: "128Mi"
+              memory: "512M"
               cpu: "500m"
           ports:
             - containerPort: 7700
@@ -28,26 +28,12 @@ spec:
                   name: meilisearch-api-key
                   key: meilisearch-api-key
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: rabbitmq-deployment
+  name: meilisearch-service
 spec:
   selector:
-    matchLabels:
-      app: rabbitmq-app
-  template:
-    metadata:
-      labels:
-        app: rabbitmq-app
-    spec:
-      containers:
-        - name: rabbitmq
-          image: masstransit/rabbitmq:latest
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
-          ports:
-            - containerPort: 15672
-            - containerPort: 5672
+    app: meilisearch-app
+  ports:
+    - port: 7700

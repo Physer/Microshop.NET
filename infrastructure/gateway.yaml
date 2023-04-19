@@ -1,36 +1,37 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gateway-deployment
-spec:
-  selector:
-    matchLabels:
-      app: gateway-app
-  template:
-    metadata:
-      labels:
-        app: gateway-app
-    spec:
-      containers:
-        - name: gateway
-          image: crphyser.azurecr.io/microshopnet/gateway:latest
-          resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
-          ports:
-            - containerPort: 80
-          env:
-            - name: Proxy__Clusters__products__Destinations__productsApi__Address
-              value: "http://products-app"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: gateway-service
-spec:
-  selector:
-    app: gateway-app
-  ports:
-    - port: 3000
-      targetPort: 80
+# Don't use YARP for Ingress/Proxying
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: gateway-deployment
+# spec:
+#   selector:
+#     matchLabels:
+#       app: gateway-app
+#   template:
+#     metadata:
+#       labels:
+#         app: gateway-app
+#     spec:
+#       containers:
+#         - name: gateway
+#           image: crphyser.azurecr.io/microshopnet/gateway:latest
+#           resources:
+#             limits:
+#               memory: "128Mi"
+#               cpu: "500m"
+#           ports:
+#             - containerPort: 80
+#           env:
+#             - name: Proxy__Clusters__products__Destinations__productsApi__Address
+#               value: "http://products-service:3001"
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: gateway-service
+# spec:
+#   selector:
+#     app: gateway-app
+#   ports:
+#     - port: 80
