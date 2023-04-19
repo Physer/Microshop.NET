@@ -4,12 +4,14 @@ metadata:
   name: ingress
   labels:
     name: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   rules:
     - http:
         paths:
-          - path: /products
+          - path: /product*
             pathType: Prefix
             backend:
               service:
