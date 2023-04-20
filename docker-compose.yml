@@ -9,7 +9,7 @@ services:
     restart: always
   meilisearch:
     container_name: meilisearch
-    image: getmeili/meilisearch:v1.0.2
+    image: getmeili/meilisearch:latest
     environment:
       - MEILI_MASTER_KEY=${MEILISEARCH_MASTER_KEY}
     ports:
