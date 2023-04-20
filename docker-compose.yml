@@ -34,7 +34,7 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=Products
-        - SERVICE_DLL=API.dll
+        - SERVICE_DLL=Listener.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
