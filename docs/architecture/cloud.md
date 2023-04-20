@@ -1,30 +1,22 @@
 ```mermaid
 graph LR
 
-user(((User))) --> clientIngressController[Ingress]
+user(((User))) --> ingressController[Ingress]
 
 subgraph Cluster
 
-clientIngressController["Ingress controller"] ---> clientIngress
-
+subgraph Ingress
+ingressController["Ingress controller"] ---> ingress
+ingress --> clientService([Service])
+end
 
 subgraph Frontend
-clientIngress --> clientService([Service])
 clientService --> clientPod1[Pod]
 clientService --> clientPod2[Pod]
 end
 
-subgraph "API Gateway"
-clientService --> gatewayService([Service])
-
-gatewayService --> gatewayPod1[Pod]
-gatewayService --> gatewayPod2[Pod]
-gatewayService --> gatewayConfigMap[ConfigMap]
-gatewayService --> gatewaySecret[Secret]
-end
-
 subgraph "Products API"
-gatewayService --> productsService(["Products service"])
+ingress --> productsService(["Products service"])
 
 productsService --> productsPod1[Pod]
 productsService --> productsPod2[Pod]
@@ -38,7 +30,7 @@ productsDatabaseService --> productsDatabaseVolume[Volume]
 end
 
 subgraph "Pricing API"
-gatewayService --> pricingService(["Pricing service"])
+ingress --> pricingService(["Pricing service"])
 
 pricingService --> pricingPod1[Pod]
 pricingService --> pricingPod2[Pod]
@@ -52,7 +44,7 @@ pricingDatabaseService --> pricingDatabaseVolume[Volume]
 end
 
 subgraph "Orders API"
-gatewayService --> ordersService(["Orders service"])
+ingress --> ordersService(["Orders service"])
 
 ordersService --> ordersPod1[Pod]
 ordersService --> ordersPod2[Pod]
@@ -61,7 +53,7 @@ ordersService --> ordersSecret[Secret]
 end
 
 subgraph "Indexing service"
-gatewayService --> indexingService(["Indexing service"])
+ingress --> indexingService(["Indexing service"])
 
 indexingService --> indexingPod1[Pod]
 indexingService --> indexingPod2[Pod]
@@ -71,7 +63,7 @@ indexingService --> indexingVolume[Volume]
 end
 
 subgraph "Authentication service"
-gatewayService --> authenticationService(["Authentication service"])
+ingress --> authenticationService(["Authentication service"])
 
 authenticationService --> authenticationPod1[Pod]
 authenticationService --> authenticationPod2[Pod]
