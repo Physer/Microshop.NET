@@ -1,7 +1,6 @@
 using Application.Interfaces.Generator;
 using Application.Interfaces.Repositories;
 using Application.Options;
-using Application;
 using Consumer;
 using Generator;
 using Mapper;
