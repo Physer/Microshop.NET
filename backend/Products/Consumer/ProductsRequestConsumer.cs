@@ -1,27 +1,26 @@
-﻿using Application.Models;
-using Application.Queries.GetProducts;
+﻿using Application.Interfaces.Repositories;
+using Application.Models;
 using AutoMapper;
 using MassTransit;
-using MediatR;
 using ProductsClient.Contracts;
 
 namespace Consumer;
 
 public class ProductsRequestConsumer : IConsumer<GetProductsRequest>
 {
-    private readonly IMediator _mediator;
     private readonly IMapper _mapper;
+    private readonly IRepository _repository;
 
-    public ProductsRequestConsumer(IMediator mediator, 
-        IMapper mapper)
+    public ProductsRequestConsumer(IMapper mapper,
+        IRepository repository)
     {
-        _mediator = mediator;
         _mapper = mapper;
+        _repository = repository;
     }
 
     public async Task Consume(ConsumeContext<GetProductsRequest> context)
     {
-        var products = await _mediator.Send(new GetProductsQuery());
+        var products = _repository.GetProducts();
         var productResponses = _mapper.Map<IEnumerable<ProductResponse>>(products);
         await context.RespondAsync(new GetProductsResponse(productResponses));
     }
