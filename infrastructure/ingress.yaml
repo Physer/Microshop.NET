@@ -1,24 +1,6 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-ingress
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: microshop.localhost
-      http:
-        paths:
-          - path: /products
-            pathType: Prefix
-            backend:
-              service:
-                name: products-service
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: meilisearch-ingress
 spec:
   ingressClassName: nginx
