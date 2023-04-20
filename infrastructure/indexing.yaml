@@ -34,7 +34,7 @@ spec:
                   name: rabbitmq-management-password
                   key: rabbitmq-management-password
             - name: Indexing__BaseUrl
-              value: "http://meilisearch-app:7700/"
+              value: "http://meilisearch-service:7700/"
             - name: Indexing__ApiKey
               valueFrom:
                 secretKeyRef:
@@ -51,5 +51,4 @@ spec:
   selector:
     app: indexing-app
   ports:
-    - port: 3002
-      targetPort: 80
+    - port: 80
