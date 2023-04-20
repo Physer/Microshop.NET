@@ -35,8 +35,10 @@ host.Run();
 static void GenerateProductData(IHost host)
 {
     var amountOfProductsToGenerate = 500;
-    Console.WriteLine($"Generating {amountOfProductsToGenerate} fake products...");
     var productGenerator = host.Services.GetRequiredService<IProductGenerator>();
-    productGenerator.GenerateProducts(amountOfProductsToGenerate);
-    Console.WriteLine("Succesfully generated product data!");
+    var productRepository = host.Services.GetRequiredService<IRepository>();
+    Console.WriteLine($"Generating {amountOfProductsToGenerate} fake products...");
+    var products = productGenerator.GenerateProducts(amountOfProductsToGenerate);
+    productRepository.CreateProducts(products);
+    Console.WriteLine("Succesfully generated and stored product data!");
 }
