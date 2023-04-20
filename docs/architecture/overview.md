@@ -2,13 +2,13 @@
 flowchart TD
     user(((User))) --> frontend["Front-end application"]
 
-    frontend <--> gateway["API Gateway (YARP)"]
+    frontend <--> gateway["Ingress"]
 
-    gateway <--> authentication["Authentication service (Supertokens)"]
+    gateway --> authentication["Authentication service (Supertokens)"]
 
-    gateway <--> products["Products API"]
-    gateway <--> orders["Orders API"]
-    gateway <--> pricing["Pricing API"]
+    gateway --> products["Products API"]
+    gateway --> orders["Orders API"]
+    gateway --> pricing["Pricing API"]
 
     products <--> servicebus>"Servicebus (RabbitMQ)"]
     orders <--> servicebus
