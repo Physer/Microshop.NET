@@ -28,4 +28,15 @@ IHost host = Host.CreateDefaultBuilder(args)
     })
     .Build();
 
+GenerateProductData(host);
 host.Run();
+
+// Generating some dummy product data on startup
+static void GenerateProductData(IHost host)
+{
+    var amountOfProductsToGenerate = 500;
+    Console.WriteLine($"Generating {amountOfProductsToGenerate} fake products...");
+    var productGenerator = host.Services.GetRequiredService<IProductGenerator>();
+    productGenerator.GenerateProducts(amountOfProductsToGenerate);
+    Console.WriteLine("Succesfully generated product data!");
+}
