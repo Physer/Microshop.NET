@@ -23,6 +23,5 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
-    <PackageVersion Include="Yarp.ReverseProxy" Version="2.0.0" />
   </ItemGroup>
 </Project>
