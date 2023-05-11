@@ -11,10 +11,7 @@ public class IndexingWorkerTests
     public async Task TestIndexingWorker()
     {
         // Arrange
-        var hostBuilder = new HostBuilder().ConfigureServices(services =>
-        {
-            services.AddHostedService<IndexingWorker>();
-        });
+        var hostBuilder = new HostBuilder().ConfigureServices(ServiceConfigurator.ConfigureServices);
         var host = hostBuilder.Build();
         await host.StartAsync();
         var indexingWorker = host.Services.GetRequiredService<IndexingWorker>();

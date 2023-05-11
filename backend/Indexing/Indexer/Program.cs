@@ -1,33 +1,7 @@
-using Application.Options;
 using Indexer;
-using Mapper;
-using ProductsClient;
-using Search;
 
 IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((context, services) =>
-    {
-        // Options
-        var productOptionsSection = context.Configuration.GetSection(ServicebusOptions.ConfigurationEntry);
-        var productOptions = productOptionsSection.Get<ServicebusOptions>();
-        services.Configure<ServicebusOptions>(productOptionsSection);
-
-        var indexingOptionsSection = context.Configuration.GetSection(IndexingOptions.ConfigurationEntry);
-        var indexingOptions = indexingOptionsSection.Get<IndexingOptions>();
-        services.Configure<IndexingOptions>(indexingOptionsSection);
-
-        // Products AMQP Client
-        services.RegisterAmqpDependencies(productOptions);
-
-        // Indexing
-        services.RegisterSearchDependencies(indexingOptions);
-
-        // Automapper
-        services.RegisterMapperDependencies();
-
-        // Background service
-        services.AddHostedService<IndexingWorker>();
-    })
+    .ConfigureServices(ServiceConfigurator.ConfigureServices)
     .Build();
 
 host.Run();
