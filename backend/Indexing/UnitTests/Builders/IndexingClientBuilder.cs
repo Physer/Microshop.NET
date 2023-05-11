@@ -13,5 +13,12 @@ internal class IndexingClientBuilder
         _microshopIndex = Substitute.For<IMicroshopIndex>();
     }
 
-    public static IndexingClient Build() => new();
+    public IndexingClientBuilder WithIndexGetAllDocumentsReturns<T>(IEnumerable<T> items)
+    {
+        _microshopIndex.GetAllDocumentsAsync<T>().Returns(Task.FromResult(items));
+
+        return this;
+    }
+
+    public IndexingClient Build() => new();
 }
