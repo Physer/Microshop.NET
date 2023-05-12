@@ -28,7 +28,6 @@ public class IndexingWorkerTests : IAsyncLifetime
             .Build();
         await meilisearchContainer.StartAsync().ConfigureAwait(false);
 
-        // rabbitMqContainer.Name.Split('/').Last()
         var productsServiceConfiguration = new MicroshopProductsContainerConfiguration(rabbitMqContainer.IpAddress, rabbitMqConfiguration.Username, rabbitMqConfiguration.Password);
         var productsServiceContainer = new ContainerBuilder()
             .WithImage(productsServiceConfiguration.ImageName)
