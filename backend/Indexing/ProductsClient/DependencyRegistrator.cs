@@ -18,7 +18,7 @@ public static class DependencyRegistrator
         {
             busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>
             {
-                factoryConfigurator.Host(productOptions.BaseUrl, "/", hostConfigurator => {
+                factoryConfigurator.Host(productOptions.BaseUrl, (ushort)productOptions.Port, "/", hostConfigurator => {
                     hostConfigurator.Username(productOptions.ManagementUsername);
                     hostConfigurator.Password(productOptions.ManagementPassword);
                 });
