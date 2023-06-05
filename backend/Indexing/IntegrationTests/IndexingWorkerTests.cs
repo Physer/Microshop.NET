@@ -11,6 +11,7 @@ public class IndexingWorkerTests : IAsyncLifetime
     private IContainer? _meilisearchContainer;
     private IContainer? _rabbitMqContainer;
     private RabbitMqContainerConfiguration? _rabbitMqConfiguration;
+    private int? _rabbitMqContainerPort;
 
     public Task DisposeAsync() => Task.CompletedTask;
 
@@ -20,6 +21,7 @@ public class IndexingWorkerTests : IAsyncLifetime
         _rabbitMqContainer = new ContainerBuilder()
             .WithImage(_rabbitMqConfiguration.ImageName)
             .WithEnvironment(_rabbitMqConfiguration.EnvironmentVariables)
+            .WithPortBinding(_rabbitMqConfiguration.Port, true)
             .WithWaitStrategy(Wait
                 .ForUnixContainer()
                 .UntilMessageIsLogged(@"[s|S]erver startup complete"))
@@ -34,7 +36,8 @@ public class IndexingWorkerTests : IAsyncLifetime
             .Build();
         await _meilisearchContainer.StartAsync().ConfigureAwait(false);
 
-        var productsServiceConfiguration = new MicroshopProductsContainerConfiguration(_rabbitMqContainer.IpAddress, _rabbitMqConfiguration.Username, _rabbitMqConfiguration.Password);
+        _rabbitMqContainerPort = _rabbitMqContainer.GetMappedPublicPort(_rabbitMqConfiguration.Port);
+        var productsServiceConfiguration = new MicroshopProductsContainerConfiguration(_rabbitMqContainer.IpAddress, _rabbitMqConfiguration.Username, _rabbitMqConfiguration.Password, _rabbitMqContainerPort.Value);
         var productsServiceContainer = new ContainerBuilder()
             .WithImage(productsServiceConfiguration.ImageName)
             .WithEnvironment(productsServiceConfiguration.EnvironmentVariables)
@@ -53,6 +56,7 @@ public class IndexingWorkerTests : IAsyncLifetime
             { "Servicebus:BaseUrl", _rabbitMqContainer?.IpAddress },
             { "Servicebus:ManagementUsername", _rabbitMqConfiguration?.Username },
             { "Servicebus:ManagementPassword", _rabbitMqConfiguration?.Password },
+            { "Servicebus:Port", _rabbitMqContainerPort.ToString() }
         };
         var host = new ApplicationBuilder(configuration)
             .Build();
