@@ -3,6 +3,7 @@
 internal class MeilisearchContainerConfiguration : IContainerConfiguration
 {
     public string ImageName => "getmeili/meilisearch";
+    public int Port => 7700;
 
     public IReadOnlyDictionary<string, string>? EnvironmentVariables => new Dictionary<string, string>
     {
