@@ -1,5 +1,6 @@
-﻿using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
+using FluentAssertions;
 using IntegrationTests.Builders;
 using IntegrationTests.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -9,11 +10,13 @@ namespace IntegrationTests;
 
 public class IndexingWorkerTests : IAsyncLifetime
 {
+    private IContainer? _meilisearchContainer;
     private IContainer? _rabbitMqContainer;
+    private MeilisearchContainerConfiguration? _meilisearchConfiguration;
     private RabbitMqContainerConfiguration? _rabbitMqConfiguration;
     private int? _rabbitMqContainerPort;
     private int? _meilisearchContainerPort;
-    
+
     private const string _localhost = "localhost";
 
     public Task DisposeAsync() => Task.CompletedTask;
@@ -27,21 +30,25 @@ public class IndexingWorkerTests : IAsyncLifetime
             .WithPortBinding(_rabbitMqConfiguration.Port, true)
             .WithWaitStrategy(Wait
                 .ForUnixContainer()
-                .UntilMessageIsLogged(@"[s|S]erver startup complete"))
+                .UntilMessageIsLogged(@"[s|S]erver startup complete")
+                .UntilPortIsAvailable(_rabbitMqConfiguration.Port))
             .Build();
         await _rabbitMqContainer.StartAsync().ConfigureAwait(false);
 
-        var meilisearchConfiguration = new MeilisearchContainerConfiguration();
-        var meilisearchContainer = new ContainerBuilder()
-            .WithImage(meilisearchConfiguration.ImageName)
-            .WithEnvironment(meilisearchConfiguration.EnvironmentVariables)
-            .WithPortBinding(meilisearchConfiguration.Port, true)
-            .WithWaitStrategy(Wait.ForUnixContainer())
+        _meilisearchConfiguration = new MeilisearchContainerConfiguration();
+        _meilisearchContainer = new ContainerBuilder()
+            .WithImage(_meilisearchConfiguration.ImageName)
+            .WithEnvironment(_meilisearchConfiguration.EnvironmentVariables)
+            .WithPortBinding(_meilisearchConfiguration.Port, true)
+            .WithWaitStrategy(Wait
+                .ForUnixContainer()
+                .UntilPortIsAvailable(_meilisearchConfiguration.Port)
+                .UntilContainerIsHealthy())
             .Build();
-        await meilisearchContainer.StartAsync().ConfigureAwait(false);
+        await _meilisearchContainer.StartAsync().ConfigureAwait(false);
 
         _rabbitMqContainerPort = _rabbitMqContainer.GetMappedPublicPort(_rabbitMqConfiguration.Port);
-        _meilisearchContainerPort = meilisearchContainer.GetMappedPublicPort(meilisearchConfiguration.Port);
+        _meilisearchContainerPort = _meilisearchContainer.GetMappedPublicPort(_meilisearchConfiguration.Port);
 
         var productsServiceConfiguration = new MicroshopProductsContainerConfiguration(_rabbitMqContainer.IpAddress, _rabbitMqConfiguration.Username, _rabbitMqConfiguration.Password, _rabbitMqContainerPort.Value);
         var productsServiceContainer = new ContainerBuilder()
@@ -53,12 +60,14 @@ public class IndexingWorkerTests : IAsyncLifetime
     }
 
     [Fact]
-    public void IndexingWorker_IndexesSuccesfully()
+    public async void IndexingWorker_IndexesSuccesfully()
     {
         // Arrange
         Dictionary<string, string?> configuration = new()
         {
             { "Indexing:BaseUrl", $"http://{_localhost}:{_meilisearchContainerPort}/" },
+            { "Indexing:ApiKey", _meilisearchConfiguration?.ApiKey },
+            { "Indexing:IndexingIntervalInSeconds", 3600.ToString() },
             { "Servicebus:BaseUrl", _localhost },
             { "Servicebus:ManagementUsername", _rabbitMqConfiguration?.Username },
             { "Servicebus:ManagementPassword", _rabbitMqConfiguration?.Password },
@@ -71,5 +80,9 @@ public class IndexingWorkerTests : IAsyncLifetime
         // Act
 
         // Assert
+        var containerLogs = await _meilisearchContainer!.GetLogsAsync();
+        containerLogs.Should().NotBeNull();
+        containerLogs.Stderr.Should().Contain("indexed_documents:");
+        containerLogs.Stderr.Should().NotContain("indexed_documents: 0");
     }
 }
