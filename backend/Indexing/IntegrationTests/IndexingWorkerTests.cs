@@ -42,8 +42,7 @@ public class IndexingWorkerTests : IAsyncLifetime
             .WithPortBinding(_meilisearchConfiguration.Port, true)
             .WithWaitStrategy(Wait
                 .ForUnixContainer()
-                .UntilPortIsAvailable(_meilisearchConfiguration.Port)
-                .UntilContainerIsHealthy())
+                .UntilPortIsAvailable(_meilisearchConfiguration.Port))
             .Build();
         await _meilisearchContainer.StartAsync().ConfigureAwait(false);
 
@@ -54,7 +53,8 @@ public class IndexingWorkerTests : IAsyncLifetime
         var productsServiceContainer = new ContainerBuilder()
             .WithImage(productsServiceConfiguration.ImageName)
             .WithEnvironment(productsServiceConfiguration.EnvironmentVariables)
-            .WithWaitStrategy(Wait.ForUnixContainer())
+            .WithWaitStrategy(Wait.ForUnixContainer()
+            .UntilMessageIsLogged(@"[b|]Bus started:"))
             .Build();
         await productsServiceContainer.StartAsync().ConfigureAwait(false);
     }
@@ -75,7 +75,10 @@ public class IndexingWorkerTests : IAsyncLifetime
         };
         var host = new ApplicationBuilder(configuration)
             .Build();
-        host.Run();
+
+        await host.StartAsync().ConfigureAwait(false);
+        Thread.Sleep(20000);
+        await host.StopAsync().ConfigureAwait(false);
 
         // Act
 
