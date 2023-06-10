@@ -3,7 +3,6 @@ using DotNet.Testcontainers.Containers;
 using FluentAssertions;
 using IntegrationTests.Builders;
 using IntegrationTests.Configuration;
-using Microsoft.Extensions.Hosting;
 using Xunit;
 
 namespace IntegrationTests;
@@ -53,8 +52,9 @@ public class IndexingWorkerTests : IAsyncLifetime
         var productsServiceContainer = new ContainerBuilder()
             .WithImage(productsServiceConfiguration.ImageName)
             .WithEnvironment(productsServiceConfiguration.EnvironmentVariables)
-            .WithWaitStrategy(Wait.ForUnixContainer()
-            .UntilMessageIsLogged(@"[b|]Bus started:"))
+            .WithWaitStrategy(Wait
+                .ForUnixContainer()
+                .UntilMessageIsLogged(@"[b|B]us started"))
             .Build();
         await productsServiceContainer.StartAsync().ConfigureAwait(false);
     }
@@ -77,7 +77,7 @@ public class IndexingWorkerTests : IAsyncLifetime
             .Build();
 
         await host.StartAsync().ConfigureAwait(false);
-        Thread.Sleep(20000);
+        Thread.Sleep(TimeSpan.FromSeconds(5));
         await host.StopAsync().ConfigureAwait(false);
 
         // Act
