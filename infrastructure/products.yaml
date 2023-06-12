@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: products
-          image: crphyser.azurecr.io/microshopnet/products:latest
+          image: physer/microshop-products:main
           resources:
             limits:
               memory: "128Mi"
@@ -23,6 +23,8 @@ spec:
           env:
             - name: Servicebus__BaseUrl
               value: "rabbitmq-service"
+            - name: Servicebus__Port
+              value: "5672"
             - name: Servicebus__ManagementUsername
               valueFrom:
                 secretKeyRef:

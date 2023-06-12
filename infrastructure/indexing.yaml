@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: indexing
-          image: crphyser.azurecr.io/microshopnet/indexing:latest
+          image: physer/microshop-indexing:main
           resources:
             limits:
               memory: "128Mi"
@@ -23,6 +23,8 @@ spec:
           env:
             - name: Servicebus__BaseUrl
               value: "rabbitmq-service"
+            - name: Servicebus__Port
+              value: "5672"
             - name: Servicebus__ManagementUsername
               valueFrom:
                 secretKeyRef:
