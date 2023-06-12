@@ -15,3 +15,6 @@ jobs:
       docker-image-name: microshop-indexing
       service-name: Indexing
       service-dll: Indexer.dll
+    secrets:
+      dockerUsername: ${{ secrets.DOCKER_USERNAME }}
+      dockerPassword: ${{ secrets.DOCKER_PASSWORD }}

@@ -15,3 +15,6 @@ jobs:
       docker-image-name: microshop-products
       service-name: Products
       service-dll: Listener.dll
+    secrets:
+      dockerUsername: ${{ secrets.DOCKER_USERNAME }}
+      dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
