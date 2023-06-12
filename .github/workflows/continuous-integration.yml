@@ -77,4 +77,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            SERVICE_NAME=${{ inputs.service-name }},SERVICE_DLL=${{ inputs.service-dll }}
+            SERVICE_NAME=${{ inputs.service-name }}
+            SERVICE_DLL=${{ inputs.service-dll }}
