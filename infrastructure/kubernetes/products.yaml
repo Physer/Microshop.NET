@@ -28,13 +28,13 @@ spec:
             - name: Servicebus__ManagementUsername
               valueFrom:
                 secretKeyRef:
-                  name: SERVICEBUS_MANAGEMENT_USERNAME
-                  key: SERVICEBUS_MANAGEMENT_USERNAME
+                  name: rabbitmq-management-username
+                  key: rabbitmq-management-username
             - name: Servicebus__ManagementPassword
               valueFrom:
                 secretKeyRef:
-                  name: SERVICEBUS_MANAGEMENT_PASSWORD
-                  key: SERVICEBUS_MANAGEMENT_PASSWORD
+                  name: rabbitmq-management-password
+                  key: rabbitmq-management-password
 ---
 apiVersion: v1
 kind: Service

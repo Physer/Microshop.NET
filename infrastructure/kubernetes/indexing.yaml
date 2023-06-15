@@ -28,20 +28,20 @@ spec:
             - name: Servicebus__ManagementUsername
               valueFrom:
                 secretKeyRef:
-                  name: SERVICEBUS_MANAGEMENT_USERNAME
-                  key: SERVICEBUS_MANAGEMENT_USERNAME
+                  name: rabbitmq-management-username
+                  key: rabbitmq-management-username
             - name: Servicebus__ManagementPassword
               valueFrom:
                 secretKeyRef:
-                  name: SERVICEBUS_MANAGEMENT_PASSWORD
-                  key: SERVICEBUS_MANAGEMENT_PASSWORD
+                  name: rabbitmq-management-password
+                  key: rabbitmq-management-password
             - name: Indexing__BaseUrl
               value: "http://meilisearch-service:7700/"
             - name: Indexing__ApiKey
               valueFrom:
                 secretKeyRef:
-                  name: MEILISEARCH_MASTER_KEY
-                  key: MEILISEARCH_MASTER_KEY
+                  name: meilisearch-api-key
+                  key: meilisearch-api-key
             - name: Indexing__IndexingIntervalInSeconds
               value: "3600"
 ---
