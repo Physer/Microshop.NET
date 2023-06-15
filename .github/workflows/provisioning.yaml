@@ -7,6 +7,15 @@ on:
       environment:
         required: true
         type: string
+    secrets:
+      azureClientId:
+        required: true
+      azureClientSecret:
+        required: true
+      azureSubscriptionId:
+        required: true
+      azureTenantId:
+        required: true
 
 jobs:
   provision_resources:
