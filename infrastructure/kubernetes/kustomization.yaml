@@ -1,0 +1,4 @@
+secretGenerator:
+- name: microshop-secrets
+  envs:
+  - .env.secret
