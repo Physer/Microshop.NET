@@ -82,4 +82,5 @@ jobs:
 
   provision_resources:
     name: Provision resources
+    needs: continuous_integration
     uses: Physer/Microshop.NET/.github/workflows/provisioning.yaml@main
