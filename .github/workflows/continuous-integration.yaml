@@ -1,5 +1,5 @@
 name: Continuous Integration (Template)
-concurrency: ci
+concurrency: ci-${{ github.workflow }}
 
 on:
   workflow_call:
