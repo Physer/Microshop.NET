@@ -25,7 +25,7 @@ spec:
             - name: MEILI_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: meilisearch-api-key
+                  name: microshop-secrets
                   key: meilisearch-api-key
 ---
 apiVersion: v1
