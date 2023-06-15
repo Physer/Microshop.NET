@@ -7,6 +7,10 @@ on:
       environment:
         required: true
         type: string
+      location:
+        required: false
+        type: string
+        default: West Europe
     secrets:
       azureClientId:
         required: true
@@ -24,12 +28,13 @@ jobs:
         working-directory: infrastructure/terraform
     name: Provision resources using Terraform
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
     env:
       ARM_CLIENT_ID: ${{ secrets.azureClientId }}
       ARM_CLIENT_SECRET: ${{ secrets.azureClientSecret }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.azureSubscriptionId }}
       ARM_TENANT_ID: ${{ secrets.azureTenantId }}
+      TF_VAR_environment: ${{ inputs.environment }}
+      TF_VAR_location: ${{ inputs.location }}
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
