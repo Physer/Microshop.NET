@@ -79,8 +79,3 @@ jobs:
           build-args: |
             SERVICE_NAME=${{ inputs.service-name }}
             SERVICE_DLL=${{ inputs.service-dll }}
-
-  provision_resources:
-    name: Provision resources
-    needs: continuous_integration
-    uses: Physer/Microshop.NET/.github/workflows/provisioning.yaml@main

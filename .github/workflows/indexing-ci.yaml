@@ -4,8 +4,10 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'backend/Indexing/**'
-      - '.github/**'
+      - "backend/Indexing/**"
+      - ".github/**"
+    branches:
+      - main
 
 jobs:
   products_continuous_integration:
