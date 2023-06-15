@@ -17,7 +17,8 @@ jobs:
       azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
-  products_provision_resources:
+  production_provision_resources:
+    name: Production - Provision resources
     uses: Physer/Microshop.NET/.github/workflows/provisioning.yaml@main
     needs: test_provision_resources
     with:

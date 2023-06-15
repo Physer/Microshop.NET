@@ -28,6 +28,7 @@ jobs:
         working-directory: infrastructure/terraform
     name: Provision resources using Terraform
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     env:
       ARM_CLIENT_ID: ${{ secrets.azureClientId }}
       ARM_CLIENT_SECRET: ${{ secrets.azureClientSecret }}
