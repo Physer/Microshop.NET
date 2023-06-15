@@ -1,0 +1,19 @@
+name: Provision resources
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  test_provision_resources:
+    name: Test - Provision resources
+    uses: Physer/Microshop.NET/.github/workflows/provisioning.yaml@main
+    with:
+      environment: test
+  products_provision_resources:
+    uses: Physer/Microshop.NET/.github/workflows/provisioning.yaml@main
+    needs: test_provision_resources
+    with:
+      environment: production
