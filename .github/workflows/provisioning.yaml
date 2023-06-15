@@ -40,8 +40,8 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
       - name: Terraform workspace select
         id: workspace
-        run: terraform workspace select ${{ inputs.environment }} -or-create
-        
+        run: terraform -or-create workspace select ${{ inputs.environment }}
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
