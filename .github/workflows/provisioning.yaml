@@ -1,11 +1,12 @@
-name: Provision resources
+name: Provision resources (Template)
 concurrency: provisioning
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
 
 jobs:
   provision_resources:
@@ -14,6 +15,7 @@ jobs:
         working-directory: infrastructure/terraform
     name: Provision resources using Terraform
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     env:
       ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -29,7 +31,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init --backend-config=config.azure.tfbackend
 
       - name: Terraform Validate
         id: validate
