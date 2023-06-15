@@ -1,4 +1,4 @@
-name: Provisioning (Template)
+name: Provision resources
 
 on:
   workflow_dispatch:
