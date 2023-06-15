@@ -38,10 +38,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
-      - name: Terraform workspace select
-        id: workspace
-        run: terraform workspace select -or-create ${{ inputs.environment }}
-
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
@@ -54,6 +50,10 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+
+      - name: Terraform workspace select
+        id: workspace
+        run: terraform workspace select -or-create ${{ inputs.environment }}
 
       - name: Terraform Plan
         id: plan
