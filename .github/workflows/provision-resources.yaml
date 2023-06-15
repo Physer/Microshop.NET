@@ -3,6 +3,9 @@ name: Provision resources
 on:
   workflow_dispatch:
   push:
+    paths:
+      - "infrastructure/**"
+      - ".github/**"
     branches:
       - main
 
