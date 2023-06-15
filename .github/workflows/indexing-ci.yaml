@@ -9,7 +9,7 @@ on:
 
 jobs:
   products_continuous_integration:
-    uses: Physer/Microshop.NET/.github/workflows/continuous-integration.yml@main
+    uses: Physer/Microshop.NET/.github/workflows/continuous-integration.yaml@main
     with:
       service-directory: backend/Indexing
       docker-image-name: microshop-indexing
