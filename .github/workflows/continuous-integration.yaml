@@ -1,4 +1,5 @@
 name: Continuous Integration (Template)
+concurrency: ci
 
 on:
   workflow_call:
