@@ -20,6 +20,12 @@ on:
         required: true
       azureTenantId:
         required: true
+      meilisearchApiKey:
+        required: true
+      rabbitMqUsername:
+        required: true
+      rabbitMqPassword:
+        required: true
 
 jobs:
   provision_resources:
@@ -65,3 +71,58 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply -auto-approve
+
+  prepare_aks_credentials:
+    if: ${{ github.event.continuous_integration.conclusion == 'success' }} && ${{ github.event.test_provision_resources.conclusion == 'success' }} && ${{ github.event.production_provision_resources.conclusion == 'success' }}
+    name: Prepare AKS deployment credentials
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    needs: provision_resources
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: azure/setup-kubectl@v3
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.azureClientId }}","clientSecret":"${{ secrets.azureClientSecret }}","subscriptionId":"${{ secrets.azureSubscriptionId }}","tenantId":"${{ secrets.azureTenantId }}"}'
+
+      - name: Set AKS context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: "rg-microshop-${{ inputs.environment }}"
+          cluster-name: "aks-microshop-${{ inputs.environment }}"
+
+  create_secrets_environment_file:
+    name: Create .env.secret file for Kustomize
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrastructure/kubernetes
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: |
+          cat <<EOF > .env.secret
+          meilisearch-api-key=${{ secrets.meilisearchApiKey }}
+          rabbitmq-management-username=${{ secrets.rabbitMqUsername }}
+          rabbitmq-management-password=${{ secrets.rabbitMqPassword }}
+          EOF
+
+  deploy_generic_resources:
+    name: Deploy generic resources to the ${{ inputs.environment }} environment
+    environment: ${{ inputs.environment }}
+    needs: [prepare_aks_credentials, create_secrets_environment_file]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrastructure/kubernetes
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: |
+          kubectl apply -k kustomization.yaml
+          kubectl apply -f rabbitmq.yaml
+          kubectl apply -f meilisearch.yaml

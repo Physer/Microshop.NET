@@ -20,6 +20,9 @@ jobs:
       azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
+      meilisearchApiKey: ${{ secrets.MEILISEARCH_API_KEY }}
+      rabbitMqUsername: ${{ secrets.RABBITMQ_USERNAME }}
+      rabbitMqPassword: ${{ secrets.RABBITMQ_PASSWORD }}
   production_provision_resources:
     name: Production - Provision resources
     uses: Physer/Microshop.NET/.github/workflows/provisioning.yaml@main
@@ -31,3 +34,6 @@ jobs:
       azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
       azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
+      meilisearchApiKey: ${{ secrets.MEILISEARCH_API_KEY }}
+      rabbitMqUsername: ${{ secrets.RABBITMQ_USERNAME }}
+      rabbitMqPassword: ${{ secrets.RABBITMQ_PASSWORD }}

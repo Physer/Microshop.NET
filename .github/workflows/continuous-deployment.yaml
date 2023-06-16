@@ -7,6 +7,9 @@ on:
       environment:
         required: true
         type: string
+      service-name:
+        required: true
+        type: string
     secrets:
       azureClientId:
         required: true
@@ -17,12 +20,12 @@ on:
       azureTenantId:
         required: true
   workflow_run:
-    workflows: [continuous_integration, test_provision_resources, production_provision_resources]
+    workflows: [continuous_integration, deploy_generic_resources]
     types: completed
 
 jobs:
   prepare_aks_credentials:
-    if: ${{ github.event.continuous_integration.conclusion == 'success' }} && ${{ github.event.test_provision_resources.conclusion == 'success' }} && ${{ github.event.production_provision_resources.conclusion == 'success' }}
+    if: ${{ github.event.continuous_integration.conclusion == 'success' }} && ${{ github.event.deploy_generic_resources.conclusion == 'success' }}
     name: Prepare AKS deployment credentials
     runs-on: ubuntu-latest
     steps:
@@ -40,3 +43,16 @@ jobs:
         with:
           resource-group: "rg-microshop-${{ inputs.environment }}"
           cluster-name: "aks-microshop-${{ inputs.environment }}"
+
+  deploy:
+    name: Deploy ${{ inputs.service-name }} to the ${{ inputs.environment }} environment
+    environment: ${{ inputs.environment }}
+    needs: prepare_aks_credentials
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrastructure/kubernetes
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: kubectl apply -f ${{ inputs.service-name }}.yaml
