@@ -81,8 +81,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: azure/setup-kubectl@v3
-
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -121,6 +119,8 @@ jobs:
         working-directory: infrastructure/kubernetes
     steps:
       - uses: actions/checkout@v3
+
+      - uses: azure/setup-kubectl@v3
 
       - run: |
           kubectl apply -k kustomization.yaml
