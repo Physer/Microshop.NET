@@ -14,7 +14,7 @@ jobs:
     name: Continuous Integration - Indexing service
     uses: Physer/Microshop.NET/.github/workflows/continuous-integration.yaml@main
     with:
-      service-directory: backend/Indexing
+      service-directory: backend/indexing
       docker-image-name: microshop-indexing
       service-name: indexing
       service-dll: Indexer.dll

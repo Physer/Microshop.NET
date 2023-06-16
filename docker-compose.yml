@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: infrastructure/Dockerfile.backend
       args:
-        - SERVICE_NAME=Products
+        - SERVICE_NAME=products
         - SERVICE_DLL=Listener.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
@@ -33,7 +33,7 @@ services:
       context: .
       dockerfile: infrastructure/Dockerfile.backend
       args:
-        - SERVICE_NAME=Indexing
+        - SERVICE_NAME=indexing
         - SERVICE_DLL=Indexer.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
