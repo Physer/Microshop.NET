@@ -115,6 +115,8 @@ jobs:
     needs: [prepare_aks_credentials, create_secrets_environment_file]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      
       - uses: azure/k8s-bake@v2.4
         with:
           renderEngine: "kustomize"
