@@ -38,6 +38,8 @@ jobs:
       ARM_TENANT_ID: ${{ secrets.azureTenantId }}
       TF_VAR_environment: ${{ inputs.environment }}
       TF_VAR_location: ${{ inputs.location }}
+      TF_VAR_vm_size: ${{ vars.TF_VAR_VM_SIZE }}
+      TF_VAR_aks_sku_tier: ${{ VARS.TF_VAR_AKS_SKU_TIER }}
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
