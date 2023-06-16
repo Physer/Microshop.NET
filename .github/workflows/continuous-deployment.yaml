@@ -17,12 +17,12 @@ on:
       azureTenantId:
         required: true
   workflow_run:
-    workflows: [continuous_integration]
+    workflows: [continuous_integration, test_provision_resources, production_provision_resources]
     types: completed
 
 jobs:
   prepare_aks_credentials:
-    if: ${{ github.event.continuous_integration.conclusion == 'success' }}
+    if: ${{ github.event.continuous_integration.conclusion == 'success' }} && ${{ github.event.test_provision_resources.conclusion == 'success' }} && ${{ github.event.production_provision_resources.conclusion == 'success' }}
     name: Prepare AKS deployment credentials
     runs-on: ubuntu-latest
     steps:
