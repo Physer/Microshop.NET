@@ -118,7 +118,7 @@ jobs:
       - uses: azure/k8s-bake@v2.4
         with:
           renderEngine: "kustomize"
-          kustomizationPath: "./infrastructure/kubernetes/kustomization.yaml"
+          kustomizationPath: "./infrastructure/kubernetes"
           kubectl-version: "latest"
 
   deploy_generic_resources:
