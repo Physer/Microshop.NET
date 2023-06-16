@@ -1,7 +1,5 @@
 name: Provision resources (Template)
-concurrency:
-  group: provisioning
-  cancel-in-progress: true
+concurrency: provisioning
 
 on:
   workflow_call:
