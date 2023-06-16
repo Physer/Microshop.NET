@@ -116,14 +116,11 @@ jobs:
     environment: ${{ inputs.environment }}
     needs: setup_kustomize
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: infrastructure/kubernetes
     steps:
       - uses: actions/checkout@v3
 
       - uses: azure/k8s-deploy@v4
         with:
           manifests: |
-            rabbitmq.yaml
-            meilisearch.yaml
+            ./infrastructure/kubernetes/rabbitmq.yaml
+            ./infrastructure/kubernetes/meilisearch.yaml
