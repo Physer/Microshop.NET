@@ -122,3 +122,4 @@ jobs:
             ${{ steps.bake.outputs.manifestsBundle }}
             ./infrastructure/kubernetes/rabbitmq.yaml
             ./infrastructure/kubernetes/meilisearch.yaml
+            ./infrastructure/kubernetes/ingress.yaml
