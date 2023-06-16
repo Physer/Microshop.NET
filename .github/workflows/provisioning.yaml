@@ -114,20 +114,17 @@ jobs:
     environment: ${{ inputs.environment }}
     needs: [prepare_aks_credentials, create_secrets_environment_file]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: infrastructure/kubernetes
     steps:
       - uses: azure/k8s-bake@v2.4
         with:
           renderEngine: "kustomize"
-          kustomizationPath: "./kustomization.yaml"
+          kustomizationPath: "./infrastructure/kubernetes/kustomization.yaml"
           kubectl-version: "latest"
 
   deploy_generic_resources:
     name: Deploy generic resources to the ${{ inputs.environment }} environment
     environment: ${{ inputs.environment }}
-    needs: [prepare_aks_credentials, create_secrets_environment_file]
+    needs: [setup_kustomize]
     runs-on: ubuntu-latest
     defaults:
       run:
