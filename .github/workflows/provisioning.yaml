@@ -100,6 +100,7 @@ jobs:
           EOF
 
       - uses: azure/k8s-bake@v2.4
+        id: bake
         with:
           renderEngine: "kustomize"
           kustomizationPath: "./infrastructure/kubernetes"
@@ -107,5 +108,6 @@ jobs:
       - uses: azure/k8s-deploy@v4
         with:
           manifests: |
+            ${{ steps.bake.outputs.manifestsBundle }}
             ./infrastructure/kubernetes/rabbitmq.yaml
             ./infrastructure/kubernetes/meilisearch.yaml
