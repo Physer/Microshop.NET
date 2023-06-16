@@ -118,7 +118,7 @@ jobs:
       - uses: azure/k8s-bake@v2.4
         with:
           renderEngine: "kustomize"
-          kustomizationPath: "."
+          kustomizationPath: "./infrastructure/kubernetes"
 
   deploy_generic_resources:
     name: Deploy generic resources to the ${{ inputs.environment }} environment
