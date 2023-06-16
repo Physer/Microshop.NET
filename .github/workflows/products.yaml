@@ -10,8 +10,9 @@ on:
       - main
 
 jobs:
-  products_continuous_deployment:
-    uses: Physer/Microshop.NET/.github/workflows/continuous-deployment.yaml@main
+  products_continuous_integration:
+    name: Continuous Integration - Products service
+    uses: Physer/Microshop.NET/.github/workflows/continuous-integration.yaml@main
     with:
       service-directory: backend/Products
       docker-image-name: microshop-products
@@ -20,3 +21,25 @@ jobs:
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
       dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
+  test_products_continuous_deployment:
+    name: Continuous Deployment (Test) - Products service
+    uses: Physer/Microshop.NET/.github/workflows/continuous-deployment.yaml@main
+    needs: products_continuous_integration
+    with:
+      environment: test
+    secrets:
+      azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
+      azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
+  production_products_continuous_deployment:
+    name: Continuous Deployment (Production) - Products service
+    uses: Physer/Microshop.NET/.github/workflows/continuous-deployment.yaml@main
+    needs: test_products_continuous_deployment
+    with:
+      environment: production
+    secrets:
+      azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
+      azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
+      azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      azureTenantId: ${{ secrets.AZURE_TENANT_ID }}

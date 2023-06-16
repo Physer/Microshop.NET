@@ -1,82 +1,42 @@
 name: Continuous Deployment (Template)
-concurrency: ci-${{ github.workflow }}
+concurrency: cd-${{ github.workflow }}
 
 on:
   workflow_call:
     inputs:
-      service-directory:
-        required: true
-        type: string
-      docker-image-name:
-        required: true
-        type: string
-      service-name:
-        required: true
-        type: string
-      service-dll:
+      environment:
         required: true
         type: string
     secrets:
-      dockerUsername:
+      azureClientId:
         required: true
-      dockerPassword:
+      azureClientSecret:
         required: true
+      azureSubscriptionId:
+        required: true
+      azureTenantId:
+        required: true
+  workflow_run:
+    workflows: [continuous_integration]
+    types: completed
 
 jobs:
-  continuous_deployment:
-    name: Build and test solution
-    defaults:
-      run:
-        working-directory: ${{ inputs.service-directory }}
+  prepare_aks_credentials:
+    if: ${{ github.event.continuous_integration.conclusion == 'success' }}
+    name: Prepare AKS deployment credentials
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dotnet-version: ["3.1.x", "6.0.x", "7.0.x"]
-
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - uses: azure/setup-kubectl@v3
+
+      - name: Login to Azure
+        uses: azure/login@v1
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          creds: '{"clientId":"${{ secrets.azureClientId }}","clientSecret":"${{ secrets.azureClientSecret }}","subscriptionId":"${{ secrets.azureSubscriptionId }}","tenantId":"${{ secrets.azureTenantId }}"}'
 
-      - name: Install dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
-
-  publish_to_registry:
-    name: Publish Docker image
-    runs-on: ubuntu-latest
-    needs: continuous_deployment
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+      - name: Set AKS context
+        uses: azure/aks-set-context@v3
         with:
-          username: ${{ secrets.dockerUsername }}
-          password: ${{ secrets.dockerPassword }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: physer/${{ inputs.docker-image-name }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          file: ./infrastructure/Dockerfile.backend
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            SERVICE_NAME=${{ inputs.service-name }}
-            SERVICE_DLL=${{ inputs.service-dll }}
+          resource-group: "rg-microshop-${{ inputs.environment }}"
+          cluster-name: "aks-microshop-${{ inputs.environment }}"
