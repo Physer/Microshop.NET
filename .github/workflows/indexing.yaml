@@ -16,7 +16,7 @@ jobs:
     with:
       service-directory: backend/Indexing
       docker-image-name: microshop-indexing
-      service-name: Indexing
+      service-name: indexing
       service-dll: Indexer.dll
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
@@ -27,6 +27,7 @@ jobs:
     needs: indexing_continuous_integration
     with:
       environment: test
+      service-name: indexing
     secrets:
       azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
       azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -38,6 +39,7 @@ jobs:
     needs: test_indexing_continuous_deployment
     with:
       environment: production
+      service-name: indexing
     secrets:
       azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
       azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}

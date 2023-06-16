@@ -16,7 +16,7 @@ jobs:
     with:
       service-directory: backend/Products
       docker-image-name: microshop-products
-      service-name: Products
+      service-name: products
       service-dll: Listener.dll
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
@@ -27,6 +27,7 @@ jobs:
     needs: products_continuous_integration
     with:
       environment: test
+      service-name: products
     secrets:
       azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
       azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -38,6 +39,7 @@ jobs:
     needs: test_products_continuous_deployment
     with:
       environment: production
+      service-name: products
     secrets:
       azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
       azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
