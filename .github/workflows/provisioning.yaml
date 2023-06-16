@@ -73,11 +73,9 @@ jobs:
         run: terraform apply -auto-approve
 
   prepare_aks_credentials:
-    if: ${{ github.event.continuous_integration.conclusion == 'success' }} && ${{ github.event.test_provision_resources.conclusion == 'success' }} && ${{ github.event.production_provision_resources.conclusion == 'success' }}
     name: Prepare AKS deployment credentials
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
-    needs: provision_resources
     steps:
       - uses: actions/checkout@v3
 
@@ -92,13 +90,11 @@ jobs:
           resource-group: "rg-microshop-${{ inputs.environment }}"
           cluster-name: "aks-microshop-${{ inputs.environment }}"
 
-  create_secrets_environment_file:
-    name: Create .env.secret file for Kustomize
+  setup_kustomize:
+    name: Set-up Kustomize
     environment: ${{ inputs.environment }}
+    needs: prepare_aks_credentials
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: infrastructure/kubernetes
     steps:
       - uses: actions/checkout@v3
 
@@ -109,14 +105,6 @@ jobs:
           rabbitmq-management-password=${{ secrets.rabbitMqPassword }}
           EOF
 
-  setup_kustomize:
-    name: Set-up Kustomize
-    environment: ${{ inputs.environment }}
-    needs: [prepare_aks_credentials, create_secrets_environment_file]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
       - uses: azure/k8s-bake@v2.4
         with:
           renderEngine: "kustomize"
@@ -125,7 +113,7 @@ jobs:
   deploy_generic_resources:
     name: Deploy generic resources to the ${{ inputs.environment }} environment
     environment: ${{ inputs.environment }}
-    needs: [setup_kustomize]
+    needs: setup_kustomize
     runs-on: ubuntu-latest
     defaults:
       run:
