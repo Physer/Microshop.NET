@@ -109,6 +109,21 @@ jobs:
           rabbitmq-management-password=${{ secrets.rabbitMqPassword }}
           EOF
 
+  setup_kustomize:
+    name: Set-up Kustomize
+    environment: ${{ inputs.environment }}
+    needs: [prepare_aks_credentials, create_secrets_environment_file]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrastructure/kubernetes
+    steps:
+      - uses: azure/k8s-bake@v2.4
+        with:
+          renderEngine: "kustomize"
+          kustomizationPath: "./kustomization.yaml"
+          kubectl-version: "latest"
+
   deploy_generic_resources:
     name: Deploy generic resources to the ${{ inputs.environment }} environment
     environment: ${{ inputs.environment }}
@@ -118,11 +133,8 @@ jobs:
       run:
         working-directory: infrastructure/kubernetes
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: azure/setup-kubectl@v3
-
-      - run: |
-          kubectl apply -k kustomization.yaml
-          kubectl apply -f rabbitmq.yaml
-          kubectl apply -f meilisearch.yaml
+      - uses: azure/k8s-deploy@v4
+        with:
+          manifests: |
+            ./rabbitmq.yaml
+            ./meilisearch.yaml
