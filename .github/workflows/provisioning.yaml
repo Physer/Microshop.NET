@@ -93,7 +93,8 @@ jobs:
           resource-group: "rg-microshop-${{ inputs.environment }}"
           cluster-name: "aks-microshop-${{ inputs.environment }}"
 
-      - working-directory: infrastructure/kubernetes
+      - name: Create .env.secret file
+        working-directory: infrastructure/kubernetes
         run: |
           cat <<EOF > .env.secret
           meilisearch-api-key=${{ secrets.meilisearchApiKey }}
@@ -101,16 +102,23 @@ jobs:
           rabbitmq-management-password=${{ secrets.rabbitMqPassword }}
           EOF
 
-      - uses: azure/k8s-bake@v2.4
+      - name: Bake the Kustomize manifest
+        uses: azure/k8s-bake@v2.4
         id: bake
         with:
           renderEngine: "kustomize"
           kustomizationPath: "./infrastructure/kubernetes"
 
-      - uses: azure/k8s-deploy@v4
+      - name: Deploy the Ingress controller
+        uses: azure/k8s-deploy@v4
+        with:
+          namespace: ingress-nginx
+          manifests: https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.0/deploy/static/provider/cloud/deploy.yaml
+
+      - name: Deploy Kustomize manifest and generic resoucres
+        uses: azure/k8s-deploy@v4
         with:
           manifests: |
             ${{ steps.bake.outputs.manifestsBundle }}
             ./infrastructure/kubernetes/rabbitmq.yaml
             ./infrastructure/kubernetes/meilisearch.yaml
-            https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.0/deploy/static/provider/cloud/deploy.yaml
