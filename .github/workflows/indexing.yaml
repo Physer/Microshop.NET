@@ -1,4 +1,4 @@
-name: Indexing - Continuous Integration
+name: Indexing - Continuous Deployment
 
 on:
   workflow_dispatch:
@@ -10,8 +10,8 @@ on:
       - main
 
 jobs:
-  products_continuous_integration:
-    uses: Physer/Microshop.NET/.github/workflows/continuous-integration.yaml@main
+  products_continuous_deployment:
+    uses: Physer/Microshop.NET/.github/workflows/continuous-deployment.yaml@main
     with:
       service-directory: backend/Indexing
       docker-image-name: microshop-indexing

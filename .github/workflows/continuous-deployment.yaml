@@ -1,4 +1,4 @@
-name: Continuous Integration (Template)
+name: Continuous Deployment (Template)
 concurrency: ci-${{ github.workflow }}
 
 on:
@@ -23,7 +23,7 @@ on:
         required: true
 
 jobs:
-  continuous_integration:
+  continuous_deployment:
     name: Build and test solution
     defaults:
       run:
@@ -53,7 +53,7 @@ jobs:
   publish_to_registry:
     name: Publish Docker image
     runs-on: ubuntu-latest
-    needs: continuous_integration
+    needs: continuous_deployment
     steps:
       - uses: actions/checkout@v3
 
