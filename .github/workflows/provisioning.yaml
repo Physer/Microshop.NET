@@ -46,7 +46,9 @@ jobs:
       TF_VAR_aks_sku_tier: ${{ VARS.TF_VAR_AKS_SKU_TIER }}
     steps:
       - uses: actions/checkout@v3
+
       - uses: hashicorp/setup-terraform@v2
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
@@ -111,3 +113,4 @@ jobs:
             ${{ steps.bake.outputs.manifestsBundle }}
             ./infrastructure/kubernetes/rabbitmq.yaml
             ./infrastructure/kubernetes/meilisearch.yaml
+            https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.0/deploy/static/provider/cloud/deploy.yaml
