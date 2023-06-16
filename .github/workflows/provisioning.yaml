@@ -72,26 +72,10 @@ jobs:
         id: apply
         run: terraform apply -auto-approve
 
-  create_env_secret:
-    name: Create environment secrets
-    environment: ${{ inputs.environment }}
-    needs: provision_resources
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - working-directory: infrastructure/kubernetes
-        run: |
-          cat <<EOF > .env.secret
-          meilisearch-api-key=${{ secrets.meilisearchApiKey }}
-          rabbitmq-management-username=${{ secrets.rabbitMqUsername }}
-          rabbitmq-management-password=${{ secrets.rabbitMqPassword }}
-          EOF
-
   deploy_generic_resources:
     name: Deploy generic resources to the ${{ inputs.environment }} environment
     environment: ${{ inputs.environment }}
-    needs: create_env_secret
+    needs: provision_resources
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -106,6 +90,14 @@ jobs:
         with:
           resource-group: "rg-microshop-${{ inputs.environment }}"
           cluster-name: "aks-microshop-${{ inputs.environment }}"
+
+      - working-directory: infrastructure/kubernetes
+        run: |
+          cat <<EOF > .env.secret
+          meilisearch-api-key=${{ secrets.meilisearchApiKey }}
+          rabbitmq-management-username=${{ secrets.rabbitMqUsername }}
+          rabbitmq-management-password=${{ secrets.rabbitMqPassword }}
+          EOF
 
       - uses: azure/k8s-bake@v2.4
         with:
