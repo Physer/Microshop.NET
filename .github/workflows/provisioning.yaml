@@ -98,7 +98,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: |
+      - working-directory: /infrastructure/kubernetes
+        run: |
           cat <<EOF > .env.secret
           meilisearch-api-key=${{ secrets.meilisearchApiKey }}
           rabbitmq-management-username=${{ secrets.rabbitMqUsername }}
