@@ -24,14 +24,13 @@ on:
     types: completed
 
 jobs:
-  prepare_aks_credentials:
-    if: ${{ github.event.continuous_integration.conclusion == 'success' }} && ${{ github.event.deploy_generic_resources.conclusion == 'success' }}
-    name: Prepare AKS deployment credentials
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Deploy ${{ inputs.service-name }} to the ${{ inputs.environment }} environment
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-
-      - uses: azure/setup-kubectl@v3
 
       - name: Login to Azure
         uses: azure/login@v1
@@ -44,15 +43,7 @@ jobs:
           resource-group: "rg-microshop-${{ inputs.environment }}"
           cluster-name: "aks-microshop-${{ inputs.environment }}"
 
-  deploy:
-    name: Deploy ${{ inputs.service-name }} to the ${{ inputs.environment }} environment
-    environment: ${{ inputs.environment }}
-    needs: prepare_aks_credentials
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: infrastructure/kubernetes
-    steps:
-      - uses: actions/checkout@v3
-
-      - run: kubectl apply -f ${{ inputs.service-name }}.yaml
+      - name: Deploy serivce
+        uses: azure/k8s-deploy@v4
+        with:
+          manifests: ./infrastructure/kubernetes/${{ inputs.service-name }}.yaml
