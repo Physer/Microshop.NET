@@ -19,13 +19,9 @@ on:
         required: true
       azureTenantId:
         required: true
-  workflow_run:
-    workflows: [continuous_integration, deploy_generic_resources]
-    types: completed
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Deploy ${{ inputs.service-name }} to the ${{ inputs.environment }} environment
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
