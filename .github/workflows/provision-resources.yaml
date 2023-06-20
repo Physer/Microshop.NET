@@ -2,12 +2,12 @@ name: Provision resources
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "infrastructure/**"
-      - ".github/**"
-    branches:
-      - main
+  # push:
+  #   paths:
+  #     - "infrastructure/**"
+  #     - ".github/**"
+  #   branches:
+  #     - main
 
 jobs:
   production_provision_resources:

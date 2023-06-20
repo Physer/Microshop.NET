@@ -2,12 +2,12 @@ name: Indexing - Continuous Deployment
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "backend/Indexing/**"
-      - ".github/**"
-    branches:
-      - main
+  # push:
+  #   paths:
+  #     - "backend/Indexing/**"
+  #     - ".github/**"
+  #   branches:
+  #     - main
 
 jobs:
   indexing_continuous_integration:

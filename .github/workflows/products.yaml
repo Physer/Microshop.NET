@@ -2,12 +2,12 @@ name: Products - Continuous Deployment
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - "backend/Products/**"
-      - ".github/**"
-    branches:
-      - main
+  # push:
+  #   paths:
+  #     - "backend/Products/**"
+  #     - ".github/**"
+  #   branches:
+  #     - main
 
 jobs:
   products_continuous_integration:
