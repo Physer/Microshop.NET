@@ -21,22 +21,10 @@ jobs:
     secrets:
       dockerUsername: ${{ secrets.DOCKER_USERNAME }}
       dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
-  test_indexing_continuous_deployment:
-    name: Continuous Deployment (Test) - Indexing service
-    uses: Physer/Microshop.NET/.github/workflows/continuous-deployment.yaml@main
-    needs: indexing_continuous_integration
-    with:
-      environment: test
-      service-name: indexing
-    secrets:
-      azureClientId: ${{ secrets.AZURE_CLIENT_ID }}
-      azureClientSecret: ${{ secrets.AZURE_CLIENT_SECRET }}
-      azureSubscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      azureTenantId: ${{ secrets.AZURE_TENANT_ID }}
   production_products_continuous_deployment:
     name: Continuous Deployment (Production) - Indexing service
     uses: Physer/Microshop.NET/.github/workflows/continuous-deployment.yaml@main
-    needs: test_indexing_continuous_deployment
+    needs: indexing_continuous_integration
     with:
       environment: production
       service-name: indexing
