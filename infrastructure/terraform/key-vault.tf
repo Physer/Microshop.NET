@@ -8,21 +8,27 @@ resource "azurerm_key_vault" "key_vault" {
   purge_protection_enabled    = false
 
   sku_name = "standard"
-
   access_policy {
-    tenant_id = data.azurerm_client_config.client_config.tenant_id
-    object_id = data.azurerm_client_config.client_config.object_id
-
-    key_permissions = [
-      "Get",
-    ]
-
+    tenant_id      = data.azuread_service_principal.service_principal.application_tenant_id
+    object_id      = data.azuread_service_principal.service_principal.object_id
+    application_id = data.azuread_service_principal.service_principal.application_id
     secret_permissions = [
       "Get",
-    ]
-
-    storage_permissions = [
-      "Get",
+      "List"
     ]
   }
+  access_policy {
+    tenant_id = data.azurerm_client_config.client_config.tenant_id
+    object_id = data.azuread_user.alex.object_id
+    secret_permissions = [
+      "Get",
+      "List",
+      "Set",
+      "Delete"
+    ]
+  }
+}
+
+data "azurerm_key_vault_secrets" "key_vault_secrets" {
+  key_vault_id = azurerm_key_vault.key_vault.id
 }
