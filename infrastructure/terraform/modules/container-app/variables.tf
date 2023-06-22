@@ -13,3 +13,13 @@ variable "resource_group_name" {
 variable "image_name" {
   type = string
 }
+
+variable "appsettings" {
+  type    = map(string)
+  default = {}
+}
+
+variable "secrets" {
+  type    = map(string)
+  default = {}
+}

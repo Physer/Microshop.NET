@@ -10,6 +10,20 @@ resource "azurerm_container_app" "microshop_container_app" {
       image  = var.image_name
       cpu    = 0.25
       memory = "0.5Gi"
+      dynamic "env" {
+        for_each = var.appsettings
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
+      dynamic "env" {
+        for_each = var.secrets
+        content {
+          name        = env.key
+          secret_name = env.value
+        }
+      }
     }
   }
 }
