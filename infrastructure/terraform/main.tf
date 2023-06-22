@@ -11,8 +11,14 @@ terraform {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = true
+    }
+  }
 }
+
+data "azurerm_client_config" "client_config" {}
 
 resource "azurerm_resource_group" "rg_microshop" {
   name     = "rg-microshop-${var.environment}"
