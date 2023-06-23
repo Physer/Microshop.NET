@@ -3,6 +3,13 @@ resource "azurerm_container_app" "microshop_container_app" {
   container_app_environment_id = var.container_app_environment_id
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
+  dynamic "secret" {
+    for_each = var.secrets
+    content {
+      name  = secret.key
+      value = secret.value
+    }
+  }
 
   template {
     container {
@@ -10,6 +17,7 @@ resource "azurerm_container_app" "microshop_container_app" {
       image  = var.image_name
       cpu    = 0.25
       memory = "0.5Gi"
+
       dynamic "env" {
         for_each = var.appsettings
         content {
@@ -18,7 +26,7 @@ resource "azurerm_container_app" "microshop_container_app" {
         }
       }
       dynamic "env" {
-        for_each = var.secrets
+        for_each = var.secret_appsettings
         content {
           name        = env.key
           secret_name = env.value

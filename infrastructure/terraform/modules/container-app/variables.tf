@@ -19,6 +19,11 @@ variable "appsettings" {
   default = {}
 }
 
+variable "secret_appsettings" {
+  type    = map(string)
+  default = {}
+}
+
 variable "secrets" {
   type    = map(string)
   default = {}
