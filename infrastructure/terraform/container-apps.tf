@@ -11,6 +11,7 @@ module "rabbitmq_app" {
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "masstransit/rabbitmq:latest"
   resource_group_name          = azurerm_resource_group.rg_microshop.name
+  target_port                  = 5672
 }
 
 module "meilisearch_app" {
@@ -19,6 +20,7 @@ module "meilisearch_app" {
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "getmeili/meilisearch:latest"
   resource_group_name          = azurerm_resource_group.rg_microshop.name
+  target_port                  = 7700
   secrets = tomap({
     (local.meilisearch_api_key) = random_password.meilisearch_api_key.result
   })
@@ -39,9 +41,9 @@ module "indexing_app" {
     (local.meilisearch_api_key) = random_password.meilisearch_api_key.result
   })
   appsettings = {
-    "Servicebus__BaseUrl" : "rabbitmq-service",
+    "Servicebus__BaseUrl" : module.rabbitmq_app.fqdn,
     "Servicebus__Port" : "5672"
-    "Indexing__BaseUrl" : "http://meilisearch-service:7700/",
+    "Indexing__BaseUrl" : "http://${module.meilisearch_app.fqdn}:7700/",
     "Indexing__IndexingIntervalInSeconds" : "3600"
   }
   secret_appsettings = {

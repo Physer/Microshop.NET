@@ -28,3 +28,13 @@ variable "secrets" {
   type    = map(string)
   default = {}
 }
+
+variable "is_external" {
+  type    = bool
+  default = false
+}
+
+variable "target_port" {
+  type    = number
+  default = 443
+}
