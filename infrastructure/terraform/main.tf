@@ -6,7 +6,7 @@ terraform {
     }
     random = {
       source  = "hashicorp/random"
-      version = "3.5.1"
+      version = "~> 3.5.1"
     }
   }
   backend "azurerm" {
@@ -17,6 +17,7 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
 resource "azurerm_resource_group" "rg_microshop" {
   name     = "rg-microshop-${var.environment}"
   location = var.location
