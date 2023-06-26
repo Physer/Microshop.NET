@@ -13,7 +13,7 @@ locals {
   ])
   indexing_appsettings = tolist([
     { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.fqdn },
-    { name = "Servicebus__Port", value = 5672 },
+    { name = "Servicebus__Port", value = 443 },
     { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.fqdn}:7700/" },
     { name = "Indexing__IndexingIntervalInSeconds", value = 3600 },
     { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
