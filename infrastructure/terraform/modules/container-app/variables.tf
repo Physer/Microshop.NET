@@ -6,8 +6,13 @@ variable "container_app_environment_id" {
   type = string
 }
 
-variable "resource_group_name" {
+variable "resource_group_id" {
   type = string
+}
+
+variable "location" {
+  type    = string
+  default = "West Europe"
 }
 
 variable "image_name" {
@@ -15,18 +20,20 @@ variable "image_name" {
 }
 
 variable "appsettings" {
-  type    = map(string)
-  default = {}
-}
-
-variable "secret_appsettings" {
-  type    = map(string)
-  default = {}
+  type = list(object({
+    name      = string,
+    value     = optional(string),
+    secretRef = optional(string)
+  }))
+  default = []
 }
 
 variable "secrets" {
-  type    = map(string)
-  default = {}
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
 }
 
 variable "is_external" {
@@ -37,4 +44,19 @@ variable "is_external" {
 variable "target_port" {
   type    = number
   default = 443
+}
+
+variable "transport" {
+  type    = string
+  default = "auto"
+}
+
+variable "scale_max" {
+  type    = number
+  default = 10
+}
+
+variable "scale_min" {
+  type    = number
+  default = 0
 }

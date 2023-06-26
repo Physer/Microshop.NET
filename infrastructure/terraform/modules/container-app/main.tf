@@ -1,47 +1,41 @@
-resource "azurerm_container_app" "microshop_container_app" {
-  name                         = "ca-microshop-${var.application_name}"
-  container_app_environment_id = var.container_app_environment_id
-  resource_group_name          = var.resource_group_name
-  revision_mode                = "Single"
-  ingress {
-    allow_insecure_connections = false
-    external_enabled           = var.is_external
-    target_port                = var.target_port
-    transport                  = "tcp"
-    traffic_weight {
-      percentage      = 100
-      latest_revision = true
-    }
-  }
-  dynamic "secret" {
-    for_each = var.secrets
-    content {
-      name  = secret.key
-      value = secret.value
-    }
-  }
-
-  template {
-    container {
-      name   = "ca-microshop-${var.application_name}-container"
-      image  = var.image_name
-      cpu    = 0.25
-      memory = "0.5Gi"
-
-      dynamic "env" {
-        for_each = var.appsettings
-        content {
-          name  = env.key
-          value = env.value
+resource "azapi_resource" "microshop_container_app" {
+  type                   = "Microsoft.App/containerApps@2022-11-01-preview"
+  name                   = "ca-microshop-${var.application_name}"
+  location               = var.location
+  parent_id              = var.resource_group_id
+  response_export_values = ["properties.latestRevisionFqdn"]
+  body = jsonencode({
+    properties = {
+      configuration = {
+        activeRevisionsMode = "Single",
+        ingress = {
+          allowInsecure = false,
+          external      = var.is_external,
+          targetPort    = var.target_port,
+          traffic = [{
+            latestRevision = true,
+            weight         = 100
+          }]
+          transport = var.transport
         }
+        secrets = var.secrets
       }
-      dynamic "env" {
-        for_each = var.secret_appsettings
-        content {
-          name        = env.key
-          secret_name = env.value
+      environmentId = var.container_app_environment_id,
+      template = {
+        containers = [{
+          image = var.image_name,
+          name  = "ca-microshop-${var.application_name}-container",
+          resources = {
+            cpu    = 0.25,
+            memory = "0.5Gi",
+          }
+          env = var.appsettings
+        }]
+        scale = {
+          maxReplicas = var.scale_max
+          minReplicas = var.scale_min
         }
       }
     }
-  }
+  })
 }
