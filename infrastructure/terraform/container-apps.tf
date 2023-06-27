@@ -29,6 +29,17 @@ locals {
     { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
     { name = "Indexing__ApiKey", secretRef = local.meilisearch_api_key },
   ])
+
+  products_secrets = tolist([
+    { name = (local.rabbitmq_username), value = random_string.rabbitmq_username.result },
+    { name = (local.rabbitmq_password), value = random_password.rabbitmq_password.result },
+  ])
+  products_appsettings = tolist([
+    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.name },
+    { name = "Servicebus__Port", value = 5672 },
+    { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
+    { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
+  ])
 }
 
 resource "azurerm_container_app_environment" "cae_microshop" {
@@ -72,4 +83,14 @@ module "indexing_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   secrets                      = local.indexing_secrets
   appsettings                  = local.indexing_appsettings
+}
+
+module "products_app" {
+  source                       = "./modules/container-app"
+  application_name             = "products"
+  container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
+  image_name                   = "physer/microshop-products:main"
+  resource_group_id            = azurerm_resource_group.rg_microshop.id
+  secrets                      = local.products_secrets
+  appsettings                  = local.products_appsettings
 }
