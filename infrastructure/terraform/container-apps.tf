@@ -24,7 +24,7 @@ locals {
     { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.name },
     { name = "Servicebus__Port", value = 5672 },
     { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.name}:7700/" },
-    { name = "Indexing__IndexingIntervalInSeconds", value = 3600 },
+    { name = "Indexing__IndexingIntervalInSeconds", value = 120 },
     { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
     { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
     { name = "Indexing__ApiKey", secretRef = local.meilisearch_api_key },
@@ -61,6 +61,7 @@ module "rabbitmq_app" {
   secrets                      = local.rabbitmq_secrets
   appsettings                  = local.rabbitmq_appsettings
   ingress_enabled              = true
+  scale_min                    = 1
 }
 
 module "meilisearch_app" {
