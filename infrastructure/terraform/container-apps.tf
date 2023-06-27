@@ -1,4 +1,13 @@
 locals {
+  rabbitmq_secrets = tolist([
+    { name = (local.rabbitmq_username), value = random_string.rabbitmq_username.result },
+    { name = (local.rabbitmq_password), value = random_password.rabbitmq_password.result }
+  ])
+  rabbitmq_appsettings = tolist([
+    { name = "RABBITMQ_DEFAULT_USER", secretRef = local.rabbitmq_username },
+    { name = "RABBITMQ_DEFAULT_PASS", secretRef = local.rabbitmq_password }
+  ])
+
   meilisearch_secrets = tolist([
     { name = (local.meilisearch_api_key), value = random_password.meilisearch_api_key.result }
   ])
@@ -7,14 +16,14 @@ locals {
   ])
 
   indexing_secrets = tolist([
-    { name = (local.rabbitmq_username), value = random_password.rabbitmq_username.result },
+    { name = (local.rabbitmq_username), value = random_string.rabbitmq_username.result },
     { name = (local.rabbitmq_password), value = random_password.rabbitmq_password.result },
     { name = (local.meilisearch_api_key), value = random_password.meilisearch_api_key.result }
   ])
   indexing_appsettings = tolist([
-    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.fqdn },
-    { name = "Servicebus__Port", value = 443 },
-    { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.fqdn}:7700/" },
+    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.name },
+    { name = "Servicebus__Port", value = 5672 },
+    { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.name}:7700/" },
     { name = "Indexing__IndexingIntervalInSeconds", value = 3600 },
     { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
     { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
@@ -36,9 +45,11 @@ module "rabbitmq_app" {
   image_name                   = "masstransit/rabbitmq:latest"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   target_port                  = 5672
+  exposed_port                 = 5672
   transport                    = "tcp"
-  scale_max                    = 1
-  scale_min                    = 1
+  secrets                      = local.rabbitmq_secrets
+  appsettings                  = local.rabbitmq_appsettings
+  ingress_enabled              = true
 }
 
 module "meilisearch_app" {
@@ -50,6 +61,7 @@ module "meilisearch_app" {
   target_port                  = 7700
   secrets                      = local.meilisearch_secrets
   appsettings                  = local.meilisearch_appsettings
+  ingress_enabled              = true
 }
 
 module "indexing_app" {

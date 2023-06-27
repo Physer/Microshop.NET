@@ -2,8 +2,9 @@ resource "random_password" "meilisearch_api_key" {
   length = 16
 }
 
-resource "random_password" "rabbitmq_username" {
-  length = 16
+resource "random_string" "rabbitmq_username" {
+  length  = 16
+  special = false
 }
 
 resource "random_password" "rabbitmq_password" {

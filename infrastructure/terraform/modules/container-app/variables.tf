@@ -41,6 +41,11 @@ variable "is_external" {
   default = false
 }
 
+variable "ingress_enabled" {
+  type    = bool
+  default = false
+}
+
 variable "target_port" {
   type    = number
   default = 443
@@ -57,6 +62,11 @@ variable "scale_max" {
 }
 
 variable "scale_min" {
+  type    = number
+  default = 0
+}
+
+variable "exposed_port" {
   type    = number
   default = 0
 }
