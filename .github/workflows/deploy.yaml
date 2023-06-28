@@ -1,0 +1,99 @@
+name: Deploy required services
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish-services:
+    name: Build and publish services
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        services:
+          [
+            {
+              service-directory: backend/indexing,
+              docker-image-name: microshop-indexing,
+              service-name: indexing,
+              service-dll: Indexer.dll,
+            },
+            {
+              service-directory: backend/products,
+              docker-image-name: microshop-products,
+              service-name: products,
+              service-dll: Listener.dll,
+            },
+          ]
+    defaults:
+      run:
+        working-directory: ${{ matrix.services.service-directory }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: physer/${{ matrix.services.docker-image-name }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./infrastructure/Dockerfile.backend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SERVICE_NAME=${{ matrix.services.service-name }}
+            SERVICE_DLL=${{ matrix.services.service-dll }}
+
+  deploy_terraform_resources:
+    name: Deploy resources to Azure using Terraform
+    needs: build-and-publish-services
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: infrastructure/terraform
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Initialize Terraform
+        run: terraform init -backend-config="config.azure.tfbackend"
+
+      - name: Plan Terraform
+        run: terraform plan -no-color
+
+      - name: Apply Terraform
+        run: terraform apply -auto-approve
