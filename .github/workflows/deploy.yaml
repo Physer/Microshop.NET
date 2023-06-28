@@ -93,6 +93,9 @@ jobs:
       - name: Initialize Terraform
         run: terraform init -backend-config="config.azure.tfbackend"
 
+      - name: Set Terraform workspace
+        run: terraform workspace select -or-create production
+
       - name: Plan Terraform
         run: terraform plan -no-color
 
