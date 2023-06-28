@@ -36,19 +36,14 @@ variable "secrets" {
   default = []
 }
 
-variable "is_external" {
-  type    = bool
-  default = false
-}
-
 variable "ingress_enabled" {
   type    = bool
   default = false
 }
 
-variable "target_port" {
-  type    = number
-  default = 443
+variable "port" {
+  type = number
+  default = null
 }
 
 variable "transport" {
@@ -58,17 +53,12 @@ variable "transport" {
 
 variable "scale_max" {
   type    = number
-  default = 10
+  default = 1
 }
 
 variable "scale_min" {
   type    = number
-  default = 0
-}
-
-variable "exposed_port" {
-  type    = number
-  default = 0
+  default = 1
 }
 
 variable "allow_insecure" {

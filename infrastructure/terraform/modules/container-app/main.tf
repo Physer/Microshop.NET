@@ -10,9 +10,8 @@ resource "azapi_resource" "microshop_container_app" {
         activeRevisionsMode = "Single",
         ingress = !var.ingress_enabled ? null : {
           allowInsecure = var.allow_insecure,
-          external      = var.is_external,
-          targetPort    = var.target_port,
-          exposedPort   = var.transport == "tcp" ? var.exposed_port : null,
+          targetPort    = var.port,
+          exposedPort   = var.transport == "tcp" ? var.port : null,
           traffic = [{
             latestRevision = true,
             weight         = 100

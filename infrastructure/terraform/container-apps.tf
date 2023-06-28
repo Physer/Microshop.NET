@@ -11,8 +11,7 @@ module "rabbitmq_app" {
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "masstransit/rabbitmq:latest"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
-  target_port                  = 5672
-  exposed_port                 = 5672
+  port                         = 5672
   transport                    = "tcp"
   secrets                      = local.rabbitmq_secrets
   appsettings                  = local.rabbitmq_appsettings
@@ -25,7 +24,7 @@ module "meilisearch_app" {
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "getmeili/meilisearch:latest"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
-  target_port                  = 7700
+  port                         = 7700
   secrets                      = local.meilisearch_secrets
   appsettings                  = local.meilisearch_appsettings
   ingress_enabled              = true
