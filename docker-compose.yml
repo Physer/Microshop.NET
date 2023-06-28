@@ -3,21 +3,19 @@ services:
   rabbitmq:
     container_name: rabbitmq
     image: masstransit/rabbitmq:latest
-    ports:
-      - 15672:15672
-      - 5672:5672
     restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${SERVICEBUS_MANAGEMENT_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${SERVICEBUS_MANAGEMENT_PASSWORD}
   meilisearch:
     container_name: meilisearch
     image: getmeili/meilisearch:latest
     environment:
       - MEILI_MASTER_KEY=${MEILISEARCH_MASTER_KEY}
-    ports:
-      - 7700:7700
     restart: always
   products:
     container_name: products
-    build: 
+    build:
       context: .
       dockerfile: infrastructure/Dockerfile.backend
       args:
@@ -29,7 +27,7 @@ services:
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
   indexing:
     container_name: indexing
-    build: 
+    build:
       context: .
       dockerfile: infrastructure/Dockerfile.backend
       args:
