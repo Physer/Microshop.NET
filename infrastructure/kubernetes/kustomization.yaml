@@ -1,7 +1,0 @@
-generatorOptions:
- disableNameSuffixHash: true
-
-secretGenerator:
-- name: microshop-secrets
-  envs:
-  - .env.secret
