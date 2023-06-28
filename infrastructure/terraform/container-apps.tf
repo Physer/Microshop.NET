@@ -21,10 +21,10 @@ locals {
     { name = (local.meilisearch_api_key), value = random_password.meilisearch_api_key.result }
   ])
   indexing_appsettings = tolist([
-    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.name },
+    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.revision_name },
     { name = "Servicebus__Port", value = 5672 },
-    { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.name}:7700/" },
-    { name = "Indexing__IndexingIntervalInSeconds", value = 120 },
+    { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.revision_fqdn}/" },
+    { name = "Indexing__IndexingIntervalInSeconds", value = 3600 },
     { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
     { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
     { name = "Indexing__ApiKey", secretRef = local.meilisearch_api_key },
@@ -35,7 +35,7 @@ locals {
     { name = (local.rabbitmq_password), value = random_password.rabbitmq_password.result },
   ])
   products_appsettings = tolist([
-    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.name },
+    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.revision_name },
     { name = "Servicebus__Port", value = 5672 },
     { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
     { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
@@ -61,7 +61,6 @@ module "rabbitmq_app" {
   secrets                      = local.rabbitmq_secrets
   appsettings                  = local.rabbitmq_appsettings
   ingress_enabled              = true
-  scale_min                    = 1
 }
 
 module "meilisearch_app" {
@@ -74,6 +73,7 @@ module "meilisearch_app" {
   secrets                      = local.meilisearch_secrets
   appsettings                  = local.meilisearch_appsettings
   ingress_enabled              = true
+  allow_insecure               = true
 }
 
 module "indexing_app" {

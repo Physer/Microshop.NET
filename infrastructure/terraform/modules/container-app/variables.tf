@@ -70,3 +70,8 @@ variable "exposed_port" {
   type    = number
   default = 0
 }
+
+variable "allow_insecure" {
+  type    = bool
+  default = false
+}

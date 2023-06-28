@@ -3,13 +3,13 @@ resource "azapi_resource" "microshop_container_app" {
   name                   = "ca-microshop-${var.application_name}"
   location               = var.location
   parent_id              = var.resource_group_id
-  response_export_values = ["name"]
+  response_export_values = ["properties.latestRevisionName", "properties.latestRevisionFqdn"]
   body = jsonencode({
     properties = {
       configuration = {
         activeRevisionsMode = "Single",
         ingress = !var.ingress_enabled ? null : {
-          allowInsecure = false,
+          allowInsecure = var.allow_insecure,
           external      = var.is_external,
           targetPort    = var.target_port,
           exposedPort   = var.transport == "tcp" ? var.exposed_port : null,
