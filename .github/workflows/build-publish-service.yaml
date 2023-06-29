@@ -1,0 +1,68 @@
+name: Build and publish service (reusable workflow)
+concurrency: ci
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+      service-entrypoint:
+        required: true
+        type: string
+    secrets:
+      docker-username:
+        required: true
+      docker-password:
+        required: true
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-publish-services:
+    name: Build and publish ${{ inputs.service-name }} service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend/${{ inputs.service-name }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        with:
+          username: ${{ secrets.docker-username }}
+          password: ${{ secrets.docker-password }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: physer/microshop-${{ inputs.service-name }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          file: ./infrastructure/Dockerfile.backend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            SERVICE_NAME=${{ inputs.service-name }}
+            SERVICE_DLL=${{ inputs.service-entrypoint }}.dll
