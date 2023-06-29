@@ -16,22 +16,12 @@ jobs:
       matrix:
         services:
           [
-            {
-              service-directory: backend/indexing,
-              docker-image-name: microshop-indexing,
-              service-name: indexing,
-              service-dll: Indexer.dll,
-            },
-            {
-              service-directory: backend/products,
-              docker-image-name: microshop-products,
-              service-name: products,
-              service-dll: Listener.dll,
-            },
+            { name: indexing, entrypoint: Indexer },
+            { name: products, entrypoint: Listener },
           ]
     defaults:
       run:
-        working-directory: ${{ matrix.services.service-directory }}
+        working-directory: backend/${{ matrix.services.name }}
     steps:
       - uses: actions/checkout@v3
 
@@ -59,7 +49,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: physer/${{ matrix.services.docker-image-name }}
+          images: physer/microshop-${{ matrix.services.name }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -70,8 +60,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            SERVICE_NAME=${{ matrix.services.service-name }}
-            SERVICE_DLL=${{ matrix.services.service-dll }}
+            SERVICE_NAME=${{ matrix.services.name }}
+            SERVICE_DLL=${{ matrix.services.entrypoint }}.dll
 
   deploy_terraform_resources:
     name: Deploy resources to Azure using Terraform
