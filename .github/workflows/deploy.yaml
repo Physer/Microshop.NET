@@ -1,10 +1,12 @@
 name: Deploy required services
+concurrency: deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  # Temporarily disabled until proper filters are applied
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   build-and-publish-services:
