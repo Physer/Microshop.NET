@@ -113,8 +113,11 @@ The infrastructure is being provisioned automatically through the use of our [Gi
 
 # Deployments
 
-Whenever a push is done to the `main` branch, all services are being built, tested and published to the Docker Hub.
+Whenever a push is done to the `main` branch, all necessary services are being built, tested and published to the Docker Hub.
 These actions are done in parallel per service.
+Whether or not a new version of the service is built and deployed depends on the changes files in the commit.
+See the [deploy.yaml workflow file](./.github/workflows/deploy.yaml) for more information.
+
 After these have all succeeded, the Azure Container Apps are provisioned with the latest Docker images through Terraform.
 
 # Running the platform locally
