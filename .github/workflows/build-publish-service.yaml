@@ -1,5 +1,5 @@
 name: Build and publish service (reusable workflow)
-concurrency: ci
+concurrency: ci-${{ inputs.service-name }}
 
 on:
   workflow_call:
