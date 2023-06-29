@@ -134,6 +134,20 @@ If you wish to run the platform locally, follow these steps:
 Upon the start of the platform, products will be generated and indexed in the Search Index.
 If you so desire, you can change the MeiliSearch docker container to expose port `7700` to view the indexed data.
 
+# Deploying the platform to your own Azure tenant
+
+If you want to host this platform on your own Azure tenant, follow these steps:
+
+_Note: Microshop.NET uses Terraform remote state in an Azure Storage Account. These steps assume you're able to set up such an account and its containers accordingly._
+1. Navigate to the `~/infrastructure/terraform` directory
+2. Open the `config.azure.tfbackend` file
+3. Either set up an Azure Storage Account with the specified Terraform state data or change the data to match your remote state   storage in Azure
+4. Initialize the Terraform state by running `terraform init -backend-config="config.azure.tfbackend"` (or omit the argument if not leveraging remote state)
+5. Plan the Terraform deployment by executing `terraform plan`
+6. Apply the Terraform deployment by executing `terraform apply`
+
+Optionally you can add a file `terraform.tfvars` to this folder that includes predefined variable values, so you don't have to specify them when you run the `terraform` commands.
+
 # Questions and comments
 
 Do you have any questions or comments about this project?
