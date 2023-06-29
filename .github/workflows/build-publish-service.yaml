@@ -15,9 +15,6 @@ on:
         required: true
       docker-password:
         required: true
-  push:
-    branches:
-      - main
 
 jobs:
   build-and-publish-services:
