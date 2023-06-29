@@ -30,6 +30,7 @@ services:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
+    restart: always
   indexing:
     container_name: indexing
     build:
@@ -45,3 +46,4 @@ services:
       - Indexing__BaseUrl=http://meilisearch:7700/
       - Indexing__ApiKey=${MEILISEARCH_MASTER_KEY}
       - Indexing__IndexingIntervalInSeconds=3600
+    restart: always
