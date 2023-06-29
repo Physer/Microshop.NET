@@ -11,6 +11,12 @@ resource "random_password" "rabbitmq_password" {
   length = 16
 }
 
+resource "random_pet" "revision_suffix" {
+  keepers = {
+    uuid = uuid()
+  }
+}
+
 locals {
   rabbitmq_username   = "rabbitmq-management-username"
   rabbitmq_password   = "rabbitmq-management-password"

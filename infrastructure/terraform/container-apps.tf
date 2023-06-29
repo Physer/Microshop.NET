@@ -39,6 +39,7 @@ module "indexing_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   secrets                      = local.indexing_secrets
   appsettings                  = local.indexing_appsettings
+  revision_suffix              = random_pet.revision_suffix.id
 }
 
 module "products_app" {
@@ -49,4 +50,5 @@ module "products_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   secrets                      = local.products_secrets
   appsettings                  = local.products_appsettings
+  revision_suffix              = random_pet.revision_suffix.id
 }

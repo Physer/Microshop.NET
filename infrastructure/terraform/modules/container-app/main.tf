@@ -35,6 +35,7 @@ resource "azapi_resource" "microshop_container_app" {
           maxReplicas = var.scale_max
           minReplicas = var.scale_min
         }
+        revisionSuffix = var.revision_suffix != null ? var.revision_suffix : null
       }
     }
   })

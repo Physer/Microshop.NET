@@ -42,7 +42,7 @@ variable "ingress_enabled" {
 }
 
 variable "port" {
-  type = number
+  type    = number
   default = null
 }
 
@@ -64,4 +64,9 @@ variable "scale_min" {
 variable "allow_insecure" {
   type    = bool
   default = false
+}
+
+variable "revision_suffix" {
+  type    = string
+  default = null
 }
