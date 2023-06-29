@@ -52,6 +52,7 @@ jobs:
 
   deploy_terraform_resources:
     name: Deploy resources to Azure using Terraform
+    if: ${{ always() }}
     needs:
       [build-and-publish-indexing-service, build-and-publish-products-service]
     runs-on: ubuntu-latest
