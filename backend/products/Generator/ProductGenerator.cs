@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces.Generator;
+using Application.Options;
 using AutoBogus;
 using Bogus;
 using Domain;
+using Microsoft.Extensions.Options;
 
 namespace Generator;
 
@@ -9,8 +11,12 @@ public class ProductGenerator : IProductGenerator
 {
     private readonly Faker<Product> _productFaker;
 
-    public ProductGenerator()
+    public ProductGenerator(IOptions<DataOptions> options)
     {
+        var seed = options?.Value?.Seed;
+        if (seed is not null && seed.Value != 0)
+            Randomizer.Seed = new Random(seed.Value);
+
         _productFaker = new AutoFaker<Product>()
             .RuleFor(fake => fake.ProductCode, fake => fake.Commerce.Ean13())
             .RuleFor(fake => fake.Name, fake => fake.Commerce.ProductName())

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoBogus" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
   </ItemGroup>
 
   <ItemGroup>

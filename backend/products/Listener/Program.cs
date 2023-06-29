@@ -13,6 +13,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         var productOptionsSection = context.Configuration.GetSection(ServicebusOptions.ConfigurationEntry);
         var productOptions = productOptionsSection.Get<ServicebusOptions>();
         services.Configure<ServicebusOptions>(productOptionsSection);
+        var dataOptionsSection = context.Configuration.GetSection(DataOptions.ConfigurationEntry);
+        services.Configure<DataOptions>(dataOptionsSection);
 
         // Persistence
         services.AddSingleton<IRepository, ProductRepository>();
