@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Superseded by [deploying-azure-container-apps](deploying-azure-container-apps.md)
 
 ## Context
 
