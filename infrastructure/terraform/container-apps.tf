@@ -16,6 +16,7 @@ module "rabbitmq_app" {
   secrets                      = local.rabbitmq_secrets
   appsettings                  = local.rabbitmq_appsettings
   ingress_enabled              = true
+  revision_suffix              = random_pet.revision_suffix.id
 }
 
 module "meilisearch_app" {
@@ -29,6 +30,7 @@ module "meilisearch_app" {
   appsettings                  = local.meilisearch_appsettings
   ingress_enabled              = true
   allow_insecure               = true
+  revision_suffix              = random_pet.revision_suffix.id
 }
 
 module "indexing_app" {
