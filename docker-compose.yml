@@ -4,6 +4,9 @@ services:
     container_name: rabbitmq
     image: masstransit/rabbitmq:latest
     restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
     environment:
       - RABBITMQ_DEFAULT_USER=${SERVICEBUS_MANAGEMENT_USERNAME}
       - RABBITMQ_DEFAULT_PASS=${SERVICEBUS_MANAGEMENT_PASSWORD}
@@ -13,6 +16,8 @@ services:
     environment:
       - MEILI_MASTER_KEY=${MEILISEARCH_MASTER_KEY}
     restart: always
+    ports:
+      - 7700:7700
   products:
     container_name: products
     build:
