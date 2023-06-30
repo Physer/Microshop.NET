@@ -49,7 +49,7 @@ jobs:
       - name: Verify code coverage
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
-          filename: coverage/**/coverage.merged.xml
+          filename: backend/${{ inputs.service-name }}/coverage/**/coverage.merged.xml
           fail_below_min: true
           indicators: true
           thresholds: "70 90"
