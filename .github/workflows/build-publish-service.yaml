@@ -44,7 +44,7 @@ jobs:
         run: dotnet test --no-restore --verbosity normal -c Release --collect:"XPlat Code Coverage" --results-directory ./coverage
 
       - name: Merge coverage reports
-        run: dotnet-coverage merge *.cobertura.xml --recursive --output ./coverage/coverage.merged.xml --output cobertura
+        run: dotnet-coverage merge *.cobertura.xml --recursive --output ./coverage/coverage.merged.xml --output-format cobertura
 
       - name: Verify code coverage
         uses: irongut/CodeCoverageSummary@v1.3.0
