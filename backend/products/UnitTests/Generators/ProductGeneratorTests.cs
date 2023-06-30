@@ -1,5 +1,6 @@
 ﻿using Domain;
 using FluentAssertions;
+using Xunit;
 
 namespace Tests.Generators;
 

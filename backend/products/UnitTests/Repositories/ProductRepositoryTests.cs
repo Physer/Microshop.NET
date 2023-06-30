@@ -2,6 +2,7 @@
 using Domain;
 using FluentAssertions;
 using Persistence;
+using Xunit;
 
 namespace Tests.Repositories;
 
