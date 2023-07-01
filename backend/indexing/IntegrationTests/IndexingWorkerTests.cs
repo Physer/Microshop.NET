@@ -1,8 +1,9 @@
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using FluentAssertions;
-using IntegrationTests.Builders;
+using Indexer;
 using IntegrationTests.Configuration;
+using Library;
 using Xunit;
 
 namespace IntegrationTests;
@@ -73,9 +74,7 @@ public class IndexingWorkerTests : IAsyncLifetime
             { "Servicebus:ManagementPassword", _rabbitMqConfiguration?.Password },
             { "Servicebus:Port", _rabbitMqContainerPort.ToString() }
         };
-        var host = new ApplicationBuilder(configuration)
-            .Build();
-
+        var host = DotIntHost.Build(configuration, ServiceConfigurator.ConfigureServices);
         await host.StartAsync().ConfigureAwait(false);
         Thread.Sleep(TimeSpan.FromSeconds(5));
         await host.StopAsync().ConfigureAwait(false);
