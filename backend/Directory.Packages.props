@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AutoBogus" Version="2.13.1" />
-    <PackageVersion Include="DotInt" Version="1.1.0" />
+    <PackageVersion Include="DotnetInlineHost" Version="0.3.0" />
     <PackageVersion Include="MeiliSearch" Version="0.14.2" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageVersion Include="MassTransit.RabbitMQ" Version="8.0.14" />

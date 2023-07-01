@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="DotInt" />
+		<PackageReference Include="DotnetInlineHost" />
 		<PackageReference Include="FluentAssertions" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
