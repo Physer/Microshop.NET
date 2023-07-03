@@ -1,25 +1,16 @@
 ```mermaid
 sequenceDiagram
+  actor Servicebus
+  activate Message Consumer
   activate Indexing Service
-  activate Servicebus
-
-  actor Cron
-  Cron->>Indexing Service: Trigger
-
-  Indexing Service->>Servicebus: GetProductsRequest
-
-  activate Products Service
-  Servicebus->>Products Service: GetProductsResponse
-  Products Service-->>Servicebus: GetProductsResponse
-  deactivate Products Service
-
-  Servicebus-->>Indexing Service: GetProductsResponse
+  Servicebus->>Message Consumer: Consume message (ProductsGenerated)
+  Message Consumer->>Indexing Service: IndexProducts(products)
+  deactivate Message Consumer
 
   activate Search index
   Indexing Service->>Search index: DeleteDocuments
   Indexing Service->>Search index: AddDocuments(products)
 
-  deactivate Servicebus
   deactivate Indexing Service
   deactivate Search index
 ```

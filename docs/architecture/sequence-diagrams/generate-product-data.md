@@ -15,5 +15,12 @@ sequenceDiagram
   Note right of Products Repository: Stored in-memory
   deactivate Products Repository
 
+  activate Message Producer
+  Startup->>Message Producer: PublishProductsGeneratedMessage
+  activate Servicebus
+  Message Producer->>Servicebus: ProductsGenerated
+  deactivate Servicebus
+  deactivate Message Producer
+
   deactivate Startup
 ```
