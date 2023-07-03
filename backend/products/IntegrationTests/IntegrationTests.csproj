@@ -10,10 +10,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="DotnetInlineHost" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Testcontainers" />
 		<PackageReference Include="xunit" />
 		<PackageReference Include="xunit.runner.visualstudio" />
-		<PackageReference Include="coverlet.collector"  />
+		<PackageReference Include="coverlet.collector" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ProductsGenerator\ProductsGenerator.csproj" />
 	</ItemGroup>
 
 </Project>

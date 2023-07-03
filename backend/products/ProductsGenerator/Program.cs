@@ -5,8 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProductsGenerator;
 
-var builder = Host.CreateApplicationBuilder(args);
-ServiceConfigurator.ConfigureServices(builder.Configuration, builder.Services);
+var builder = Host.CreateDefaultBuilder(args).ConfigureServices(ServiceConfigurator.ConfigureServices);
 using var host = builder.Build();
 await host.StartAsync();
 
