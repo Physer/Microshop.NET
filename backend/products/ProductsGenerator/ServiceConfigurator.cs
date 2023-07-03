@@ -4,9 +4,11 @@ using Generator;
 using Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ProductsGenerator;
 
+[ExcludeFromCodeCoverage]
 public static class ServiceConfigurator
 {
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)

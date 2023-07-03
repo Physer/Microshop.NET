@@ -3,9 +3,11 @@ using Application.Options;
 using MassTransit;
 using Messaging.Publishers;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Messaging;
 
+[ExcludeFromCodeCoverage]
 public static class DependencyRegistrator
 {
     public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions)
