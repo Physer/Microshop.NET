@@ -25,12 +25,12 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=products
-        - SERVICE_DLL=Listener.dll
+        - SERVICE_DLL=ProductsGenerator.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
-    restart: always
+    restart: on-failure
   indexing:
     container_name: indexing
     build:

@@ -48,7 +48,7 @@ jobs:
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
     with:
       service-name: products
-      service-entrypoint: Listener
+      service-entrypoint: ProductsGenerator
 
   deploy_terraform_resources:
     name: Deploy resources to Azure using Terraform
