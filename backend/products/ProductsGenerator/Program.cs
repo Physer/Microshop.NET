@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Generator;
+using Application.Interfaces.Messaging;
 using Application.Interfaces.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +21,8 @@ var products = productGenerator.GenerateProducts(amountOfProductsToGenerate);
 productRepository.CreateProducts(products);
 logger.LogInformation("Succesfully generated and stored product data!");
 
-logger.LogInformation("Sending event...");
-//TODO: Implement
+logger.LogInformation("Sending event that all products have been generated");
+var messagePublisher = host.Services.GetRequiredService<IProductsGeneratedMessagePublisher>();
+await messagePublisher.PublishMessage(products);
 
 await host.StopAsync();

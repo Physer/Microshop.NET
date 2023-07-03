@@ -28,6 +28,6 @@ public static class DependencyRegistrator
         });
 
         // Publishers
-        services.AddScoped<IMessagePublisher, ProductsGeneratedMessagePublisher>();
+        services.AddScoped<IProductsGeneratedMessagePublisher, ProductsGeneratedMessagePublisher>();
     }
 }
