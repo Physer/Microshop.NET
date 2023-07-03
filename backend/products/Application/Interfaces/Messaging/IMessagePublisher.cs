@@ -1,6 +1,6 @@
 ﻿namespace Application.Interfaces.Messaging;
 
-public interface IMessagePublisher<T> where T : IMessage
+public interface IMessagePublisher
 {
-    Task PublishMessage(T message);
+    Task PublishMessage();
 }

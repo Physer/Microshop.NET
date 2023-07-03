@@ -2,6 +2,7 @@
 using Application.Options;
 using MassTransit;
 using Messaging.Messages;
+using Messaging.Publishers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Messaging;
@@ -27,6 +28,6 @@ public static class DependencyRegistrator
         });
 
         // Publishers
-        services.AddScoped<IMessagePublisher<ProductsGenerated>, MessagePublisher<ProductsGenerated>>();
+        services.AddScoped<IMessagePublisher, ProductsGeneratedMessagePublisher>();
     }
 }

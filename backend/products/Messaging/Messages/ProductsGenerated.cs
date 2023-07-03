@@ -2,4 +2,4 @@
 
 namespace Messaging.Messages;
 
-public record ProductsGenerated : IMessage;
+public record ProductsGenerated;
