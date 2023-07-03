@@ -3,7 +3,7 @@ using Generator;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 
-namespace Tests.Generators;
+namespace UnitTests.Generators;
 
 internal class ProductGeneratorBuilder
 {

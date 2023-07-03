@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Tests.Generators;
+namespace UnitTests.Generators;
 
 public class ProductGeneratorTests
 {
