@@ -3,6 +3,7 @@ using Application.Interfaces.Repositories;
 using Application.Options;
 using Generator;
 using Mapper;
+using Messaging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
@@ -14,8 +15,9 @@ public static class ServiceConfigurator
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
     {
         // Options
-        var productOptionsSection = configuration.GetSection(ServicebusOptions.ConfigurationEntry);
-        services.Configure<ServicebusOptions>(productOptionsSection);
+        var servciebusOptionsSection = configuration.GetSection(ServicebusOptions.ConfigurationEntry);
+        var servicebusOptions = servciebusOptionsSection.Get<ServicebusOptions>();
+        services.Configure<ServicebusOptions>(servciebusOptionsSection);
         var dataOptionsSection = configuration.GetSection(DataOptions.ConfigurationEntry);
         services.Configure<DataOptions>(dataOptionsSection);
 
@@ -27,5 +29,8 @@ public static class ServiceConfigurator
 
         // Mapper
         services.AddAutoMapper(typeof(ProductProfile));
+
+        // Messaging
+        services.RegisterMessagingDependencies(servicebusOptions);
     }
 }

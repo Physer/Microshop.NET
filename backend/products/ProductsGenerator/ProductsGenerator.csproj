@@ -33,6 +33,7 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Generator\Generator.csproj" />
     <ProjectReference Include="..\Mapper\Mapper.csproj" />
+    <ProjectReference Include="..\Messaging\Messaging.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
   </ItemGroup>
 
