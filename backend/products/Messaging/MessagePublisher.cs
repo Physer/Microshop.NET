@@ -4,21 +4,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Messaging;
 
-public class MessagePublisher : IMessagePublisher
+public class MessagePublisher<T> : IMessagePublisher<T> where T : IMessage
 {
     private readonly IPublishEndpoint _publishEndpoint;
-    private readonly ILogger<MessagePublisher> _logger;
+    private readonly ILogger<MessagePublisher<T>> _logger;
 
     public MessagePublisher(IPublishEndpoint publishEndpoint,
-        ILogger<MessagePublisher> logger)
+        ILogger<MessagePublisher<T>> logger)
     {
         _publishEndpoint = publishEndpoint;
         _logger = logger;
     }
 
-    public async Task PublishMessage<T>(T message) where T : class
+    public async Task PublishMessage(T message)
     {
-        _logger.LogInformation("Publishing message {messageName}", message.GetType().Name);
+        _logger.LogInformation("Publishing message {messageName} from the {publisherName}", message.GetType().Name, nameof(MessagePublisher<T>));
         await _publishEndpoint.Publish(message);
     }
 }

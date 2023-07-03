@@ -1,5 +1,7 @@
-﻿using Application.Options;
+﻿using Application.Interfaces.Messaging;
+using Application.Options;
 using MassTransit;
+using Messaging.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Messaging;
@@ -23,5 +25,8 @@ public static class DependencyRegistrator
                 factoryConfigurator.ConfigureEndpoints(context);
             });
         });
+
+        // Publishers
+        services.AddScoped<IMessagePublisher<ProductsGenerated>, MessagePublisher<ProductsGenerated>>();
     }
 }
