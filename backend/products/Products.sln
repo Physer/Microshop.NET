@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer", "Consumer\Consum
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Listener", "Listener\Listener.csproj", "{2C34EA66-7106-4746-B024-B1155645B6EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{8BCE7ABF-4FE9-4578-A301-6EFBE48566CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{8BCE7ABF-4FE9-4578-A301-6EFBE48566CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductsGenerator", "ProductsGenerator\ProductsGenerator.csproj", "{BE75AD77-C451-4BB7-801C-EB45D3D086B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{8BCE7ABF-4FE9-4578-A301-6EFBE48566CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BCE7ABF-4FE9-4578-A301-6EFBE48566CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BCE7ABF-4FE9-4578-A301-6EFBE48566CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE75AD77-C451-4BB7-801C-EB45D3D086B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE75AD77-C451-4BB7-801C-EB45D3D086B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE75AD77-C451-4BB7-801C-EB45D3D086B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE75AD77-C451-4BB7-801C-EB45D3D086B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{8870CE8A-173C-486A-849A-F770EBF34088} = {7DC67F05-0916-463F-9350-5D02774E3EE1}
 		{2C34EA66-7106-4746-B024-B1155645B6EC} = {C0434576-9040-4E59-A5BD-B1911FF69843}
 		{8BCE7ABF-4FE9-4578-A301-6EFBE48566CE} = {70D96A9A-9281-46FD-B11C-0F3C39E1445A}
+		{BE75AD77-C451-4BB7-801C-EB45D3D086B0} = {C0434576-9040-4E59-A5BD-B1911FF69843}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9CA2E463-8133-4529-98DB-D984BCBC5967}
