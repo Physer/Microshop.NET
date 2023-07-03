@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces.Messaging;
 using Application.Options;
 using MassTransit;
-using Messaging.Messages;
 using Messaging.Publishers;
 using Microsoft.Extensions.DependencyInjection;
 

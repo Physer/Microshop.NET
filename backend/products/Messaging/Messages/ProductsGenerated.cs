@@ -1,5 +1,3 @@
-﻿using Application.Interfaces.Messaging;
-
-namespace Messaging.Messages;
+﻿namespace Messaging.Messages;
 
 public record ProductsGenerated;

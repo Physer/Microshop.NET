@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces.Generator;
 using Application.Interfaces.Messaging;
-using Application.Interfaces.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -13,13 +12,10 @@ await host.StartAsync();
 
 var amountOfProductsToGenerate = 500;
 var productGenerator = host.Services.GetRequiredService<IProductGenerator>();
-var productRepository = host.Services.GetRequiredService<IRepository>();
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
-logger.LogInformation("Generating {amountOfProductsToGenerate} fake products...", amountOfProductsToGenerate);
+logger.LogInformation("Generating {amountOfProductsToGenerate} fake products", amountOfProductsToGenerate);
 var products = productGenerator.GenerateProducts(amountOfProductsToGenerate);
-productRepository.CreateProducts(products);
-logger.LogInformation("Succesfully generated and stored product data!");
 
 logger.LogInformation("Sending event that all products have been generated");
 var messagePublisher = host.Services.GetRequiredService<IProductsGeneratedMessagePublisher>();

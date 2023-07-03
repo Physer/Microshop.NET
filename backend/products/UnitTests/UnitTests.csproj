@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Listener\Listener.csproj" />
+	  <ProjectReference Include="..\ProductsGenerator\ProductsGenerator.csproj" />
 	</ItemGroup>
 
 </Project>
