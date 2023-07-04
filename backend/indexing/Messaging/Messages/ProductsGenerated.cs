@@ -2,4 +2,4 @@
 
 namespace Messaging.Messages;
 
-internal record ProductsGenerated(IEnumerable<Product> Products);
+public record ProductsGenerated(IEnumerable<Product> Products);
