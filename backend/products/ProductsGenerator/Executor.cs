@@ -18,7 +18,9 @@ internal static class Executor
         var products = productGenerator.GenerateProducts(amountOfProductsToGenerate);
 
         logger.LogInformation("Sending event that all products have been generated");
-        var messagePublisher = host.Services.GetRequiredService<IProductsGeneratedMessagePublisher>();
+        var serviceProvider = host.Services.GetRequiredService<IServiceProvider>();
+        using var scope = serviceProvider.CreateScope();
+        var messagePublisher = scope.ServiceProvider.GetRequiredService<IProductsGeneratedMessagePublisher>();
         var publishedMessageId = await messagePublisher.PublishMessage(products);
         logger.LogInformation("Sent message {messageId}", publishedMessageId);
     }
