@@ -4,5 +4,5 @@ namespace Application.Interfaces.Messaging;
 
 public interface IProductsGeneratedMessagePublisher
 {
-    Task PublishMessage(IEnumerable<Product> products);
+    Task<Guid?> PublishMessage(IEnumerable<Product> products);
 }

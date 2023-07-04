@@ -18,6 +18,7 @@ var products = productGenerator.GenerateProducts(amountOfProductsToGenerate);
 
 logger.LogInformation("Sending event that all products have been generated");
 var messagePublisher = host.Services.GetRequiredService<IProductsGeneratedMessagePublisher>();
-await messagePublisher.PublishMessage(products);
+var publishedMessageId = await messagePublisher.PublishMessage(products);
+logger.LogInformation("Sent message {messageId}", publishedMessageId);
 
 await host.StopAsync();
