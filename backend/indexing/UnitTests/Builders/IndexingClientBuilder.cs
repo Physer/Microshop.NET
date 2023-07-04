@@ -2,7 +2,7 @@
 using NSubstitute;
 using Search;
 
-namespace Tests.Builders;
+namespace UnitTests.Builders;
 
 internal class IndexingClientBuilder
 {

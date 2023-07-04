@@ -1,6 +1,5 @@
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
-using FluentAssertions;
 using Indexer;
 using IntegrationTests.Configuration;
 using Xunit;

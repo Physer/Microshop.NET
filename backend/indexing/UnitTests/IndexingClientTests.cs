@@ -1,10 +1,9 @@
 ﻿using AutoFixture.Xunit2;
 using FluentAssertions;
 using NSubstitute;
-using Tests.Builders;
 using Xunit;
 
-namespace Tests;
+namespace UnitTests;
 
 public class IndexingClientTests
 {

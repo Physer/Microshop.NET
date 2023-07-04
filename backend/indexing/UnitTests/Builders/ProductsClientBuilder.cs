@@ -7,7 +7,7 @@ using ProductsClient;
 using ProductsClient.Contracts;
 using RabbitMQ.Client.Exceptions;
 
-namespace Tests.Builders;
+namespace UnitTests.Builders;
 
 internal class ProductsClientBuilder
 {

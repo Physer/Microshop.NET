@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Hosting;
 
-namespace Indexer;
+namespace Indexing;
 
 public class Program
 {
