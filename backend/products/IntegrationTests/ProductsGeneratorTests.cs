@@ -43,9 +43,11 @@ public class ProductsGeneratorTests : IAsyncLifetime
             { "Servicebus:Port", _rabbitMqContainerPort.ToString() }
         };
         var commandlineConfiguration = configuration.Select(c => $"--{c.Key}={c.Value}");
+        List<string> extraCommandLineArguments = new() { "ShouldStop" };
+        var arguments = commandlineConfiguration.Concat(extraCommandLineArguments);
 
         // Act
-        var exception = await Record.ExceptionAsync(() => ProductsGenerator.Program.Main(commandlineConfiguration.ToArray()));
+        var exception = await Record.ExceptionAsync(() => ProductsGenerator.Program.Main(arguments.ToArray()));
 
         // Assert
         exception.Should().BeNull();

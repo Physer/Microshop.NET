@@ -10,6 +10,8 @@ public class Program
         using var host = builder.Build();
         await host.StartAsync();
         await Executor.GenerateAsync(host);
-        await host.StopAsync();
+
+        var cancellationToken = args.Contains("ShouldStop") ? new CancellationToken(true) : default;
+        await host.WaitForShutdownAsync(cancellationToken);
     }
 }
