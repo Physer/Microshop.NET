@@ -27,7 +27,7 @@ public class ProductsGeneratedMessagePublisher : IProductsGeneratedMessagePublis
     public async Task<Guid?> PublishMessage(IEnumerable<Product> products)
     {
         _logger.LogInformation("Publishing message from {publisher}", nameof(ProductsGeneratedMessagePublisher));
-        await _publishEndpoint.Publish(new ProductsGenerated(), x =>
+        await _publishEndpoint.Publish(new ProductsGenerated(products), x =>
         {
             MessageId = x.MessageId;
         });

@@ -1,3 +1,5 @@
-﻿namespace Messaging.Messages;
+﻿using Domain;
 
-public record ProductsGenerated;
+namespace Messaging.Messages;
+
+public record ProductsGenerated(IEnumerable<Product> Products);

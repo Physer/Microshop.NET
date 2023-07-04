@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using Domain;
+using MassTransit;
 using Messaging.Messages;
 using Messaging.Publishers;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ internal class ProductsGeneratedMessagePublisherBuilder
 
     public ProductsGeneratedMessagePublisherBuilder WithPublishedMessageId(Guid messageId)
     {
-        _publishEndpoint.WhenForAnyArgs(p => p.Publish(new ProductsGenerated(), _ => { })).Do(x => _publisher.MessageId = messageId);
+        _publishEndpoint.WhenForAnyArgs(p => p.Publish(new ProductsGenerated(Enumerable.Empty<Product>()), _ => { })).Do(x => _publisher.MessageId = messageId);
 
         return this;
     }
