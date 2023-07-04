@@ -6,7 +6,8 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        var builder = Host.CreateDefaultBuilder(args).ConfigureServices(ServiceConfigurator.ConfigureServices);
+        var builder = Host.CreateApplicationBuilder(args);
+        ServiceConfigurator.ConfigureServices(builder.Configuration, builder.Services);
         using var host = builder.Build();
         await host.StartAsync();
         await Executor.GenerateAsync(host);

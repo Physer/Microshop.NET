@@ -12,13 +12,13 @@ namespace ProductsGenerator;
 [ExcludeFromCodeCoverage]
 public static class ServiceConfigurator
 {
-    public static void ConfigureServices(HostBuilderContext context, IServiceCollection services)
+    public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
     {
         // Options
-        var servciebusOptionsSection = context.Configuration.GetSection(ServicebusOptions.ConfigurationEntry);
+        var servciebusOptionsSection = configuration.GetSection(ServicebusOptions.ConfigurationEntry);
         var servicebusOptions = servciebusOptionsSection.Get<ServicebusOptions>();
         services.Configure<ServicebusOptions>(servciebusOptionsSection);
-        var dataOptionsSection = context.Configuration.GetSection(DataOptions.ConfigurationEntry);
+        var dataOptionsSection = configuration.GetSection(DataOptions.ConfigurationEntry);
         services.Configure<DataOptions>(dataOptionsSection);
 
         // Generator
