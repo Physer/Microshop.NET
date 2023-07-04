@@ -38,7 +38,7 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=indexing
-        - SERVICE_DLL=Indexer.dll
+        - SERVICE_DLL=Indexing.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}

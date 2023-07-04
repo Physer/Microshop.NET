@@ -36,7 +36,7 @@ jobs:
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
     with:
       service-name: indexing
-      service-entrypoint: Indexer
+      service-entrypoint: Indexing
 
   build-and-publish-products-service:
     name: Build and publish products service
