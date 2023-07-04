@@ -4,6 +4,7 @@ using FluentAssertions;
 using MassTransit;
 using ProductsClient.Contracts;
 using RabbitMQ.Client.Exceptions;
+using UnitTests.Builders;
 using Xunit;
 
 namespace UnitTests;
