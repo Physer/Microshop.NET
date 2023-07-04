@@ -1,9 +1,7 @@
 ﻿using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
-using DotnetInlineHost;
 using FluentAssertions;
 using IntegrationTests.Configuration;
-using ProductsGenerator;
 using Xunit;
 
 namespace IntegrationTests;
@@ -44,12 +42,10 @@ public class ProductsGeneratorTests : IAsyncLifetime
             { "Servicebus:ManagementPassword", RabbitMqContainerConfiguration.Password },
             { "Servicebus:Port", _rabbitMqContainerPort.ToString() }
         };
+        var commandlineConfiguration = configuration.Select(c => $"--{c.Key}={c.Value}");
 
         // Act
-        var host = InlineHost.Build(configuration, ServiceConfigurator.ConfigureServices);
-        var exception = await Record.ExceptionAsync(async () => await host.StartAsync().ConfigureAwait(false));
-        Thread.Sleep(TimeSpan.FromSeconds(5));
-        await host.StopAsync().ConfigureAwait(false);
+        var exception = await Record.ExceptionAsync(() => ProductsGenerator.Program.Main(commandlineConfiguration.ToArray()));
 
         // Assert
         exception.Should().BeNull();
