@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "Integra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Indexing", "Indexing\Indexing.csproj", "{6AD166BB-BE4D-4BD1-8171-23CBED9F3D1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messaging", "Messaging\Messaging.csproj", "{7B9C189E-E703-4925-9DB2-44C5042B6C5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{6AD166BB-BE4D-4BD1-8171-23CBED9F3D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AD166BB-BE4D-4BD1-8171-23CBED9F3D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AD166BB-BE4D-4BD1-8171-23CBED9F3D1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B9C189E-E703-4925-9DB2-44C5042B6C5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B9C189E-E703-4925-9DB2-44C5042B6C5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B9C189E-E703-4925-9DB2-44C5042B6C5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B9C189E-E703-4925-9DB2-44C5042B6C5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{9623F217-06E0-42FC-A851-A5C11C9C1227} = {ED9FB4FB-FF1A-4A6A-90AC-C70D781AF1EA}
 		{0B62B335-0BCD-4EEF-B369-35F41B8EF5E0} = {ED9FB4FB-FF1A-4A6A-90AC-C70D781AF1EA}
 		{6AD166BB-BE4D-4BD1-8171-23CBED9F3D1B} = {B63C2EBE-8018-4096-8F25-B9416BFFE283}
+		{7B9C189E-E703-4925-9DB2-44C5042B6C5C} = {46D6E74A-5B70-4CD9-9AFB-8449772A6F25}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE3DE82E-3FBD-42B3-B9A0-2C01045024A3}

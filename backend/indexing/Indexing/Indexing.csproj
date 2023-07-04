@@ -5,6 +5,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>af5fad11-fa31-4e99-b473-8bc1782688c6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,7 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Mapper\Mapper.csproj" />
-    <ProjectReference Include="..\ProductsClient\ProductsClient.csproj" />
+    <ProjectReference Include="..\Messaging\Messaging.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
 

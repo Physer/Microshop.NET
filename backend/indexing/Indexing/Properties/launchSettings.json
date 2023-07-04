@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Indexing": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "development"
+      }
+    }
+  }
+}
