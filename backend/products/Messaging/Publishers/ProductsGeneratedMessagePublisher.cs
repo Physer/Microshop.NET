@@ -14,14 +14,14 @@ public class ProductsGeneratedMessagePublisher : IProductsGeneratedMessagePublis
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<ProductsGeneratedMessagePublisher> _logger;
 
-    internal Guid? MessageId;
+    internal Guid? _messageId;
 
     public ProductsGeneratedMessagePublisher(IPublishEndpoint publishEndpoint,
         ILogger<ProductsGeneratedMessagePublisher> logger)
     {
         _publishEndpoint = publishEndpoint;
         _logger = logger;
-        MessageId = Guid.Empty;
+        _messageId = Guid.Empty;
     }
 
     public async Task<Guid?> PublishMessage(IEnumerable<Product> products)
@@ -29,11 +29,11 @@ public class ProductsGeneratedMessagePublisher : IProductsGeneratedMessagePublis
         _logger.LogInformation("Publishing message from {publisher}", nameof(ProductsGeneratedMessagePublisher));
         await _publishEndpoint.Publish(new ProductsGenerated(products), x =>
         {
-            MessageId = x.MessageId;
+            _messageId = x.MessageId;
         });
 
-        if (MessageId == Guid.Empty)
+        if (_messageId == Guid.Empty)
             throw new MessagePublishingException($"Unable to publish a message using the {nameof(ProductsGeneratedMessagePublisher)}");
-        return MessageId;
+        return _messageId;
     }
 }

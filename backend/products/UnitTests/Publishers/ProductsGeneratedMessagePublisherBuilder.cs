@@ -23,7 +23,7 @@ internal class ProductsGeneratedMessagePublisherBuilder
 
     public ProductsGeneratedMessagePublisherBuilder WithPublishedMessageId(Guid messageId)
     {
-        _publishEndpoint.WhenForAnyArgs(p => p.Publish(new ProductsGenerated(Enumerable.Empty<Product>()), _ => { })).Do(x => _publisher.MessageId = messageId);
+        _publishEndpoint.WhenForAnyArgs(p => p.Publish(new ProductsGenerated(Enumerable.Empty<Product>()), _ => { })).Do(x => _publisher._messageId = messageId);
 
         return this;
     }
