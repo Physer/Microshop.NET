@@ -17,12 +17,11 @@ public class IndexingServiceTests
         // Arrange
         var indexingServiceBuilder = new IndexingServiceBuilder();
         var indexingService = indexingServiceBuilder
-            .WithProductsClientReturningProducts(products)
             .WithMapperMappingToIndexableProducts(indexableProducts)
             .Build();
 
         // Act
-        await indexingService.IndexProductsAsync();
+        await indexingService.IndexProductsAsync(products);
 
         // Assert
         indexingServiceBuilder._mapperMock.Received(1).Map<IEnumerable<IndexableProduct>>(products);

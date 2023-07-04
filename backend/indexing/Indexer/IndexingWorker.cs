@@ -1,5 +1,6 @@
 using Application.Interfaces.Indexing;
 using Application.Options;
+using Domain;
 using Microsoft.Extensions.Options;
 
 namespace Indexer;
@@ -31,7 +32,7 @@ public class IndexingWorker : IHostedService, IDisposable
     {
         var interval = _indexingOptions.IndexingIntervalInSeconds ?? 3600;
         _logger.LogInformation("Triggering service every {interval} seconds", interval);
-        _timer = new Timer(async _ => await IndexAsync(cancellationToken), null, TimeSpan.Zero, TimeSpan.FromSeconds(interval));
+        _timer = new Timer(async _ => await IndexAsync(), null, TimeSpan.Zero, TimeSpan.FromSeconds(interval));
         return Task.CompletedTask;
     }
 
@@ -41,10 +42,10 @@ public class IndexingWorker : IHostedService, IDisposable
         return Task.CompletedTask;
     }
 
-    private async Task IndexAsync(CancellationToken cancellationToken = default)
+    private async Task IndexAsync()
     {
         _logger.LogInformation("Starting indexing");
-        await _indexingService.IndexProductsAsync(cancellationToken);
+        await _indexingService.IndexProductsAsync(Enumerable.Empty<Product>());
         _logger.LogInformation("Done indexing");
     }
 }

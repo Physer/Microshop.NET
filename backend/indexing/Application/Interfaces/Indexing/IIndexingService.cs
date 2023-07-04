@@ -1,6 +1,8 @@
-﻿namespace Application.Interfaces.Indexing;
+﻿using Domain;
+
+namespace Application.Interfaces.Indexing;
 
 public interface IIndexingService
 {
-    Task IndexProductsAsync(CancellationToken cancellationToken);
+    Task IndexProductsAsync(IEnumerable<Product> products);
 }
