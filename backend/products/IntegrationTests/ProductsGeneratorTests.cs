@@ -1,9 +1,8 @@
 ﻿using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using DotnetInlineHost;
+using FluentAssertions;
 using IntegrationTests.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using ProductsGenerator;
 using Xunit;
 
@@ -48,10 +47,11 @@ public class ProductsGeneratorTests : IAsyncLifetime
 
         // Act
         var host = InlineHost.Build(configuration, ServiceConfigurator.ConfigureServices);
-        await host.StartAsync().ConfigureAwait(false);
+        var exception = await Record.ExceptionAsync(async () => await host.StartAsync().ConfigureAwait(false));
         Thread.Sleep(TimeSpan.FromSeconds(5));
         await host.StopAsync().ConfigureAwait(false);
 
         // Assert
+        exception.Should().BeNull();
     }
 }
