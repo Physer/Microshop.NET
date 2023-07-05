@@ -6,7 +6,7 @@ Accepted
 
 ## Context
 
-Due to the containerized nature of the platform, we cannot guarantee that the consumers will always start before the publishers.
+Due to the distributed nature of the platform, we cannot guarantee that the consumers will always start before the publishers.
 They need to do so because the consumers are responsible for creating the queues and binding the exchanges to them.
 If the publisher starts first, it broadcasts a message on the bus without a binding or a queue being present, resulting in an undelivered (and non-retried) message.
 
