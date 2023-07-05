@@ -26,22 +26,23 @@ More information about this choice can be found in an [Architecture Decision Rec
 The Products service is responsible for storing and accessing product data.
 This only includes directly related product data, so things like prices and stock information is not part of this service.
 
-The Products service generates a pre-configured amount of fake products when the service starts and stores these in-memory.
-It then listens to messages on the servicebus when product data is requested.
-If a message comes in, it will retrieve the product data from the in-memory database and send it back to the servicebus. The Products service is a console application.
+The Products service generates a pre-configured amount of fake products when the service starts.
+When the products have been generated, the service publishes a message on the servicebus with all product data. The Products service is a console application.
 
 ### Tests:
 
 - Unit Tests
+- Integration Tests
+  - Using [Testcontainers.NET](https://dotnet.testcontainers.org/) to simulate the complete environment.
 
 ### Libraries used:
 
 - Autobogus
 - Autofixture
-- Automapper
 - FluentAssertions
 - MassTransit (RabbitMQ)
 - NSubstitute
+- Testcontainers
 - XUnit
 
 ## Indexing service
@@ -50,7 +51,7 @@ If a message comes in, it will retrieve the product data from the in-memory data
 
 The Indexing service is responsible for retrieving product data and storing the data in a search index.
 
-The Indexing service is a [background service](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services?view=aspnetcore-7.0&tabs=visual-studio) that is triggered periodically by a configured timed interval. Upon triggering, the service will request all product data through the servicebus and, once received, store the data in an external search index.
+The Indexing service is a console application that listens for incoming messages. Once a message is received, the indexing service will store the data in an external search index.
 
 ### Tests:
 
@@ -109,7 +110,7 @@ Using Azure Container Apps over Kubernetes (or Azure Kubernetes Services) was a 
 
 All infrastructure is setup as Infrastructure-as-Code by using [Terraform](https://www.terraform.io/).
 
-The infrastructure is being provisioned automatically through the use of our [Github Actions](https://github.com/Physer/Microshop.NET/actions).
+The infrastructure is being provisioned automatically through the use of [Github Actions](https://github.com/Physer/Microshop.NET/actions).
 
 # Deployments
 
