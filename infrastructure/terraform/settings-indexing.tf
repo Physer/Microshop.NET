@@ -5,9 +5,9 @@ locals {
     { name = (local.meilisearch_api_key), value = random_password.meilisearch_api_key.result }
   ]
   indexing_appsettings = [
-    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.revision_name },
+    { name = "Servicebus__BaseUrl", value = module.rabbitmq_app.name },
     { name = "Servicebus__Port", value = 5672 },
-    { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.revision_fqdn}/" },
+    { name = "Indexing__BaseUrl", value = "http://${module.meilisearch_app.name}/" },
     { name = "Indexing__IndexingIntervalInSeconds", value = 3600 },
     { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
     { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
