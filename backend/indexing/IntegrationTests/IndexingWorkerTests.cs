@@ -72,12 +72,9 @@ public class IndexingWorkerTests : IAsyncLifetime
             { "Servicebus:ManagementPassword", _rabbitMqConfiguration?.Password },
             { "Servicebus:Port", _rabbitMqContainerPort.ToString() }
         };
-        var commandlineConfiguration = configuration.Select(c => $"--{c.Key}={c.Value}");
-        List<string> extraCommandLineArguments = new() { "ShouldStop" };
-        var arguments = commandlineConfiguration.Concat(extraCommandLineArguments);
 
         // Act
-        await Program.Main(arguments.ToArray());
+        await Program.Main(Utilities.CreateTemporaryCommandlineArguments(configuration));
 
         // Assert
         //TODO: When new event handling has been implemented
