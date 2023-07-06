@@ -18,7 +18,7 @@ internal class MicroshopProductsContainerConfiguration : IContainerConfiguration
         _rabbitMqPort = rabbitMqPort;
     }
 
-    public string ImageName => "physer/microshop-products";
+    public string ImageName => "physer/microshop-products:main";
 
     public IReadOnlyDictionary<string, string>? EnvironmentVariables => new Dictionary<string, string>
     {
