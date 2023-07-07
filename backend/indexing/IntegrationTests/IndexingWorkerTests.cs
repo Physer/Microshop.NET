@@ -47,7 +47,7 @@ public class IndexingWorkerTests : IAsyncLifetime
         _rabbitMqContainerPort = _rabbitMqContainer.GetMappedPublicPort(_rabbitMqConfiguration.Port);
         _meilisearchContainerPort = _meilisearchContainer.GetMappedPublicPort(_meilisearchConfiguration.Port);
 
-        var productsServiceConfiguration = new MicroshopProductsContainerConfiguration(_rabbitMqContainer.IpAddress, _rabbitMqConfiguration.Username, _rabbitMqConfiguration.Password, _rabbitMqContainerPort.Value);
+        var productsServiceConfiguration = new MicroshopProductsContainerConfiguration(_rabbitMqContainer.IpAddress, _rabbitMqConfiguration.Username, _rabbitMqConfiguration.Password, _rabbitMqConfiguration.Port);
         var productsServiceContainer = new ContainerBuilder()
             .WithImage(productsServiceConfiguration.ImageName)
             .WithEnvironment(productsServiceConfiguration.EnvironmentVariables)
