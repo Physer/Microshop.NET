@@ -21,7 +21,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\API\API.csproj" />
-	  <ProjectReference Include="..\ProductsGenerator\ProductsGenerator.csproj" />
 	</ItemGroup>
 
 </Project>
