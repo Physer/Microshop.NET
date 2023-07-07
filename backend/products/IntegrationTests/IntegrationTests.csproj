@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentAssertions" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="Testcontainers" />
 		<PackageReference Include="xunit" />
@@ -19,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\API\API.csproj" />
 	  <ProjectReference Include="..\ProductsGenerator\ProductsGenerator.csproj" />
 	</ItemGroup>
 

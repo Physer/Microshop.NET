@@ -7,3 +7,5 @@ var app = builder.Build();
 app.MapPost("/products", Endpoints.GenerateProducts);
 
 app.Run();
+
+public partial class Program { }
