@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Superseded by [api-endpoints-for-entity-operations](api-endpoints-for-entity-operations.md)
 
 ## Context
 
