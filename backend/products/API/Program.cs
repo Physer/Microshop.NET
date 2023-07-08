@@ -1,13 +1,8 @@
 using API;
-using Application.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddTestConfiguration();
-ServiceConfigurator.ConfigureServices(builder.Configuration, builder.Services);
+var startup = new Startup(builder.Configuration);
+startup.ConfigureServices(builder.Services);
 var app = builder.Build();
-
-app.MapPost("/products", Endpoints.GenerateProducts);
-
+startup.Configure(app, app.Environment);
 app.Run();
-
-public partial class Program { }
