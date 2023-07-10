@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Messaging.Publishers;
 
-public class PricesGeneratedMessagePublisher : IPricesGeneratedMessagePublisher
+internal class PricesGeneratedMessagePublisher : IPricesGeneratedMessagePublisher
 {
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<PricesGeneratedMessagePublisher> _logger;
