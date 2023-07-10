@@ -18,7 +18,7 @@ public class ProductGenerator : IProductGenerator
             Randomizer.Seed = new Random(seed.Value);
 
         _productFaker = new AutoFaker<Product>()
-            .RuleFor(fake => fake.ProductCode, fake => fake.Commerce.Ean13())
+            .RuleFor(fake => fake.Code, fake => fake.Commerce.Ean13())
             .RuleFor(fake => fake.Name, fake => fake.Commerce.ProductName())
             .RuleFor(fake => fake.Description, fake => fake.Commerce.ProductDescription());
     }
