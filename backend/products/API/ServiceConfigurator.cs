@@ -3,7 +3,9 @@ using Application.Options;
 using Generator;
 using Messaging;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("IntegrationTests")]
 namespace API;
 
 [ExcludeFromCodeCoverage]

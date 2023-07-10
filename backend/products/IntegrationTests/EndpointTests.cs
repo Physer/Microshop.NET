@@ -10,17 +10,11 @@ using Xunit;
 
 namespace IntegrationTests;
 
-public class EndpointTests : IClassFixture<WebApplicationFactory<Program>>, IAsyncLifetime
+public class EndpointTests : IAsyncLifetime
 {
-    private readonly WebApplicationFactory<Program> _applicationFactory;
     private IContainer? _rabbitMqContainer;
     private RabbitMqContainerConfiguration? _rabbitMqConfiguration;
     private int? _rabbitMqContainerPort;
-
-    public EndpointTests(WebApplicationFactory<Program> applicationFactory)
-    {
-        _applicationFactory = applicationFactory;
-    }
 
     public Task DisposeAsync() => Task.CompletedTask;
 
@@ -53,7 +47,7 @@ public class EndpointTests : IClassFixture<WebApplicationFactory<Program>>, IAsy
             ["Servicebus:Port"] = _rabbitMqContainerPort.ToString()
         };
         TestConfiguration.Create(builder => builder.AddInMemoryCollection(configuration));
-        var client = _applicationFactory.CreateClient();
+        var client = new WebApplicationFactory<Program>().CreateClient();
 
         // Act
         var response = await client.PostAsync("/products", default);
