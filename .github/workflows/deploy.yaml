@@ -50,6 +50,18 @@ jobs:
       service-name: products
       service-entrypoint: API
 
+  build-and-publish-gateway-service:
+    name: Build and publish gateway service
+    needs: retrieve-changes
+    if: ${{ needs.retrieve-changes.outputs.products == 'true' }}
+    uses: ./.github/workflows/build-publish-service.yaml
+    secrets:
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+    with:
+      service-name: gateway
+      service-entrypoint: API
+
   deploy_terraform_resources:
     name: Deploy resources to Azure using Terraform
     if: ${{ always() }}
