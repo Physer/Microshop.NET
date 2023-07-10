@@ -49,3 +49,14 @@ services:
       - Indexing__ApiKey=${MEILISEARCH_MASTER_KEY}
       - Indexing__IndexingIntervalInSeconds=3600
     restart: always
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.backend
+      args:
+        - SERVICE_NAME=gateway
+        - SERVICE_DLL=API.dll
+    restart: always
+    ports:
+      - 80
