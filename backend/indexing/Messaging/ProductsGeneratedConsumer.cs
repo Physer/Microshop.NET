@@ -20,7 +20,7 @@ internal class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
 
     public async Task Consume(ConsumeContext<ProductsGenerated> context)
     {
-        _logger.LogInformation("Received message {messageId} in the consumer: {consumer}", context.MessageId, nameof(ProductsGeneratedConsumer));
+        _logger.LogInformation("Indexing service - Received message {messageId}", context.MessageId);
         await _indexingService.IndexProductsAsync(context.Message?.Products ?? Enumerable.Empty<Product>());
     }
 }
