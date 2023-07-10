@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Generator\Generator.csproj" />
     <ProjectReference Include="..\Messaging\Messaging.csproj" />
   </ItemGroup>
 
