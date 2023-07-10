@@ -1,5 +1,7 @@
-﻿using Application.Options;
+﻿using Application.Interfaces.Messaging;
+using Application.Options;
 using MassTransit;
+using Messaging.Publishers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Messaging;
@@ -16,12 +18,15 @@ public static class DependencyRegistrator
             busConfigurator.AddConsumer<ProductsGeneratedConsumer>();
             busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>
             {
-                factoryConfigurator.Host(servicebusOptions.BaseUrl, (ushort)servicebusOptions.Port, "/", hostConfigurator => {
+                factoryConfigurator.Host(servicebusOptions.BaseUrl, (ushort)servicebusOptions.Port, "/", hostConfigurator =>
+                {
                     hostConfigurator.Username(servicebusOptions.ManagementUsername);
                     hostConfigurator.Password(servicebusOptions.ManagementPassword);
                 });
                 factoryConfigurator.ConfigureEndpoints(context);
             });
         });
+
+        services.AddScoped<IPricesGeneratedMessagePublisher, PricesGeneratedMessagePublisher>();
     }
 }
