@@ -32,7 +32,7 @@ services:
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
     restart: always
     ports:
-      - 80
+      - 5001:80
   indexing:
     container_name: indexing
     build:
@@ -59,4 +59,4 @@ services:
         - SERVICE_DLL=API.dll
     restart: always
     ports:
-      - 80
+      - 5000:80
