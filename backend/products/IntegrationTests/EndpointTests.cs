@@ -1,4 +1,5 @@
-﻿using DotNet.Testcontainers.Builders;
+﻿using Application.Configuration;
+using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using FluentAssertions;
 using IntegrationTests.Configuration;
@@ -9,11 +10,17 @@ using Xunit;
 
 namespace IntegrationTests;
 
-public class EndpointTests : IAsyncLifetime
+public class EndpointTests : IClassFixture<WebApplicationFactory<Program>>, IAsyncLifetime
 {
+    private readonly WebApplicationFactory<Program> _applicationFactory;
     private IContainer? _rabbitMqContainer;
     private RabbitMqContainerConfiguration? _rabbitMqConfiguration;
     private int? _rabbitMqContainerPort;
+
+    public EndpointTests(WebApplicationFactory<Program> applicationFactory)
+    {
+        _applicationFactory = applicationFactory;
+    }
 
     public Task DisposeAsync() => Task.CompletedTask;
 
@@ -31,6 +38,7 @@ public class EndpointTests : IAsyncLifetime
             .Build();
         await _rabbitMqContainer.StartAsync().ConfigureAwait(false);
         _rabbitMqContainerPort = _rabbitMqContainer.GetMappedPublicPort(RabbitMqContainerConfiguration.Port);
+
     }
 
     [Fact]
@@ -44,9 +52,8 @@ public class EndpointTests : IAsyncLifetime
             ["Servicebus:ManagementPassword"] = RabbitMqContainerConfiguration.Password,
             ["Servicebus:Port"] = _rabbitMqContainerPort.ToString()
         };
-
-        var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder => builder.ConfigureAppConfiguration((_, configurationBuilder) => configurationBuilder.AddInMemoryCollection(configuration)));
-        var client = factory.CreateClient();
+        TestConfiguration.Create(builder => builder.AddInMemoryCollection(configuration));
+        var client = _applicationFactory.CreateClient();
 
         // Act
         var response = await client.PostAsync("/products", default);
