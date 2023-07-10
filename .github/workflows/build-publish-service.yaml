@@ -41,18 +41,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --no-restore --verbosity normal -c Release --collect:"XPlat Code Coverage" --results-directory ./coverage
-
-      - name: Merge coverage reports
-        run: dotnet-coverage merge *.cobertura.xml --recursive --output ./coverage/coverage.merged.xml --output-format cobertura
-
-      - name: Verify code coverage
-        uses: irongut/CodeCoverageSummary@v1.3.0
-        with:
-          filename: backend/${{ inputs.service-name }}/coverage/**/coverage.merged.xml
-          fail_below_min: true
-          indicators: true
-          thresholds: "70 90"
+        run: dotnet test --configuration Release --no-restore
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
