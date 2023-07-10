@@ -69,7 +69,11 @@ jobs:
     name: Deploy resources to Azure using Terraform
     if: ${{ always() }}
     needs:
-      [build-and-publish-indexing-service, build-and-publish-products-service]
+      [
+        build-and-publish-indexing-service,
+        build-and-publish-products-service,
+        build-and-publish-gateway-service,
+      ]
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
