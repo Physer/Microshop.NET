@@ -14,6 +14,7 @@ jobs:
     outputs:
       indexing: ${{ steps.filter.outputs.indexing }}
       products: ${{ steps.filter.outputs.products }}
+      gateway: ${{ steps.filter.outputs.gateway }}
     steps:
       - uses: actions/checkout@v3
 
@@ -25,6 +26,8 @@ jobs:
               - 'backend/indexing/**'
             products:
               - 'backend/products/**'
+            gateway:
+              - 'backend/gateway/**'
 
   build-and-publish-indexing-service:
     name: Build and publish indexing service
@@ -53,7 +56,7 @@ jobs:
   build-and-publish-gateway-service:
     name: Build and publish gateway service
     needs: retrieve-changes
-    if: ${{ needs.retrieve-changes.outputs.products == 'true' }}
+    if: ${{ needs.retrieve-changes.outputs.gateway == 'true' }}
     uses: ./.github/workflows/build-publish-service.yaml
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
