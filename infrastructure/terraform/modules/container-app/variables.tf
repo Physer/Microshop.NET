@@ -43,7 +43,7 @@ variable "ingress_enabled" {
 
 variable "port" {
   type    = number
-  default = null
+  default = 80
 }
 
 variable "transport" {

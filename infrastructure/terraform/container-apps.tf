@@ -33,6 +33,17 @@ module "meilisearch_app" {
   revision_suffix              = random_pet.revision_suffix.id
 }
 
+module "gateway_app" {
+  source                       = "./modules/container-app"
+  application_name             = "gateway"
+  container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
+  image_name                   = "physer/microshop-gateway:main"
+  resource_group_id            = azurerm_resource_group.rg_microshop.id
+  ingress_enabled              = true
+  allow_external_traffic       = true
+  revision_suffix              = random_pet.revision_suffix.id
+}
+
 module "indexing_app" {
   source                       = "./modules/container-app"
   application_name             = "indexing"
@@ -50,7 +61,6 @@ module "products_app" {
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-products:main"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
-  port                         = 80
   secrets                      = local.products_secrets
   appsettings                  = local.products_appsettings
   ingress_enabled              = true
@@ -58,14 +68,15 @@ module "products_app" {
   revision_suffix              = random_pet.revision_suffix.id
 }
 
-module "gateway_app" {
+module "pricing_app" {
   source                       = "./modules/container-app"
-  application_name             = "gateway"
+  application_name             = "pricing"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
-  image_name                   = "physer/microshop-gateway:main"
+  image_name                   = "physer/microshop-pricing:main"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
-  port                         = 80
+  secrets                      = local.pricing_secrets
+  appsettings                  = local.pricing_appsettings
   ingress_enabled              = true
-  allow_external_traffic       = true
+  allow_insecure               = true
   revision_suffix              = random_pet.revision_suffix.id
 }
