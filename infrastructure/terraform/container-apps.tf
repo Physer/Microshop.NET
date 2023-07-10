@@ -66,6 +66,6 @@ module "gateway_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   port                         = 80
   ingress_enabled              = true
-  allow_insecure               = true
+  allow_external_traffic       = true
   revision_suffix              = random_pet.revision_suffix.id
 }

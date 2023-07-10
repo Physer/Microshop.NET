@@ -70,3 +70,8 @@ variable "revision_suffix" {
   type    = string
   default = null
 }
+
+variable "allow_external_traffic" {
+  type    = bool
+  default = false
+}
