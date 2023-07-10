@@ -19,6 +19,16 @@ Microtemplate has specifically been designed to make it easy to create a new .NE
 
 More information about this choice can be found in an [Architecture Decision Record (ADR)](./docs/ADRs/microtemplate-for-project-setup.md)
 
+## Gateway
+
+### Overview
+
+The Gateway is a reverse proxy that allows an API aggregation layer to communicate with different downstream services.
+The Gateway is set-up using [Microsoft's YARP](https://microsoft.github.io/reverse-proxy/index.html)
+
+All inbound traffic to Microshop.NET will go through the Gateway, never directly to downstream services.
+Note that this does not apply to service-to-service communication, only for external communication (e.g. a front-end).
+
 ## Products service
 
 ### Overview
