@@ -18,6 +18,17 @@ services:
     restart: always
     ports:
       - 7700:7700
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.backend
+      args:
+        - SERVICE_NAME=gateway
+        - SERVICE_DLL=API.dll
+    restart: always
+    ports:
+      - 5000:80
   products:
     container_name: products
     build:
@@ -49,14 +60,18 @@ services:
       - Indexing__ApiKey=${MEILISEARCH_MASTER_KEY}
       - Indexing__IndexingIntervalInSeconds=3600
     restart: always
-  gateway:
-    container_name: gateway
+  pricing:
+    container_name: pricing
     build:
       context: .
       dockerfile: infrastructure/Dockerfile.backend
       args:
-        - SERVICE_NAME=gateway
+        - SERVICE_NAME=pricing
         - SERVICE_DLL=API.dll
+    environment:
+      - Servicebus__BaseUrl=rabbitmq
+      - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
+      - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
     restart: always
     ports:
-      - 5000:80
+      - 5002:80
