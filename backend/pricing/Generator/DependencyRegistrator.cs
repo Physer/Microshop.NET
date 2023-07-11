@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces.Generator;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("UnitTests")]
 namespace Generator;
 
 [ExcludeFromCodeCoverage]

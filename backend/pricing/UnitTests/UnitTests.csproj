@@ -11,6 +11,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AutoFixture.Xunit2" />
+		<PackageReference Include="FluentAssertions" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NSubstitute" />
 		<PackageReference Include="xunit" />
