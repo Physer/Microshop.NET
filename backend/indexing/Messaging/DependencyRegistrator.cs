@@ -15,6 +15,7 @@ public static class DependencyRegistrator
 
         services.AddMassTransit(busConfigurator =>
         {
+            busConfigurator.SetEndpointNameFormatter(new SnakeCaseEndpointNameFormatter("indexing", false));
             busConfigurator.AddConsumer<ProductsGeneratedConsumer>();
             busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>
             {
