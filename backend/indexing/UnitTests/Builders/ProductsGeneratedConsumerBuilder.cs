@@ -11,8 +11,9 @@ namespace UnitTests.Builders;
 internal class ProductsGeneratedConsumerBuilder
 {
     internal readonly IIndexingService _indexingService;
-    internal readonly ILogger<ProductsGeneratedConsumer> _logger;    
-    internal readonly ConsumeContext<ProductsGenerated> _consumeContext;
+    internal readonly ILogger<ProductsGeneratedConsumer> _logger;
+
+    internal ConsumeContext<ProductsGenerated>? _consumeContext;
 
     public ProductsGeneratedConsumerBuilder()
     {
@@ -23,14 +24,21 @@ internal class ProductsGeneratedConsumerBuilder
 
     public ProductsGeneratedConsumerBuilder WithReceivingProducts(IEnumerable<Product> products)
     {
-        _consumeContext.Message.Returns(new ProductsGenerated(products));
-        
+        _consumeContext!.Message.Returns(new ProductsGenerated(products));
+
         return this;
     }
 
     public ProductsGeneratedConsumerBuilder WithMessage(Guid messageId)
     {
-        _consumeContext.MessageId.Returns(messageId);
+        _consumeContext!.MessageId.Returns(messageId);
+
+        return this;
+    }
+
+    public ProductsGeneratedConsumerBuilder WithoutConsumeContext()
+    {
+        _consumeContext = null;
 
         return this;
     }
