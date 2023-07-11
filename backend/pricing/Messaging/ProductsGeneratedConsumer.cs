@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Messaging;
 
-internal class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
+public class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
 {
     private readonly ILogger<ProductsGeneratedConsumer> _logger;
     private readonly IPriceGenerator _priceGenerator;
