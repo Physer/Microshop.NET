@@ -41,7 +41,23 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --configuration Release --no-restore
+        run: dotnet test --no-restore --verbosity normal -c Release --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+      - name: Merge coverage reports
+        run: dotnet-coverage merge *.cobertura.xml --recursive --output ./coverage/coverage.merged.xml --output-format cobertura
+
+      - name: Verify code coverage is above 70%
+        shell: pwsh
+        run: |
+          [XML]$report = Get-Content coverage/coverage.merged.xml
+
+          if ($report.coverage.'line-rate' -lt 0.7) {
+            throw "Line coverage is less than 70 percent!"
+          }
+
+          if ($report.coverage.'branch-rate' -lt 0.7) {
+            throw "Branch coverage is less than 70 percent!"
+          }
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
