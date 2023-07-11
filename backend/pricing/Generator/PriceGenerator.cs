@@ -19,7 +19,8 @@ internal class PriceGenerator : IPriceGenerator
 
         _priceFaker = new AutoFaker<Price>()
             .RuleFor(fake => fake.ProductCode, fake => fake.Commerce.Ean13())
-            .RuleFor(fake => fake.Value, fake => decimal.Parse(fake.Commerce.Price()));
+            .RuleFor(fake => fake.Value, fake => decimal.Parse(fake.Commerce.Price()))
+            .RuleFor(fake => fake.Currency, _ => "EUR");
     }
 
     public IEnumerable<Price> GeneratePrices(int amountToGenerate) => _priceFaker.Generate(amountToGenerate);

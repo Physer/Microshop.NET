@@ -1,7 +1,5 @@
-﻿using Application.Interfaces.Messaging;
-using Application.Options;
+﻿using Application.Options;
 using MassTransit;
-using Messaging.Publishers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Messaging;
@@ -15,6 +13,7 @@ public static class DependencyRegistrator
 
         services.AddMassTransit(busConfigurator =>
         {
+            busConfigurator.SetEndpointNameFormatter(new SnakeCaseEndpointNameFormatter("pricing", false));
             busConfigurator.AddConsumer<ProductsGeneratedConsumer>();
             busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>
             {
@@ -26,7 +25,5 @@ public static class DependencyRegistrator
                 factoryConfigurator.ConfigureEndpoints(context);
             });
         });
-
-        services.AddScoped<IPricesGeneratedMessagePublisher, PricesGeneratedMessagePublisher>();
     }
 }
