@@ -4,6 +4,7 @@ using AutoFixture.Xunit2;
 using Domain;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
+using FluentAssertions;
 using IntegrationTests.Configuration;
 using MassTransit;
 using MassTransit.Testing;
@@ -62,16 +63,21 @@ public class ConsumerTests : IAsyncLifetime
         };
         TestConfiguration.Create(builder => builder.AddInMemoryCollection(configuration));
         var application = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder => builder.ConfigureServices(services =>
-                services.AddMassTransitTestHarness(cfg =>
-                    cfg.ConfigureBusRegistration(_servicebusOptions))));
+            .WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    services.AddMassTransitTestHarness(cfg => cfg.ConfigureBusRegistration(_servicebusOptions));
+                });
+            });
 
-        var foo = application.Services.GetTestHarness();
-        await foo.Bus.Publish<ProductsGenerated>(new(products));
-        var bar = foo.GetConsumerHarness<ProductsGeneratedConsumer>();
+        var testHarness = application.Services.GetTestHarness();
+        var productsGeneratedConsumerHarness = testHarness.GetConsumerHarness<ProductsGeneratedConsumer>();
 
         // Act
+        await testHarness.Bus.Publish<ProductsGenerated>(new(products));
 
         // Assert
+        (await productsGeneratedConsumerHarness.Consumed.Any<ProductsGenerated>()).Should().BeTrue();
     }
 }
