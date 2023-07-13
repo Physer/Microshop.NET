@@ -3,7 +3,6 @@ using Application.Options;
 using AutoFixture.Xunit2;
 using Domain;
 using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
 using FluentAssertions;
 using IntegrationTests.Configuration;
 using MassTransit;
@@ -18,34 +17,31 @@ namespace IntegrationTests;
 
 public class ConsumerTests : IAsyncLifetime
 {
-    private IContainer? _rabbitMqContainer;
-    private RabbitMqContainerConfiguration? _rabbitMqConfiguration;
-    private int? _rabbitMqContainerPort;
     private ServicebusOptions? _servicebusOptions;
 
     public Task DisposeAsync() => Task.CompletedTask;
 
     public async Task InitializeAsync()
     {
-        _rabbitMqConfiguration = new RabbitMqContainerConfiguration();
-        _rabbitMqContainer = new ContainerBuilder()
-            .WithImage(_rabbitMqConfiguration.ImageName)
-            .WithEnvironment(_rabbitMqConfiguration.EnvironmentVariables)
+        var rabbitMqConfiguration = new RabbitMqContainerConfiguration();
+        var rabbitMqContainer = new ContainerBuilder()
+            .WithImage(rabbitMqConfiguration.ImageName)
+            .WithEnvironment(rabbitMqConfiguration.EnvironmentVariables)
             .WithPortBinding(RabbitMqContainerConfiguration.Port, true)
             .WithWaitStrategy(Wait
                 .ForUnixContainer()
                 .UntilMessageIsLogged(@"[s|S]erver startup complete")
                 .UntilPortIsAvailable(RabbitMqContainerConfiguration.Port))
             .Build();
-        await _rabbitMqContainer.StartAsync().ConfigureAwait(false);
-        _rabbitMqContainerPort = _rabbitMqContainer.GetMappedPublicPort(RabbitMqContainerConfiguration.Port);
+        await rabbitMqContainer.StartAsync().ConfigureAwait(false);
+        var rabbitMqContainerPort = rabbitMqContainer.GetMappedPublicPort(RabbitMqContainerConfiguration.Port);
 
         _servicebusOptions = new()
         {
             BaseUrl = "localhost",
             ManagementUsername = RabbitMqContainerConfiguration.Username,
             ManagementPassword = RabbitMqContainerConfiguration.Username,
-            Port = _rabbitMqContainerPort ?? 0
+            Port = rabbitMqContainerPort
         };
     }
 
@@ -70,9 +66,7 @@ public class ConsumerTests : IAsyncLifetime
                     services.AddMassTransitTestHarness(cfg => cfg.ConfigureBusRegistration(_servicebusOptions));
                 });
             });
-
         var testHarness = application.Services.GetTestHarness();
-        var productsGeneratedConsumerHarness = testHarness.GetConsumerHarness<ProductsGeneratedConsumer>();
 
         // Act
         await testHarness.Start();
@@ -80,6 +74,7 @@ public class ConsumerTests : IAsyncLifetime
         await testHarness.Stop();
 
         // Assert
-        (await productsGeneratedConsumerHarness.Consumed.Any<ProductsGenerated>()).Should().BeTrue();
+        (await testHarness.Consumed.Any<ProductsGenerated>()).Should().BeTrue();
+        (await testHarness.Published.Any<PricesGenerated>()).Should().BeTrue();
     }
 }
