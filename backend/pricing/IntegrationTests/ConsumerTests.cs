@@ -76,6 +76,8 @@ public class ConsumerTests : IAsyncLifetime
 
         // Act
         await testHarness.Bus.Publish<ProductsGenerated>(new(products));
+        // TEMP
+        Thread.Sleep(TimeSpan.FromSeconds(5));
 
         // Assert
         (await productsGeneratedConsumerHarness.Consumed.Any<ProductsGenerated>()).Should().BeTrue();
