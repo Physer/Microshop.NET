@@ -73,15 +73,13 @@ public class ConsumerTests : IAsyncLifetime
 
         var testHarness = application.Services.GetTestHarness();
         var productsGeneratedConsumerHarness = testHarness.GetConsumerHarness<ProductsGeneratedConsumer>();
-        var hasPublishedMessage = false;
 
         // Act
-        await testHarness.Bus.Publish<ProductsGenerated>(new(products), _ => hasPublishedMessage = true);
+        await testHarness.Start();
+        await testHarness.Bus.Publish<ProductsGenerated>(new(products));
+        await testHarness.Stop();
 
         // Assert
-        if (hasPublishedMessage)
-            (await productsGeneratedConsumerHarness.Consumed.Any<ProductsGenerated>()).Should().BeTrue();
-        else
-            throw new MassTransitException("Unable to publish message and verify the consumer has consumed the message");
+        (await productsGeneratedConsumerHarness.Consumed.Any<ProductsGenerated>()).Should().BeTrue();
     }
 }
