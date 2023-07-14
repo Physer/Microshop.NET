@@ -25,7 +25,6 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=gateway
-        - SERVICE_DLL=API.dll
     restart: always
     ports:
       - 5000:80
@@ -36,7 +35,6 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=products
-        - SERVICE_DLL=API.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
@@ -51,7 +49,6 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=indexing
-        - SERVICE_DLL=Indexing.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
@@ -60,6 +57,8 @@ services:
       - Indexing__ApiKey=${MEILISEARCH_MASTER_KEY}
       - Indexing__IndexingIntervalInSeconds=3600
     restart: always
+    ports:
+      - 5003:80
   pricing:
     container_name: pricing
     build:
@@ -67,7 +66,6 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=pricing
-        - SERVICE_DLL=API.dll
     environment:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
