@@ -4,9 +4,10 @@ namespace IntegrationTests.Configuration;
 
 internal class RabbitMqContainerConfiguration : IContainerConfiguration
 {
-    public string Username => "guest";
-    public string Password => "guest";
-    public int Port => 5672;
+    public static string Hostname => "localhost";
+    public static string Username => "guest";
+    public static string Password => "guest";
+    public static int Port => 5672;
 
     public string ImageName => "masstransit/rabbitmq";
 
