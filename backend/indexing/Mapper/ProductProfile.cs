@@ -8,8 +8,9 @@ namespace Mapper;
 [ExcludeFromCodeCoverage]
 public class ProductProfile : Profile
 {
-    public ProductProfile() 
+    public ProductProfile()
     {
         CreateMap<Product, IndexableProduct>();
+        CreateMap<Price, IndexablePrice>();
     }
 }
