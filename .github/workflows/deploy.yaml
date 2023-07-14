@@ -42,7 +42,6 @@ jobs:
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
     with:
       service-name: gateway
-      service-entrypoint: API
 
   build-and-publish-indexing-service:
     name: Build and publish indexing service
@@ -54,7 +53,6 @@ jobs:
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
     with:
       service-name: indexing
-      service-entrypoint: Indexing
 
   build-and-publish-products-service:
     name: Build and publish products service
@@ -66,7 +64,6 @@ jobs:
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
     with:
       service-name: products
-      service-entrypoint: API
 
   build-and-publish-pricing-service:
     name: Build and publish pricing service
@@ -78,7 +75,6 @@ jobs:
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
     with:
       service-name: pricing
-      service-entrypoint: API
 
   deploy_terraform_resources:
     name: Deploy resources to Azure using Terraform
