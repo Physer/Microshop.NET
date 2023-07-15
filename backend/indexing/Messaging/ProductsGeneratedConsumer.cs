@@ -8,10 +8,10 @@ namespace Messaging;
 
 public class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
 {
-    private readonly IIndexingService _indexingService;
+    private readonly IProductsIndexer _indexingService;
     private readonly ILogger<ProductsGeneratedConsumer> _logger;
 
-    public ProductsGeneratedConsumer(IIndexingService indexingService,
+    public ProductsGeneratedConsumer(IProductsIndexer indexingService,
         ILogger<ProductsGeneratedConsumer> logger)
     {
         _indexingService = indexingService;

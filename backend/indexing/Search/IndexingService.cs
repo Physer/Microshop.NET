@@ -5,7 +5,7 @@ using Domain;
 
 namespace Search;
 
-public class IndexingService : IIndexingService
+public class IndexingService : IProductsIndexer, IPricesIndexer
 {
     private readonly IMapper _mapper;
     private readonly IIndexingClient _indexingClient;
@@ -25,5 +25,10 @@ public class IndexingService : IIndexingService
         var indexableProducts = _mapper.Map<IEnumerable<IndexableProduct>>(products);
         await _indexingClient.DeleteAllDocumentsAsync(_index);
         await _indexingClient.AddDocumentsAsync(_index, indexableProducts);
+    }
+
+    public async Task IndexPricesAsync(IEnumerable<Price> prices)
+    {
+
     }
 }

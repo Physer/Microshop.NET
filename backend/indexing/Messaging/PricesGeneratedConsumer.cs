@@ -5,5 +5,5 @@ namespace Messaging;
 
 internal class PricesGeneratedConsumer : IConsumer<PricesGenerated>
 {
-    public Task Consume(ConsumeContext<PricesGenerated> context) => throw new NotImplementedException("This method still has to be implemented and index the prices properly");
+    public async Task Consume(ConsumeContext<PricesGenerated> context) => await Task.CompletedTask;
 }

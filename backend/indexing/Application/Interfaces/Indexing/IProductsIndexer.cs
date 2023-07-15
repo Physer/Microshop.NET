@@ -2,7 +2,7 @@
 
 namespace Application.Interfaces.Indexing;
 
-public interface IIndexingService
+public interface IProductsIndexer
 {
     Task IndexProductsAsync(IEnumerable<Product> products);
 }
