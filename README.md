@@ -10,7 +10,14 @@ It will also contain different layers of testing and automated deployments, as w
 
 # Service overview
 
-## Microservice template
+## Service requirements
+
+Generally services are ASP.NET Core APIs. Even if they will not have endpoints, API projects are preferred due to their integration with testing utilities and their splendid Cloud support and containerization.
+
+All communication between services happen asynchronously to prevent tight coupling and cascading outages of services.
+In order to achieve this, [a RabbitMQ servicebus](#servicebus) is used, leveraging the AMQP standard. Services will remain agnostic of each other and will only ever know about the data they request, creating clear boundaries between services and reducing coupling. For more information about this decision, please refer to the [Architecture Decision Record (ADR)](./docs/ADRs/amqp-for-interservices-communication.md)
+
+### Microservice template
 
 Every microservice in this project has been based of the same Visual Studio solution template.
 This keeps the services consistent and allows for a clear structure.
@@ -19,11 +26,27 @@ Microtemplate has specifically been designed to make it easy to create a new .NE
 
 More information about this choice can be found in an [Architecture Decision Record (ADR)](./docs/ADRs/microtemplate-for-project-setup.md)
 
-## Gateway
+### Testing
+
+Every service has the requirement of at least 70% code coverage for both lines and branches. This is verified upon push. The automatically triggered Github Action will fail if any of the relevant services does not adhere to the 70% minimum.
+
+Additionally, every service has both Unit Tests and Integration Tests. These Test projects are written using [XUnit](https://xunit.net/) as a testing framework and [NSubstitute](https://nsubstitute.github.io/) as a mocking framework.
+
+In order to quickly view the test coverage locally, a Powershell script is available in the root (`~`) folder of the repository: `generateTestCoverageReport.ps1`. This file requires you to have the [dotnet-coverage utility tool](https://learn.microsoft.com/en-us/dotnet/core/additional-tools/dotnet-coverage) installed, as well as the [ReportGenerator utility tool](https://www.nuget.org/packages/dotnet-reportgenerator-globaltool). To run the command, supply the name of a service as an argument, e.g. `./generateTestsCoverageReport.ps1 products`.
+
+### Unit Tests
+
+Unit Tests should test the smallest blocks of code possible. These tests can mock their dependencies.
+
+### Integration Tests
+
+Integration Tests should test the application's flow as close to real-life as possible. To facilitate this, the Integration Tests use [Testcontainers .NET](https://dotnet.testcontainers.org/). These `Testcontainers` allow the tests to spin up Docker containers and use them in their tests.
+
+## Gateway service
 
 ### Overview
 
-The Gateway is a reverse proxy that allows an API aggregation layer to communicate with different downstream services.
+The Gateway is a reverse proxy that acts as an API aggregation layer to communicate with different downstream services.
 The Gateway is set-up using [Microsoft's YARP](https://microsoft.github.io/reverse-proxy/index.html)
 
 All inbound traffic to Microshop.NET will go through the Gateway, never directly to downstream services.
@@ -33,52 +56,56 @@ Note that this does not apply to service-to-service communication, only for exte
 
 ### Overview
 
-The Products service is responsible for storing and accessing product data.
+The Products service is responsible for generating and storing product data.
 This only includes directly related product data, so things like prices and stock information is not part of this service.
 
-The Products service generates a pre-configured amount of fake products when the service starts.
-When the products have been generated, the service publishes a message on the servicebus with all product data. The Products service is a console application.
+The Products service exposes an endpoint: `POST /products`. This endpoint will generate a pre-configured amount of fake products. After the generation of the products, the service publishes a message on the servicebus: `ProductsGenerated`. This message contains all the products generated.
 
-### Tests:
+### Supported messages
 
-- Unit Tests
-- Integration Tests
-  - Using [Testcontainers.NET](https://dotnet.testcontainers.org/) to simulate the complete environment.
+#### Consuming
 
-### Libraries used:
+- None
 
-- Autobogus
-- Autofixture
-- FluentAssertions
-- MassTransit (RabbitMQ)
-- NSubstitute
-- Testcontainers
-- XUnit
+#### Publishing
+
+- ProductsGenerated
 
 ## Indexing service
 
 ### Overview
 
-The Indexing service is responsible for retrieving product data and storing the data in a search index.
+The Indexing service is responsible for receiving data and indexing it into the search index. The Indexing service listens for incoming messages. Once a message is received, the indexing service will store the data in an external search index.
 
-The Indexing service is a console application that listens for incoming messages. Once a message is received, the indexing service will store the data in an external search index.
+### Supported messages
 
-### Tests:
+#### Consuming
 
-- Unit Tests
-- Integration Tests
-  - Using [Testcontainers.NET](https://dotnet.testcontainers.org/) to simulate the complete environment.
+- ProductsGenerated
+- PricesGenerated
 
-### Libraries used:
+#### Publishing
 
-- Autofixture
-- Automapper
-- FluentAssertions
-- MassTransit (RabbitMQ)
-- MeiliSearch
-- NSubstitute
-- Testcontainers
-- XUnit
+- None
+
+## Price service
+
+### Overview
+
+The Price service is responsible for generating and storing price data.
+This includes price data only, so no other product assets - besides the product's identifier are available to this service.
+
+The Price service listens to an incoming `ProductsGenerated` message and uses the products inside that message to generate prices for. After the prices are generated, the price data is published as a `PricesGenerated` message, including the price data, on the servicebus.
+
+### Supported messages
+
+#### Consuming
+
+- ProductsGenerated
+
+#### Publishing
+
+- PricesGenerated
 
 ## Servicebus
 
@@ -89,20 +116,65 @@ The applications interface with the RabbitMQ servicebus through the [MassTransit
 
 The search index is a [MeiliSearch](https://www.meilisearch.com/) index. The applications interface using their .NET SDK.
 
-# Communication between services
+# Message overview
 
-All communication between services happen asynchronously to prevent tight coupling and cascading outages of services.
-In order to achieve this, [a RabbitMQ servicebus](#servicebus) is used, leveraging the AMQP standard.
+## ProductsGenerated
 
-Services will remain agnostic of each other and will only ever know about the data they request, creating clear boundaries between services and reducing coupling.
+The ProductsGenerated message is sent out whenever product master data is generated. This message contains all products and their data.
 
-For more information about this decision, please refer to the [Architecture Decision Record (ADR)](./docs/ADRs/amqp-for-interservices-communication.md)
+Example payload:
+```json
+{
+  "messageId": "07000000-ac12-0242-86c8-08db862bddb2",
+  "requestId": null,
+  "correlationId": null,
+  "conversationId": "07000000-ac12-0242-8ea9-08db862bddb2",
+  "initiatorId": null,
+  "sourceAddress": "rabbitmq://rabbitmq/76d617f6222b_API_bus_yhyyyyfcnebrfufqbdpack7wyh?temporary=true",
+  "destinationAddress": "rabbitmq://rabbitmq/Messaging.Messages:ProductsGenerated",
+  "responseAddress": null,
+  "faultAddress": null,
+  "messageType": ["urn:message:Messaging.Messages:ProductsGenerated"],
+  "message": {
+    "products": [
+      {
+        "code": "9132327080890",
+        "name": "Refined Steel Shoes",
+        "description": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients"
+      }
+    ]
+  }
+}
+```
 
-# Tests
+## PricesGenerated
 
-Every service has a complete set of automated tests, sufficient for complete confidence in automated deployments of the service without degrading quality.
+The PricesGenerated message is sent out whenever price data is generated. This message contains all prices per product.
 
-Depending on the service, this might include Unit Tests, Integration Tests, End-to-End Tests and Visual Regression Tests.
+Example payload:
+```json
+{
+  "messageId": "07000000-ac12-0242-4d6b-08db862c2c2c",
+  "requestId": null,
+  "correlationId": null,
+  "conversationId": "07000000-ac12-0242-22d0-08db862c2c2b",
+  "initiatorId": null,
+  "sourceAddress": "rabbitmq://rabbitmq/pricing_products_generated",
+  "destinationAddress": "rabbitmq://rabbitmq/Messaging.Messages:PricesGenerated",
+  "responseAddress": null,
+  "faultAddress": null,
+  "messageType": ["urn:message:Messaging.Messages:PricesGenerated"],
+  "message": {
+    "prices": [
+      {
+        "productCode": "9132327080890",
+        "value": "595.32",
+        "currency": "EUR"
+      }
+    ]
+  }
+}
+```
 
 # Containerization
 
@@ -150,9 +222,10 @@ If you so desire, you can change the MeiliSearch docker container to expose port
 If you want to host this platform on your own Azure tenant, follow these steps:
 
 _Note: Microshop.NET uses Terraform remote state in an Azure Storage Account. These steps assume you're able to set up such an account and its containers accordingly._
+
 1. Navigate to the `~/infrastructure/terraform` directory
 2. Open the `config.azure.tfbackend` file
-3. Either set up an Azure Storage Account with the specified Terraform state data or change the data to match your remote state   storage in Azure
+3. Either set up an Azure Storage Account with the specified Terraform state data or change the data to match your remote state storage in Azure
 4. Initialize the Terraform state by running `terraform init -backend-config="config.azure.tfbackend"` (or omit the argument if not leveraging remote state)
 5. Plan the Terraform deployment by executing `terraform plan`
 6. Apply the Terraform deployment by executing `terraform apply`
