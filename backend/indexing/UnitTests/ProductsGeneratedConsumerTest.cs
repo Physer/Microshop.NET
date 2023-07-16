@@ -29,7 +29,7 @@ public class ProductsGeneratedConsumerTest
     }
 
     [Fact]
-    public async Task Consumer_WithoutValidMessageData_CallsLoggerAndIndexingServiceWithEmptyCollection()
+    public async Task Consumer_WithoutValidMessageData_CallsLoggerAndIndexingServiceWithNull()
     {
         // Arrange
         var productsGeneratedConsumerBuilder = new ProductsGeneratedConsumerBuilder();
@@ -39,22 +39,23 @@ public class ProductsGeneratedConsumerTest
         await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext!);
 
         // Assert
-        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexAsync<Product, IndexableProduct>(Enumerable.Empty<Product>());
+        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexAsync<Product, IndexableProduct>(null);
         productsGeneratedConsumerBuilder._logger.ReceivedWithAnyArgs(1).LogInformation("Logging with argument: {argument}", new[] { "argument" });
     }
 
     [Fact]
-    public async Task Consumer_WithoutConsumeContext_CallsLoggerAndIndexingServiceWithEmptyCollection()
+    public async Task Consumer_WithoutConsumeContext_CallsLoggerAndIndexingServiceWithNull()
     {
         // Arrange
-        var productsGeneratedConsumerBuilder = new ProductsGeneratedConsumerBuilder().WithoutConsumeContext();
+        var productsGeneratedConsumerBuilder = new ProductsGeneratedConsumerBuilder()
+            .WithoutConsumeContext();
         var productsGeneratedConsumer = productsGeneratedConsumerBuilder.Build();
 
         // Act
         await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext!);
 
         // Assert
-        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexAsync<Product, IndexableProduct>(Enumerable.Empty<Product>());
+        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexAsync<Product, IndexableProduct>(null);
         productsGeneratedConsumerBuilder._logger.ReceivedWithAnyArgs(1).LogInformation("Logging with argument: {argument}", new[] { "argument" });
     }
 }

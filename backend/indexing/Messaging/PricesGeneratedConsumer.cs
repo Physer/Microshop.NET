@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Messaging;
 
-internal class PricesGeneratedConsumer : IConsumer<PricesGenerated>
+public class PricesGeneratedConsumer : IConsumer<PricesGenerated>
 {
     private readonly ILogger<PricesGeneratedConsumer> _logger;
     private readonly IIndexingService _indexingService;

@@ -22,6 +22,6 @@ public class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
     public async Task Consume(ConsumeContext<ProductsGenerated> context)
     {
         _logger.LogInformation("Indexing service - Consuming {messageId} from the {consumerName}", context?.MessageId, nameof(ProductsGeneratedConsumer));
-        await _indexingService.IndexAsync<Product, IndexableProduct>(context?.Message?.Products ?? Enumerable.Empty<Product>());
+        await _indexingService.IndexAsync<Product, IndexableProduct>(context?.Message?.Products);
     }
 }
