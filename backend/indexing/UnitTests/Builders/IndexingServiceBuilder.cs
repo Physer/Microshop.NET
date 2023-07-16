@@ -22,7 +22,7 @@ internal class IndexingServiceBuilder
 
     public IndexingServiceBuilder WithMapperMappingToIndexableProducts(IEnumerable<IndexableProduct> indexableProducts)
     {
-        _mapperMock.Map(Arg.Any<IEnumerable<IndexableProduct>>(), Arg.Any<IEnumerable<Product>>()).Returns(indexableProducts);
+        _mapperMock.Map(Arg.Any<IEnumerable<Product>>(), Arg.Any<IEnumerable<IndexableProduct>>()).Returns(indexableProducts);
 
         return this;
     }

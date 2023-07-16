@@ -1,8 +1,9 @@
-﻿using Domain;
+﻿namespace Application.Models;
 
-namespace Application.Models;
-
-public record IndexableProduct : Product
+public record struct IndexableProduct(string Id)
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public string? Name { get; init; }
+    public string? Description { get; init; }
+    public decimal? Value { get; init; }
+    public string? Currency { get; init; }
 }

@@ -10,7 +10,6 @@ public class ProductProfile : Profile
 {
     public ProductProfile()
     {
-        CreateMap<Product, IndexableProduct>();
-        CreateMap<Price, IndexablePrice>();
+        CreateMap<Product, IndexableProduct>().ForMember(indexedProduct => indexedProduct.Id, source => source.MapFrom(product => product.Code));
     }
 }
