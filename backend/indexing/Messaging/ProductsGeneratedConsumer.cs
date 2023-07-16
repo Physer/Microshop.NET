@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Indexing;
+using Application.Models;
 using Domain;
 using MassTransit;
 using Messaging.Messages;
@@ -8,10 +9,10 @@ namespace Messaging;
 
 public class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
 {
-    private readonly IProductsIndexer _indexingService;
+    private readonly IIndexingService _indexingService;
     private readonly ILogger<ProductsGeneratedConsumer> _logger;
 
-    public ProductsGeneratedConsumer(IProductsIndexer indexingService,
+    public ProductsGeneratedConsumer(IIndexingService indexingService,
         ILogger<ProductsGeneratedConsumer> logger)
     {
         _indexingService = indexingService;
@@ -21,6 +22,6 @@ public class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
     public async Task Consume(ConsumeContext<ProductsGenerated> context)
     {
         _logger.LogInformation("Indexing service - Consuming {messageId} from the {consumerName}", context?.MessageId, nameof(ProductsGeneratedConsumer));
-        await _indexingService.IndexProductsAsync(context?.Message?.Products ?? Enumerable.Empty<Product>());
+        await _indexingService.IndexAsync<Product, IndexableProduct>(context?.Message?.Products ?? Enumerable.Empty<Product>());
     }
 }

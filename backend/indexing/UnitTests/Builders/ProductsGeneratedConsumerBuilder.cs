@@ -10,14 +10,14 @@ namespace UnitTests.Builders;
 
 internal class ProductsGeneratedConsumerBuilder
 {
-    internal readonly IProductsIndexer _indexingService;
+    internal readonly IIndexingService _indexingService;
     internal readonly ILogger<ProductsGeneratedConsumer> _logger;
 
     internal ConsumeContext<ProductsGenerated>? _consumeContext;
 
     public ProductsGeneratedConsumerBuilder()
     {
-        _indexingService = Substitute.For<IProductsIndexer>();
+        _indexingService = Substitute.For<IIndexingService>();
         _logger = Substitute.For<ILogger<ProductsGeneratedConsumer>>();
         _consumeContext = Substitute.For<ConsumeContext<ProductsGenerated>>();
     }

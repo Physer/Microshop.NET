@@ -1,4 +1,5 @@
-﻿using AutoFixture.Xunit2;
+﻿using Application.Models;
+using AutoFixture.Xunit2;
 using Domain;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
@@ -23,7 +24,7 @@ public class ProductsGeneratedConsumerTest
         await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext!);
 
         // Assert
-        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexProductsAsync(products);
+        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexAsync<Product, IndexableProduct>(products);
         productsGeneratedConsumerBuilder._logger.ReceivedWithAnyArgs(1).LogInformation("Logging with argument: {argument}", new[] { "argument" });
     }
 
@@ -38,7 +39,7 @@ public class ProductsGeneratedConsumerTest
         await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext!);
 
         // Assert
-        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexProductsAsync(Enumerable.Empty<Product>());
+        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexAsync<Product, IndexableProduct>(Enumerable.Empty<Product>());
         productsGeneratedConsumerBuilder._logger.ReceivedWithAnyArgs(1).LogInformation("Logging with argument: {argument}", new[] { "argument" });
     }
 
@@ -53,7 +54,7 @@ public class ProductsGeneratedConsumerTest
         await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext!);
 
         // Assert
-        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexProductsAsync(Enumerable.Empty<Product>());
+        await productsGeneratedConsumerBuilder._indexingService.Received(1).IndexAsync<Product, IndexableProduct>(Enumerable.Empty<Product>());
         productsGeneratedConsumerBuilder._logger.ReceivedWithAnyArgs(1).LogInformation("Logging with argument: {argument}", new[] { "argument" });
     }
 }

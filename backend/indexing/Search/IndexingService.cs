@@ -1,11 +1,9 @@
 ﻿using Application.Interfaces.Indexing;
-using Application.Models;
 using AutoMapper;
-using Domain;
 
 namespace Search;
 
-public class IndexingService : IProductsIndexer, IPricesIndexer, IIndexingService
+public class IndexingService : IIndexingService
 {
     private readonly IMapper _mapper;
     private readonly IIndexingClient _indexingClient;
@@ -15,12 +13,6 @@ public class IndexingService : IProductsIndexer, IPricesIndexer, IIndexingServic
     {
         _mapper = mapper;
         _indexingClient = indexingClient;
-    }
-
-    public async Task IndexProductsAsync(IEnumerable<Product> products)
-    {
-        var indexableProducts = _mapper.Map<IEnumerable<IndexableProduct>>(products);
-        await _indexingClient.AddOrUpdateDocumentsAsync(indexableProducts);
     }
 
     public async Task IndexAsync<TInput, TIndexableModel>(IEnumerable<TInput>? dataToIndex)

@@ -20,7 +20,7 @@ public class IndexingServiceTests
             .Build();
 
         // Act
-        await indexingService.IndexProductsAsync(products);
+        await indexingService.IndexAsync<Product, IndexableProduct>(products);
 
         // Assert
         indexingServiceBuilder._mapperMock.Received(1).Map<IEnumerable<IndexableProduct>>(products);
