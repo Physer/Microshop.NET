@@ -22,9 +22,16 @@ internal class ProductsGeneratedConsumerBuilder
         _priceGenerator = Substitute.For<IPriceGenerator>();
     }
 
-    public ProductsGeneratedConsumerBuilder WithPriceGeneratorReturningPrices(IEnumerable<Price> prices)
+    public ProductsGeneratedConsumerBuilder WithConsumerContextHavingMessageWithProducts(IEnumerable<Product> products)
     {
-        _priceGenerator.GeneratePrices(850).Returns(prices);
+        _consumeContext.Message.Returns(new ProductsGenerated(products));
+
+        return this;
+    }
+
+    public ProductsGeneratedConsumerBuilder WithPriceGeneratorReturningPrices(IEnumerable<Product> inputProducts, IEnumerable<Price> pricesToReturn)
+    {
+        _priceGenerator.GeneratePrices(inputProducts).Returns(pricesToReturn);
 
         return this;
     }
