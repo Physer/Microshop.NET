@@ -18,10 +18,16 @@ internal class PriceGenerator : IPriceGenerator
             Randomizer.Seed = new Random(seed.Value);
 
         _priceFaker = new AutoFaker<Price>()
-            .RuleFor(fake => fake.ProductCode, fake => fake.Commerce.Ean13())
             .RuleFor(fake => fake.Value, fake => decimal.Parse(fake.Commerce.Price()))
             .RuleFor(fake => fake.Currency, _ => "EUR");
     }
 
-    public IEnumerable<Price> GeneratePrices(int amountToGenerate) => _priceFaker.Generate(amountToGenerate);
+    public IEnumerable<Price> GeneratePrices(IEnumerable<Product>? productData)
+    {
+        if (productData is null)
+            yield break;
+
+        foreach (var product in productData)
+            yield return _priceFaker.RuleFor(fake => fake.ProductCode, product.Code).Generate();
+    }
 }

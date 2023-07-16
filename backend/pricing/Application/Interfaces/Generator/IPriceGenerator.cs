@@ -4,5 +4,5 @@ namespace Application.Interfaces.Generator;
 
 public interface IPriceGenerator
 {
-    IEnumerable<Price> GeneratePrices(int amountToGenerate);
+    IEnumerable<Price> GeneratePrices(IEnumerable<Product>? productData);
 }

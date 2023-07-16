@@ -19,8 +19,11 @@ public class ProductsGeneratedConsumer : IConsumer<ProductsGenerated>
 
     public async Task Consume(ConsumeContext<ProductsGenerated> context)
     {
-        _logger.LogInformation("Pricing service - received message {messageId}", context.MessageId);
-        var generatedPrices = _priceGenerator.GeneratePrices(850);
-        await context.Publish<PricesGenerated>(new(generatedPrices));
+        if (context is null)
+            return;
+
+        _logger.LogInformation("Pricing service - received message {messageId}", context?.MessageId);
+        var generatedPrices = _priceGenerator.GeneratePrices(context?.Message?.Products);
+        await context!.Publish<PricesGenerated>(new(generatedPrices));
     }
 }
