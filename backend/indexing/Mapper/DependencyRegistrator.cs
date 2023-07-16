@@ -6,5 +6,5 @@ namespace Mapper;
 [ExcludeFromCodeCoverage]
 public static class DependencyRegistrator
 {
-    public static void RegisterMapperDependencies(this IServiceCollection services) => services.AddAutoMapper(typeof(ProductProfile));
+    public static void RegisterMapperDependencies(this IServiceCollection services) => services.AddAutoMapper(typeof(IndexingProfile));
 }

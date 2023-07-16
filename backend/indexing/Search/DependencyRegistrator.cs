@@ -16,6 +16,7 @@ public static class DependencyRegistrator
 
         var meilisearchClient = new MeilisearchClient(indexingOptions.BaseUrl, indexingOptions.ApiKey);
         services.AddSingleton(_ => meilisearchClient);
+        services.AddSingleton<IIndexingService, IndexingService>();
         services.AddSingleton<IProductsIndexer, IndexingService>();
         services.AddSingleton<IIndexingClient, IndexingClient>();
         services.AddSingleton<IMicroshopIndex, MicroshopIndex>(_ => new MicroshopIndex(meilisearchClient));

@@ -6,10 +6,11 @@ using System.Diagnostics.CodeAnalysis;
 namespace Mapper;
 
 [ExcludeFromCodeCoverage]
-public class ProductProfile : Profile
+public class IndexingProfile : Profile
 {
-    public ProductProfile()
+    public IndexingProfile()
     {
         CreateMap<Product, IndexableProduct>().ForMember(indexedProduct => indexedProduct.Id, source => source.MapFrom(product => product.Code));
+        CreateMap<Price, IndexableProduct>().ForMember(indexedProduct => indexedProduct.Id, source => source.MapFrom(price => price.ProductCode));
     }
 }
