@@ -13,7 +13,7 @@ internal class ProductsGeneratedConsumerBuilder
     internal readonly ILogger<ProductsGeneratedConsumer> _logger;
     internal readonly IPriceGenerator _priceGenerator;
 
-    internal ConsumeContext<ProductsGenerated> _consumeContext;
+    internal ConsumeContext<ProductsGenerated>? _consumeContext;
 
     public ProductsGeneratedConsumerBuilder()
     {
@@ -22,9 +22,16 @@ internal class ProductsGeneratedConsumerBuilder
         _priceGenerator = Substitute.For<IPriceGenerator>();
     }
 
+    public ProductsGeneratedConsumerBuilder WithoutConsumeContext()
+    {
+        _consumeContext = null;
+
+        return this;
+    }
+
     public ProductsGeneratedConsumerBuilder WithConsumerContextHavingMessageWithProducts(IEnumerable<Product> products)
     {
-        _consumeContext.Message.Returns(new ProductsGenerated(products));
+        _consumeContext!.Message.Returns(new ProductsGenerated(products));
 
         return this;
     }

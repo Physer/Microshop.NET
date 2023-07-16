@@ -18,11 +18,26 @@ public class ProductsGeneratedConsumerTest
         var productsGeneratedConsumer = productsGeneratedConsumerBuilder.WithConsumerContextHavingMessageWithProducts(products).Build();
 
         // Act
-        await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext);
+        await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext!);
 
         // Assert
         productsGeneratedConsumerBuilder._logger.ReceivedWithAnyArgs(1).LogInformation("Logging with argument: {argument}", "argument");
-        productsGeneratedConsumerBuilder._priceGenerator.Received(1).GeneratePrices(productsGeneratedConsumerBuilder._consumeContext.Message.Products);
+        productsGeneratedConsumerBuilder._priceGenerator.Received(1).GeneratePrices(productsGeneratedConsumerBuilder._consumeContext!.Message.Products);
         await productsGeneratedConsumerBuilder._consumeContext.Publish<PricesGenerated>(new(prices));
+    }
+
+    [Fact]
+    public async Task Consume_WithoutConsumeContext_DoesNotCallDependencies()
+    {
+        // Arrange
+        var productsGeneratedConsumerBuilder = new ProductsGeneratedConsumerBuilder();
+        var productsGeneratedConsumer = productsGeneratedConsumerBuilder.WithoutConsumeContext().Build();
+
+        // Act
+        await productsGeneratedConsumer.Consume(productsGeneratedConsumerBuilder._consumeContext!);
+
+        // Assert
+        productsGeneratedConsumerBuilder._logger.DidNotReceiveWithAnyArgs().LogInformation("Logging with argument: {argument}", "argument");
+        productsGeneratedConsumerBuilder._priceGenerator.DidNotReceiveWithAnyArgs().GeneratePrices(Enumerable.Empty<Product>());;
     }
 }
