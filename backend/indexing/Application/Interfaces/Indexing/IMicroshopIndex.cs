@@ -2,7 +2,6 @@
 
 public interface IMicroshopIndex
 {
-    Task AddDocumentsAsync<T>(IEnumerable<T> documentsToIndex);
-    Task DeleteAllDocumentsAsync();
+    Task AddOrUpdateDocumentsAsync<T>(IEnumerable<T> documentsToIndex);
     Task<IEnumerable<T>> GetAllDocumentsAsync<T>();
 }

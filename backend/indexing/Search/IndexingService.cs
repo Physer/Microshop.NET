@@ -20,7 +20,6 @@ public class IndexingService : IProductsIndexer, IPricesIndexer
     public async Task IndexProductsAsync(IEnumerable<Product> products)
     {
         var indexableProducts = _mapper.Map<IEnumerable<IndexableProduct>>(products);
-        await _indexingClient.DeleteAllDocumentsAsync();
-        await _indexingClient.AddDocumentsAsync(indexableProducts);
+        await _indexingClient.AddOrUpdateDocumentsAsync(indexableProducts);
     }
 }

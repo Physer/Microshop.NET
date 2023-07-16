@@ -9,7 +9,6 @@ namespace UnitTests;
 
 public class IndexingServiceTests
 {
-
     [Theory]
     [AutoData]
     public async Task IndexProductsAsync_ShouldCallDependencies(IEnumerable<Product> products, IEnumerable<IndexableProduct> indexableProducts)
@@ -25,7 +24,6 @@ public class IndexingServiceTests
 
         // Assert
         indexingServiceBuilder._mapperMock.Received(1).Map<IEnumerable<IndexableProduct>>(products);
-        await indexingServiceBuilder._indexingClientMock.Received(1).DeleteAllDocumentsAsync();
-        await indexingServiceBuilder._indexingClientMock.ReceivedWithAnyArgs(1).AddDocumentsAsync(indexableProducts);
+        await indexingServiceBuilder._indexingClientMock.ReceivedWithAnyArgs(1).AddOrUpdateDocumentsAsync(indexableProducts);
     }
 }
