@@ -11,11 +11,9 @@ public static class ServiceConfigurator
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
     {
         // Options
-        var servciebusOptionsSection = configuration.GetSection(ServicebusOptions.ConfigurationEntry);
-        var servicebusOptions = servciebusOptionsSection.Get<ServicebusOptions>();
-        services.Configure<ServicebusOptions>(servciebusOptionsSection);
-        var dataOptionsSection = configuration.GetSection(DataOptions.ConfigurationEntry);
-        services.Configure<DataOptions>(dataOptionsSection);
+        var servicebusOptionsSection = configuration.GetSection(ServicebusOptions.ConfigurationEntry);
+        var servicebusOptions = servicebusOptionsSection.Get<ServicebusOptions>();
+        services.Configure<ServicebusOptions>(servicebusOptionsSection);
 
         // Generator
         services.RegisterGeneratorDependencies();
