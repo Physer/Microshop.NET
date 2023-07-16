@@ -25,7 +25,7 @@ public class IndexingServiceTests
 
         // Assert
         indexingServiceBuilder._mapperMock.Received(1).Map<IEnumerable<IndexableProduct>>(products);
-        await indexingServiceBuilder._indexingClientMock.Received(1).DeleteAllDocumentsAsync(indexingServiceBuilder._indexMock);
-        await indexingServiceBuilder._indexingClientMock.ReceivedWithAnyArgs(1).AddDocumentsAsync(indexingServiceBuilder._indexMock, indexableProducts);
+        await indexingServiceBuilder._indexingClientMock.Received(1).DeleteAllDocumentsAsync();
+        await indexingServiceBuilder._indexingClientMock.ReceivedWithAnyArgs(1).AddDocumentsAsync(indexableProducts);
     }
 }

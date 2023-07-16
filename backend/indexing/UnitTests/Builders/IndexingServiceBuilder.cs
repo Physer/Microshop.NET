@@ -27,5 +27,5 @@ internal class IndexingServiceBuilder
         return this;
     }
 
-    public IndexingService Build() => new(_mapperMock, _indexingClientMock, _indexMock);
+    public IndexingService Build() => new(_mapperMock, _indexingClientMock);
 }

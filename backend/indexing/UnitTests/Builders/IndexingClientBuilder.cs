@@ -20,5 +20,5 @@ internal class IndexingClientBuilder
         return this;
     }
 
-    public IndexingClient Build() => new();
+    public IndexingClient Build() => new(_microshopIndex);
 }

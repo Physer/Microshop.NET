@@ -16,7 +16,7 @@ public class IndexingClientTests
         var indexingClient = indexingClientBuilder.Build();
 
         // Act
-        await indexingClient.DeleteAllDocumentsAsync(indexingClientBuilder._microshopIndex);
+        await indexingClient.DeleteAllDocumentsAsync();
 
         // Assert
         await indexingClientBuilder._microshopIndex.Received(1).DeleteAllDocumentsAsync();
@@ -31,7 +31,7 @@ public class IndexingClientTests
         var indexingClient = indexingClientBuilder.Build();
 
         // Act
-        await indexingClient.AddDocumentsAsync(indexingClientBuilder._microshopIndex, objects);
+        await indexingClient.AddDocumentsAsync(objects);
 
         // Assert
         await indexingClientBuilder._microshopIndex.Received(1).AddDocumentsAsync(objects);
@@ -46,7 +46,7 @@ public class IndexingClientTests
         var indexingClient = indexingClientBuilder.WithIndexGetAllDocumentsReturns(objects).Build();
 
         // Act
-        var result = await indexingClient.GetAllDocumentsAsync<object>(indexingClientBuilder._microshopIndex);
+        var result = await indexingClient.GetAllDocumentsAsync<object>();
 
         // Assert
         result.Should().BeAssignableTo<IEnumerable<object>>();

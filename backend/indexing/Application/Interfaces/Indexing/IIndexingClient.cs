@@ -2,7 +2,7 @@
 
 public interface IIndexingClient
 {
-    Task AddDocumentsAsync<T>(IMicroshopIndex index, IEnumerable<T> documentsToIndex);
-    Task DeleteAllDocumentsAsync(IMicroshopIndex index);
-    Task<IEnumerable<T>> GetAllDocumentsAsync<T>(IMicroshopIndex index);
+    Task AddDocumentsAsync<T>(IEnumerable<T> documentsToIndex);
+    Task DeleteAllDocumentsAsync();
+    Task<IEnumerable<T>> GetAllDocumentsAsync<T>();
 }
