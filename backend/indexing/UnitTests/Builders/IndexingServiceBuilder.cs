@@ -9,23 +9,21 @@ namespace UnitTests.Builders;
 
 internal class IndexingServiceBuilder
 {
-    internal readonly IMapper _mapperMock;
-    internal readonly IIndexingClient _indexingClientMock;
-    internal readonly IMicroshopIndex _indexMock;
+    internal readonly IMapper _mapper;
+    internal readonly IIndex _index;
 
     public IndexingServiceBuilder()
     {
-        _mapperMock = Substitute.For<IMapper>();
-        _indexingClientMock = Substitute.For<IIndexingClient>();
-        _indexMock = Substitute.For<IMicroshopIndex>();
+        _mapper = Substitute.For<IMapper>();
+        _index = Substitute.For<IIndex>();
     }
 
     public IndexingServiceBuilder WithMapperMappingToIndexableProducts(IEnumerable<IndexableProduct> indexableProducts)
     {
-        _mapperMock.Map(Arg.Any<IEnumerable<Product>>(), Arg.Any<IEnumerable<IndexableProduct>>()).Returns(indexableProducts);
+        _mapper.Map(Arg.Any<IEnumerable<Product>>(), Arg.Any<IEnumerable<IndexableProduct>>()).Returns(indexableProducts);
 
         return this;
     }
 
-    public IndexingService Build() => new(_mapperMock, _indexingClientMock);
+    public IndexingService Build() => new(_mapper, _index);
 }

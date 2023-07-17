@@ -23,8 +23,8 @@ public class IndexingServiceTests
         await indexingService.IndexAsync<Product, IndexableProduct>(products);
 
         // Assert
-        indexingServiceBuilder._mapperMock.Received(1).Map<IEnumerable<IndexableProduct>>(products);
-        await indexingServiceBuilder._indexingClientMock.ReceivedWithAnyArgs(1).AddOrUpdateDocumentsAsync(indexableProducts);
+        indexingServiceBuilder._mapper.Received(1).Map<IEnumerable<IndexableProduct>>(products);
+        await indexingServiceBuilder._index.ReceivedWithAnyArgs(1).AddOrUpdateDocumentsAsync(indexableProducts);
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class IndexingServiceTests
         await indexingService.IndexAsync<Product, IndexableProduct>(default);
 
         // Assert
-        indexingServiceBuilder._mapperMock.DidNotReceiveWithAnyArgs().Map<IEnumerable<IndexableProduct>>(Enumerable.Empty<object>());
-        await indexingServiceBuilder._indexingClientMock.DidNotReceiveWithAnyArgs().AddOrUpdateDocumentsAsync(Enumerable.Empty<object>());
+        indexingServiceBuilder._mapper.DidNotReceiveWithAnyArgs().Map<IEnumerable<IndexableProduct>>(Enumerable.Empty<object>());
+        await indexingServiceBuilder._index.DidNotReceiveWithAnyArgs().AddOrUpdateDocumentsAsync(Enumerable.Empty<object>());
     }
 }

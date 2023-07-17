@@ -6,13 +6,13 @@ namespace Search;
 public class IndexingService : IIndexingService
 {
     private readonly IMapper _mapper;
-    private readonly IIndexingClient _indexingClient;
+    private readonly IIndex _index;
 
     public IndexingService(IMapper mapper,
-        IIndexingClient indexingClient)
+        IIndex index)
     {
         _mapper = mapper;
-        _indexingClient = indexingClient;
+        _index = index;
     }
 
     public async Task IndexAsync<TInput, TIndexableModel>(IEnumerable<TInput>? dataToIndex)
@@ -21,6 +21,6 @@ public class IndexingService : IIndexingService
             return;
 
         var indexableData = _mapper.Map<IEnumerable<TIndexableModel>>(dataToIndex);
-        await _indexingClient.AddOrUpdateDocumentsAsync(indexableData);
+        await _index.AddOrUpdateDocumentsAsync(indexableData);
     }
 }

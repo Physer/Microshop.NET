@@ -6,7 +6,7 @@ using Index = Meilisearch.Index;
 namespace Search;
 
 [ExcludeFromCodeCoverage]
-public class MicroshopIndex : IMicroshopIndex
+public class MicroshopIndex : IIndex
 {
     private readonly Index _index;
 
@@ -14,5 +14,5 @@ public class MicroshopIndex : IMicroshopIndex
 
     public async Task<IEnumerable<T>> GetAllDocumentsAsync<T>() => (await _index.GetDocumentsAsync<T>(new Meilisearch.QueryParameters.DocumentsQuery { Offset = 0, Limit = int.MaxValue })).Results;
 
-    public async Task AddOrUpdateDocumentsAsync<T>(IEnumerable<T> documentsToIndex) => await _index.UpdateDocumentsAsync<T>(documentsToIndex);
+    public async Task AddOrUpdateDocumentsAsync<T>(IEnumerable<T> documentsToIndex) => await _index.UpdateDocumentsAsync(documentsToIndex);
 }
