@@ -32,7 +32,6 @@ public class EndpointTests : IAsyncLifetime
             .Build();
         await _rabbitMqContainer.StartAsync().ConfigureAwait(false);
         _rabbitMqContainerPort = _rabbitMqContainer.GetMappedPublicPort(RabbitMqContainerConfiguration.Port);
-
     }
 
     [Fact]
@@ -53,10 +52,6 @@ public class EndpointTests : IAsyncLifetime
         var response = await client.PostAsync("/products", default);
 
         // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var content = await response.Content.ReadAsStringAsync();
-        content.Should().NotBeNull();
-        Guid.TryParse(content, out var parsedGuid).Should().BeTrue();
-        parsedGuid.Should().NotBe(Guid.Empty);
+        response.StatusCode.Should().Be(HttpStatusCode.Accepted);
     }
 }

@@ -1,41 +1,25 @@
-﻿using Application.Exceptions;
+﻿using AutoFixture.Xunit2;
 using Domain;
-using FluentAssertions;
+using Messaging.Messages;
+using NSubstitute;
 using Xunit;
 
 namespace UnitTests.Publishers;
 
 public class ProductsGeneratedMessagePublisherTests
 {
-    [Fact]
-    public async Task PublishMessage_WhenMessageIsPublished_ReturnsMessageId()
-    {
-        // Arrange
-        var expectedMessageId = Guid.NewGuid();
-        var productsGeneratedMessagePublisherBuilder = new ProductsGeneratedMessagePublisherBuilder();
-        var productsGeneratedMessagePublisher = productsGeneratedMessagePublisherBuilder
-            .WithPublishedMessageId(expectedMessageId)
-            .Build();
-
-        // Act
-        var messageId = await productsGeneratedMessagePublisher.PublishMessage(Enumerable.Empty<Product>());
-
-        // Assert
-        messageId.Should().Be(expectedMessageId);
-    }
-
-    [Fact]
-    public async Task PublishMessage_WhenMessageIsNotPublishedSuccesfully_ThrowsPublishException()
+    [Theory]
+    [AutoData]
+    public async Task PublishMessage_CallsPublishEndpoint(IEnumerable<Product> products)
     {
         // Arrange
         var productsGeneratedMessagePublisherBuilder = new ProductsGeneratedMessagePublisherBuilder();
         var productsGeneratedMessagePublisher = productsGeneratedMessagePublisherBuilder.Build();
 
         // Act
-        var exception = await Record.ExceptionAsync(() => productsGeneratedMessagePublisher.PublishMessage(Enumerable.Empty<Product>()));
+        await productsGeneratedMessagePublisher.PublishMessage(products);
 
         // Assert
-        exception.Should().NotBeNull();
-        exception.Should().BeOfType<MessagePublishingException>();
+        await productsGeneratedMessagePublisherBuilder._publishEndpoint.Received(1).Publish(new ProductsGenerated(products));
     }
 }

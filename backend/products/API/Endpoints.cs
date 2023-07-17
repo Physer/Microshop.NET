@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces.Generator;
 using Application.Interfaces.Messaging;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mime;
 
 namespace API;
 
@@ -15,8 +14,7 @@ public static class Endpoints
         logger.LogInformation("Generating fake products");
         var products = generator.GenerateProducts(500);
         logger.LogInformation("Sending event that all products have been generated");
-        var publishedMessageId = await messagePublisher.PublishMessage(products);
-        logger.LogInformation("Sent message {messageId}", publishedMessageId);
-        return Results.Content(publishedMessageId.ToString(), MediaTypeNames.Text.Plain);
+        await messagePublisher.PublishMessage(products);
+        return Results.Accepted();
     }
 }
