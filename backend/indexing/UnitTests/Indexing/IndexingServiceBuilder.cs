@@ -5,7 +5,7 @@ using Domain;
 using NSubstitute;
 using Search;
 
-namespace UnitTests.Builders;
+namespace UnitTests.Indexing;
 
 internal class IndexingServiceBuilder
 {

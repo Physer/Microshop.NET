@@ -6,7 +6,7 @@ using Messaging;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 
-namespace UnitTests.Builders;
+namespace UnitTests.Consumers;
 
 internal class PricesGeneratedConsumerBuilder
 {

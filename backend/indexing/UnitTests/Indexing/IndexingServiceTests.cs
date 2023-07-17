@@ -2,10 +2,9 @@
 using AutoFixture.Xunit2;
 using Domain;
 using NSubstitute;
-using UnitTests.Builders;
 using Xunit;
 
-namespace UnitTests;
+namespace UnitTests.Indexing;
 
 public class IndexingServiceTests
 {
