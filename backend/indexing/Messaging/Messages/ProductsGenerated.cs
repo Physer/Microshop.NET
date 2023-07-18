@@ -2,4 +2,4 @@
 
 namespace Messaging.Messages;
 
-public record ProductsGenerated(IEnumerable<Product> Products);
+public sealed record ProductsGenerated(IEnumerable<Product> Products);

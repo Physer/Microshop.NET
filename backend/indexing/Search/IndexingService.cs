@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace Search;
 
-public class IndexingService : IIndexingService
+internal class IndexingService : IIndexingService
 {
     private readonly IMapper _mapper;
     private readonly IIndex _index;

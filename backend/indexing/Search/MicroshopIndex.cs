@@ -4,7 +4,7 @@ using Index = Meilisearch.Index;
 
 namespace Search;
 
-public class MicroshopIndex : IIndex
+internal class MicroshopIndex : IIndex
 {
     private readonly Index _index;
 
