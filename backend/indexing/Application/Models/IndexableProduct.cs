@@ -2,8 +2,8 @@
 
 public record struct IndexableProduct(string Id)
 {
-    public required string? Name { get; init; }
-    public required string? Description { get; init; }
-    public required decimal? Value { get; init; }
-    public required string? Currency { get; init; }
+    public string? Name { get; init; }
+    public string? Description { get; init; }
+    public decimal? Value { get; init; }
+    public string? Currency { get; init; }
 }
