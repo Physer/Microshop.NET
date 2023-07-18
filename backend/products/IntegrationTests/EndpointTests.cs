@@ -35,7 +35,7 @@ public class EndpointTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task GenerateProducts_ReturnsOkAndMessageId()
+    public async Task GenerateProducts_ReturnsAccepted()
     {
         // Arrange
         Dictionary<string, string?> configuration = new()
