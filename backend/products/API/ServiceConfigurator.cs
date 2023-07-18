@@ -1,5 +1,4 @@
-﻿using Application.Interfaces.Generator;
-using Application.Options;
+﻿using Application.Options;
 using Generator;
 using Messaging;
 using System.Diagnostics.CodeAnalysis;
@@ -19,7 +18,7 @@ public static class ServiceConfigurator
         services.Configure<ServicebusOptions>(servicebusOptionsSection);
 
         // Generator
-        services.AddTransient<IProductGenerator, ProductGenerator>();
+        services.RegisterGeneratorDependencies();
 
         // Messaging
         services.RegisterMessagingDependencies(servicebusOptions);

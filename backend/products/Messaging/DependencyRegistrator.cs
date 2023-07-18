@@ -27,8 +27,6 @@ public static class DependencyRegistrator
                 factoryConfigurator.ConfigureEndpoints(context);
             });
         });
-
-        // Publishers
         services.AddScoped<IProductsGeneratedMessagePublisher, ProductsGeneratedMessagePublisher>();
     }
 }

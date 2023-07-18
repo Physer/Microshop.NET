@@ -5,7 +5,7 @@ using Domain;
 
 namespace Generator;
 
-public class ProductGenerator : IProductGenerator
+internal class ProductGenerator : IProductGenerator
 {
     private readonly Faker<Product> _productFaker;
 
