@@ -7,7 +7,7 @@ var host = Host.CreateDefaultBuilder(args)
     {
         // Options
         var servicebusOptionsSection = context.Configuration.GetSection(ServicebusOptions.ConfigurationEntry);
-        var servicebusOptions = servicebusOptionsSection.Get<ServicebusOptions>();
+        var servicebusOptions = servicebusOptionsSection.Get<ServicebusOptions>() ?? throw new NullReferenceException("Invalid servicebus options");
         services.Configure<ServicebusOptions>(servicebusOptionsSection);
 
         // Generator
