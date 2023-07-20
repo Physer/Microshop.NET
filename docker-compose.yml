@@ -25,6 +25,10 @@ services:
       dockerfile: infrastructure/Dockerfile.backend
       args:
         - SERVICE_NAME=gateway
+    environment:
+      - Servicebus__BaseUrl=rabbitmq
+      - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
+      - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
     restart: always
     ports:
       - 5000:80
