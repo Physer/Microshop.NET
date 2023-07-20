@@ -4,6 +4,12 @@
 		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>fbaee0c7-fe6a-4942-b77d-810576deccd0</UserSecretsId>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Application\Application.csproj" />
+	  <ProjectReference Include="..\Messaging\Messaging.csproj" />
+	</ItemGroup>
 
 </Project>
