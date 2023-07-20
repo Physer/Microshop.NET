@@ -19,8 +19,4 @@
 		<PackageReference Include="coverlet.collector" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\API\API.csproj" />
-	</ItemGroup>
-
 </Project>
