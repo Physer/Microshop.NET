@@ -11,9 +11,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3956B4FE-F318-414A-800F-7EC35883F3CF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{2B855E83-19F7-4655-B617-CC52C7E1591B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{246BA1F1-0C3C-4240-8C9A-FCA007C6C6A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{978A7393-65CD-42A5-9409-DC6541E64C21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,21 +21,21 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2B855E83-19F7-4655-B617-CC52C7E1591B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B855E83-19F7-4655-B617-CC52C7E1591B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B855E83-19F7-4655-B617-CC52C7E1591B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B855E83-19F7-4655-B617-CC52C7E1591B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{246BA1F1-0C3C-4240-8C9A-FCA007C6C6A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{246BA1F1-0C3C-4240-8C9A-FCA007C6C6A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{246BA1F1-0C3C-4240-8C9A-FCA007C6C6A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{246BA1F1-0C3C-4240-8C9A-FCA007C6C6A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{978A7393-65CD-42A5-9409-DC6541E64C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{978A7393-65CD-42A5-9409-DC6541E64C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{978A7393-65CD-42A5-9409-DC6541E64C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{978A7393-65CD-42A5-9409-DC6541E64C21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2B855E83-19F7-4655-B617-CC52C7E1591B} = {84A22C39-5E29-4C07-AE2C-A3D07260B305}
 		{246BA1F1-0C3C-4240-8C9A-FCA007C6C6A8} = {3956B4FE-F318-414A-800F-7EC35883F3CF}
+		{978A7393-65CD-42A5-9409-DC6541E64C21} = {84A22C39-5E29-4C07-AE2C-A3D07260B305}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F2DD016-98FE-4C16-B2D9-CA302805DEAF}
