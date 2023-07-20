@@ -1,4 +1,5 @@
-﻿using Application.Options;
+﻿using Application.Interfaces.Messaging;
+using Application.Options;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,8 +7,11 @@ namespace Messaging;
 
 public static class DependencyRegistrator
 {
-    public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions) => 
+    public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions)
+    {
+        services.AddScoped<IGenerateProductsPublisher, GenerateProductsPublisher>();
         services.AddMassTransit(busConfigurator => busConfigurator.ConfigureBusRegistration(servicebusOptions));
+    }
 
     internal static void ConfigureBusRegistration(this IBusRegistrationConfigurator busConfigurator, ServicebusOptions? servicebusOptions)
     {
