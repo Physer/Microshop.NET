@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="AutoBogus" Version="2.13.1" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageVersion Include="MassTransit.RabbitMQ" Version="8.0.16" />
     <PackageVersion Include="AutoFixture.Xunit2" Version="4.18.0" />

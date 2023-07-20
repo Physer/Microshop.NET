@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messaging", "Messaging\Mess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{A3137E09-D2E0-49C6-B5E8-4BB6DAD346C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{68957F37-9A30-4E8B-BAD2-DCC0FA2C08F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{A3137E09-D2E0-49C6-B5E8-4BB6DAD346C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3137E09-D2E0-49C6-B5E8-4BB6DAD346C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3137E09-D2E0-49C6-B5E8-4BB6DAD346C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68957F37-9A30-4E8B-BAD2-DCC0FA2C08F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68957F37-9A30-4E8B-BAD2-DCC0FA2C08F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68957F37-9A30-4E8B-BAD2-DCC0FA2C08F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68957F37-9A30-4E8B-BAD2-DCC0FA2C08F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{8BCE7ABF-4FE9-4578-A301-6EFBE48566CE} = {70D96A9A-9281-46FD-B11C-0F3C39E1445A}
 		{D469C6D7-6DA3-4160-A18B-6D7CB8EF7FAF} = {7DC67F05-0916-463F-9350-5D02774E3EE1}
 		{A3137E09-D2E0-49C6-B5E8-4BB6DAD346C7} = {C0434576-9040-4E59-A5BD-B1911FF69843}
+		{68957F37-9A30-4E8B-BAD2-DCC0FA2C08F4} = {70D96A9A-9281-46FD-B11C-0F3C39E1445A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9CA2E463-8133-4529-98DB-D984BCBC5967}
