@@ -61,11 +61,6 @@ variable "scale_min" {
   default = 1
 }
 
-variable "allow_insecure" {
-  type    = bool
-  default = false
-}
-
 variable "revision_suffix" {
   type    = string
   default = null

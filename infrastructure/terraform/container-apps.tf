@@ -29,7 +29,6 @@ module "meilisearch_app" {
   secrets                      = local.meilisearch_secrets
   appsettings                  = local.meilisearch_appsettings
   ingress_enabled              = true
-  allow_insecure               = true
   revision_suffix              = random_pet.revision_suffix.id
 }
 
