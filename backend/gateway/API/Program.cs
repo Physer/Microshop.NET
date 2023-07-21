@@ -15,3 +15,5 @@ builder.Services.RegisterMessagingDependencies(servicebusOptions); var app = bui
 app.MapPost("/products", Endpoints.GenerateProducts);
 
 app.Run();
+
+public partial class Program { }
