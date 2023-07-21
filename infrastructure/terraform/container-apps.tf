@@ -41,6 +41,8 @@ module "gateway_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   ingress_enabled              = true
   allow_external_traffic       = true
+  secrets                      = local.gateway_secrets
+  appsettings                  = local.gateway_appsettings
   revision_suffix              = random_pet.revision_suffix.id
 }
 
@@ -63,8 +65,6 @@ module "products_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   secrets                      = local.products_secrets
   appsettings                  = local.products_appsettings
-  ingress_enabled              = true
-  allow_insecure               = true
   revision_suffix              = random_pet.revision_suffix.id
 }
 
@@ -76,7 +76,5 @@ module "pricing_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   secrets                      = local.pricing_secrets
   appsettings                  = local.pricing_appsettings
-  ingress_enabled              = true
-  allow_insecure               = true
   revision_suffix              = random_pet.revision_suffix.id
 }
