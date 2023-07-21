@@ -10,20 +10,17 @@ public class IndexingServiceTests
 {
     [Theory]
     [AutoData]
-    public async Task IndexAsync_ShouldCallDependencies(IEnumerable<Product> products, IEnumerable<IndexableProduct> indexableProducts)
+    public async Task IndexAsync_ShouldCallDependencies(IEnumerable<Product> products)
     {
         // Arrange
         var indexingServiceBuilder = new IndexingServiceBuilder();
-        var indexingService = indexingServiceBuilder
-            .WithMapperMappingToIndexableProducts(indexableProducts)
-            .Build();
+        var indexingService = indexingServiceBuilder.Build();
 
         // Act
         await indexingService.IndexAsync<Product, IndexableProduct>(products);
 
         // Assert
-        indexingServiceBuilder._mapper.Received(1).Map<IEnumerable<IndexableProduct>>(products);
-        await indexingServiceBuilder._index.ReceivedWithAnyArgs(1).AddOrUpdateDocumentsAsync(indexableProducts);
+        await indexingServiceBuilder._index.Received(1).AddOrUpdateDocumentsAsync(Arg.Any<IEnumerable<IndexableProduct>>());
     }
 
     [Fact]
@@ -31,14 +28,12 @@ public class IndexingServiceTests
     {
         // Arrange
         var indexingServiceBuilder = new IndexingServiceBuilder();
-        var indexingService = indexingServiceBuilder
-            .Build();
+        var indexingService = indexingServiceBuilder.Build();
 
         // Act
         await indexingService.IndexAsync<Product, IndexableProduct>(default);
 
         // Assert
-        indexingServiceBuilder._mapper.DidNotReceiveWithAnyArgs().Map<IEnumerable<IndexableProduct>>(Enumerable.Empty<object>());
-        await indexingServiceBuilder._index.DidNotReceiveWithAnyArgs().AddOrUpdateDocumentsAsync(Enumerable.Empty<object>());
+        await indexingServiceBuilder._index.DidNotReceive().AddOrUpdateDocumentsAsync(Arg.Any<IEnumerable<IndexableProduct>>());
     }
 }
