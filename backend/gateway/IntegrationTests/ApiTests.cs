@@ -16,8 +16,9 @@ public class ApiTests : IClassFixture<ApiTestsFixture>
     public async Task GenerateProducts_PublishesMessage_AndReturnsAccepted()
     {
         // Arrange
-        var client = _fixture.ApplicationFactory.CreateClient();
-        var testHarness = _fixture.ApplicationFactory.Services.GetTestHarness();
+        var applicationFactory = _fixture.ApplicationFactory!;
+        var client = applicationFactory.CreateClient();
+        var testHarness = applicationFactory.Services.GetTestHarness();
 
         // Act
         var response = await client.PostAsync("/products", default);
