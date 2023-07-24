@@ -31,4 +31,22 @@ public class IndexingTests : IClassFixture<IndexingTestsFixture>
         containerLogs.Should().NotBeNull();
         containerLogs.Stderr.Should().Contain($"indexed_documents: {products.Count()}");
     }
+
+    [Theory]
+    [AutoData]
+    public async void ReceivesMessage_PricesGenerated_IndexesPrices(IEnumerable<Price> prices)
+    {
+        // Arrange
+        var testHarness = _fixture.TestHarness!;
+
+        // Act
+        await testHarness.Start();
+        await testHarness.Bus.Publish<PricesGenerated>(new(prices));
+        await testHarness.Stop();
+
+        // Assert
+        var containerLogs = await _fixture.MeilisearchContainer!.GetLogsAsync();
+        containerLogs.Should().NotBeNull();
+        containerLogs.Stderr.Should().Contain($"indexed_documents: {prices.Count()}");
+    }
 }
