@@ -13,7 +13,7 @@ public static class DependencyRegistrator
     internal static void ConfigureBusRegistration(this IBusRegistrationConfigurator busConfigurator, ServicebusOptions? servicebusOptions)
     {
         if (servicebusOptions is null)
-            return;
+            throw new ArgumentNullException(nameof(servicebusOptions), "Invalid servicebus options");
 
         busConfigurator.SetEndpointNameFormatter(new SnakeCaseEndpointNameFormatter("indexing", false));
         busConfigurator.AddConsumer<ProductsGeneratedConsumer>();
