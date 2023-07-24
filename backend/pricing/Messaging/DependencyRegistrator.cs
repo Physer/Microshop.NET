@@ -1,25 +1,20 @@
 ﻿using Application.Options;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("IntegrationTests")]
 namespace Messaging;
 
-[ExcludeFromCodeCoverage]
 public static class DependencyRegistrator
 {
-    public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions)
+    public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions) => services.AddMassTransit(busConfigurator => busConfigurator.ConfigureBusRegistration(servicebusOptions));
+
+    internal static void ConfigureBusRegistration(this IBusRegistrationConfigurator busConfigurator, ServicebusOptions? servicebusOptions)
     {
         if (servicebusOptions is null)
-            return;
+            throw new ArgumentNullException(nameof(servicebusOptions), "Invalid servicebus options");
 
-        services.AddMassTransit(busConfigurator => busConfigurator.ConfigureBusRegistration(servicebusOptions));
-    }
-
-    internal static void ConfigureBusRegistration(this IBusRegistrationConfigurator busConfigurator, ServicebusOptions servicebusOptions)
-    {
         busConfigurator.SetEndpointNameFormatter(new SnakeCaseEndpointNameFormatter("pricing", false));
         busConfigurator.AddConsumer<ProductsGeneratedConsumer>();
         busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>

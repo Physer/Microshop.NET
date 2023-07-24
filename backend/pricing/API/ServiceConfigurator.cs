@@ -1,11 +1,9 @@
 ﻿using Application.Options;
 using Generator;
 using Messaging;
-using System.Diagnostics.CodeAnalysis;
 
 namespace API;
 
-[ExcludeFromCodeCoverage]
 public static class ServiceConfigurator
 {
     public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
