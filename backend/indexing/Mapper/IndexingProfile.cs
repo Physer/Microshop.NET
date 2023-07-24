@@ -1,11 +1,9 @@
 ﻿using Application.Models;
 using AutoMapper;
 using Domain;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Mapper;
 
-[ExcludeFromCodeCoverage]
 public class IndexingProfile : Profile
 {
     public IndexingProfile()

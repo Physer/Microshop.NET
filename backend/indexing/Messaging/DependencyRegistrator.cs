@@ -1,13 +1,11 @@
 ﻿using Application.Options;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("IntegrationTests")]
 namespace Messaging;
 
-[ExcludeFromCodeCoverage]
 public static class DependencyRegistrator
 {
     public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions) => services.AddMassTransit(busConfigurator => busConfigurator.ConfigureBusRegistration(servicebusOptions));
