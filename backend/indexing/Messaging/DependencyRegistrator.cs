@@ -10,16 +10,13 @@ namespace Messaging;
 [ExcludeFromCodeCoverage]
 public static class DependencyRegistrator
 {
-    public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions)
+    public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions) => services.AddMassTransit(busConfigurator => busConfigurator.ConfigureBusRegistration(servicebusOptions));
+
+    internal static void ConfigureBusRegistration(this IBusRegistrationConfigurator busConfigurator, ServicebusOptions? servicebusOptions)
     {
         if (servicebusOptions is null)
             return;
 
-        services.AddMassTransit(busConfigurator => busConfigurator.ConfigureBusRegistration(servicebusOptions));
-    }
-
-    internal static void ConfigureBusRegistration(this IBusRegistrationConfigurator busConfigurator, ServicebusOptions servicebusOptions)
-    {
         busConfigurator.SetEndpointNameFormatter(new SnakeCaseEndpointNameFormatter("indexing", false));
         busConfigurator.AddConsumer<ProductsGeneratedConsumer>();
         busConfigurator.AddConsumer<PricesGeneratedConsumer>();
