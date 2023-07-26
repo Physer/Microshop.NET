@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -21,10 +20,9 @@ var gatewayUrl string
 var websiteUrl string
 
 func main() {
-	envLoadErr := godotenv.Load("../../.env")
-	if envLoadErr != nil {
-		log.Fatal("Error loading .env file")
-	}
+	fmt.Println("Starting authentication service")
+	fmt.Println("Loading environment variables from .env file or the environment")
+	godotenv.Load("../../.env")
 	setEnvironmentVariables()
 
 	apiBasePath := "/auth"
@@ -51,14 +49,19 @@ func main() {
 		panic(err.Error())
 	}
 
-	http.ListenAndServe(fmt.Sprintf("%s:%s", superTokensBackendHost, superTokensBackendPort), corsMiddleware(
+	fmt.Println("Initialized Supertokens")
+	backendUrl := fmt.Sprintf("%s:%s", superTokensBackendHost, superTokensBackendPort)
+	fmt.Printf("Listening on http://%s \n", backendUrl)
+	http.ListenAndServe(backendUrl, corsMiddleware(
 		supertokens.Middleware(http.HandlerFunc(func(rw http.ResponseWriter,
 			r *http.Request) {
 		}))))
 }
 
 func corsMiddleware(next http.Handler) http.Handler {
+	fmt.Println("Configuring middleware")
 	return http.HandlerFunc(func(response http.ResponseWriter, r *http.Request) {
+		fmt.Printf("Incoming %s request to %s \n", r.Method, r.URL)
 		response.Header().Set("Access-Control-Allow-Origin", websiteUrl)
 		response.Header().Set("Access-Control-Allow-Credentials", "true")
 		if r.Method == "OPTIONS" {
@@ -68,12 +71,17 @@ func corsMiddleware(next http.Handler) http.Handler {
 			response.Header().Set("Access-Control-Allow-Methods", "*")
 			response.Write([]byte(""))
 		} else {
+			fmt.Println("Serving response")
 			next.ServeHTTP(response, r)
 		}
 	})
 }
 
 func setEnvironmentVariables() {
+	fmt.Println("Setting environment variables")
+	for _, element := range os.Environ() {
+		fmt.Printf("Loaded: %s \n", element)
+	}
 	superTokensCoreUrl = os.Getenv("AUTHENTICATION_SERVICE_URL")
 	superTokensBackendHost = os.Getenv("AUTHENTICATION_BACKEND_HOST")
 	superTokensBackendPort = os.Getenv("AUTHENTICATION_BACKEND_PORT")
