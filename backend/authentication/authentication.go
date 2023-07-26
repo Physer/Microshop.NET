@@ -87,4 +87,6 @@ func setEnvironmentVariables() {
 	superTokensBackendPort = os.Getenv("AUTHENTICATION_BACKEND_PORT")
 	gatewayUrl = os.Getenv("GATEWAY_URL")
 	websiteUrl = os.Getenv("WEBSITE_URL")
+
+	fmt.Printf("Loaded %d environment variables \n", len(os.Environ()))
 }
