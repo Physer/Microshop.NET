@@ -32,8 +32,8 @@ services:
       - 5432:5432
     restart: always
 
-  authentication_service:
-    container_name: authentication_service
+  authentication_core:
+    container_name: authentication_core
     image: registry.supertokens.io/supertokens/supertokens-postgresql:6.0
     ports:
       - 3567:3567
@@ -101,14 +101,14 @@ services:
     restart: always
     ports:
       - 5002:80
-  authentication:
-    container_name: authentication
+  authentication_service:
+    container_name: authentication_service
     build:
       context: .
       dockerfile: infrastructure/Dockerfile.authentication
     environment:
-      - AUTHENTICATION_SERVICE_URL=http://host.docker.internal:3567
-      - AUTHENTICATION_BACKEND_HOST=authentication
+      - AUTHENTICATION_CORE_URL=http://host.docker.internal:3567
+      - AUTHENTICATION_BACKEND_HOST=authentication_service
       - AUTHENTICATION_BACKEND_PORT=80
       - GATEWAY_URL=http://localhost:5000
       - WEBSITE_URL=http://localhost:3000

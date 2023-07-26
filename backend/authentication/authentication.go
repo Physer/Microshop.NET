@@ -82,7 +82,7 @@ func setEnvironmentVariables() {
 	for _, element := range os.Environ() {
 		fmt.Printf("Loaded: %s \n", element)
 	}
-	superTokensCoreUrl = os.Getenv("AUTHENTICATION_SERVICE_URL")
+	superTokensCoreUrl = os.Getenv("AUTHENTICATION_CORE_URL")
 	superTokensBackendHost = os.Getenv("AUTHENTICATION_BACKEND_HOST")
 	superTokensBackendPort = os.Getenv("AUTHENTICATION_BACKEND_PORT")
 	gatewayUrl = os.Getenv("GATEWAY_URL")
