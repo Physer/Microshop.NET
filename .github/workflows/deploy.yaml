@@ -16,6 +16,7 @@ jobs:
       indexing: ${{ steps.filter.outputs.indexing }}
       products: ${{ steps.filter.outputs.products }}
       pricing: ${{ steps.filter.outputs.pricing }}
+      authentication: ${{ steps.filter.outputs.authentication }}
     steps:
       - uses: actions/checkout@v3
 
@@ -31,6 +32,8 @@ jobs:
               - 'backend/products/**'
             pricing:
               - 'backend/pricing/**'
+            authentication:
+              - 'backend/authentication/**'
 
   build-and-publish-gateway-service:
     name: Build and publish gateway service
@@ -76,6 +79,15 @@ jobs:
     with:
       service-name: pricing
 
+  build-and-publish-authentication-service:
+    name: Build and publish authentication service
+    needs: retrieve-changes
+    if: ${{ needs.retrieve-changes.outputs.authentication == 'true' }}
+    uses: ./.github/workflows/build-publish-authentication-service.yaml
+    secrets:
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+
   deploy_terraform_resources:
     name: Deploy resources to Azure using Terraform
     if: ${{ always() }}
@@ -85,6 +97,7 @@ jobs:
         build-and-publish-products-service,
         build-and-publish-gateway-service,
         build-and-publish-pricing-service,
+        build-and-publish-authentication-service,
       ]
     runs-on: ubuntu-latest
     env:
