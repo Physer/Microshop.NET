@@ -83,7 +83,7 @@ jobs:
     name: Build and publish authentication service
     needs: retrieve-changes
     if: ${{ needs.retrieve-changes.outputs.authentication == 'true' }}
-    uses: ./.github/workflows/build-publish-authentication-service.yaml
+    uses: ./.github/workflows/build-publish-authentication.yaml
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
