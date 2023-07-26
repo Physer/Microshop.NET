@@ -22,7 +22,7 @@ services:
 
   # Authentication services
   authentication_database:
-    container_name: postgres_auth_db
+    container_name: authentication_database
     image: "postgres:latest"
     environment:
       - POSTGRES_USER=${AUTH_DB_USER}
@@ -33,7 +33,7 @@ services:
     restart: always
 
   authentication_service:
-    container_name: supertokens_auth_service
+    container_name: authentication_service
     image: registry.supertokens.io/supertokens/supertokens-postgresql:6.0
     ports:
       - 3567:3567
@@ -101,3 +101,17 @@ services:
     restart: always
     ports:
       - 5002:80
+  authentication:
+    container_name: authentication
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.authentication
+    environment:
+      - AUTHENTICATION_SERVICE_URL=http://host.docker.internal:3567
+      - AUTHENTICATION_BACKEND_HOST=authentication
+      - AUTHENTICATION_BACKEND_PORT=80
+      - GATEWAY_URL=http://localhost:5000
+      - WEBSITE_URL=http://localhost:3000
+    restart: always
+    ports:
+      - 5004:80

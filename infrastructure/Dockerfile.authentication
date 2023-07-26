@@ -1,0 +1,8 @@
+FROM golang:bookworm
+
+WORKDIR /app
+COPY backend/authentication/go.mod backend/authentication/go.sum ./
+RUN go mod download
+COPY backend/authentication/*.go ./
+RUN CGO_ENABLED=0 GOOS=linux go build -o /auth
+CMD ["/auth"]
