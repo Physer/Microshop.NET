@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -14,8 +15,7 @@ import (
 )
 
 var superTokensCoreUrl string
-var superTokensBackendHost string
-var superTokensBackendPort string
+var superTokensBackendPort int
 var gatewayUrl string
 var websiteUrl string
 
@@ -50,9 +50,9 @@ func main() {
 	}
 
 	fmt.Println("Initialized Supertokens")
-	backendUrl := fmt.Sprintf("%s:%s", superTokensBackendHost, superTokensBackendPort)
-	fmt.Printf("Listening on http://%s \n", backendUrl)
-	http.ListenAndServe(backendUrl, corsMiddleware(
+	backendAddress := fmt.Sprintf(":%d", superTokensBackendPort)
+	fmt.Printf("Listening on port %d \n", superTokensBackendPort)
+	http.ListenAndServe(backendAddress, corsMiddleware(
 		supertokens.Middleware(http.HandlerFunc(func(rw http.ResponseWriter,
 			r *http.Request) {
 		}))))
@@ -83,8 +83,7 @@ func setEnvironmentVariables() {
 		fmt.Printf("Loaded: %s \n", element)
 	}
 	superTokensCoreUrl = os.Getenv("AUTHENTICATION_CORE_URL")
-	superTokensBackendHost = os.Getenv("AUTHENTICATION_BACKEND_HOST")
-	superTokensBackendPort = os.Getenv("AUTHENTICATION_BACKEND_PORT")
+	superTokensBackendPort, _ = strconv.Atoi(os.Getenv("AUTHENTICATION_BACKEND_PORT"))
 	gatewayUrl = os.Getenv("GATEWAY_URL")
 	websiteUrl = os.Getenv("WEBSITE_URL")
 
