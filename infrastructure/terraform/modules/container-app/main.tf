@@ -3,7 +3,7 @@ resource "azapi_resource" "microshop_container_app" {
   name                   = "ca-microshop-${var.application_name}"
   location               = var.location
   parent_id              = var.resource_group_id
-  response_export_values = ["name"]
+  response_export_values = ["name", "properties.configuration.ingress.fqdn"]
   body = jsonencode({
     properties = {
       configuration = {

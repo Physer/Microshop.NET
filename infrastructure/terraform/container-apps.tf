@@ -108,6 +108,8 @@ module "authentication_service" {
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-authentication:main"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
+  ingress_enabled              = true
+  allow_external_traffic       = true
   appsettings                  = local.authentication_service_appsettings
   revision_suffix              = random_pet.revision_suffix.id
 }

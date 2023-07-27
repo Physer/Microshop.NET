@@ -19,10 +19,10 @@ locals {
   ]
 
   authentication_service_appsettings = [
-    { name = "AUTHENTICATION_CORE_URL", value = "https://${module.authentication_core.name}" },
+    { name = "AUTHENTICATION_CORE_URL", value = "https://${module.authentication_core.fqdn}" },
     { name = "AUTHENTICATION_BACKEND_HOST", value = "localhost" },
     { name = "AUTHENTICATION_BACKEND_PORT", value = 80 },
-    { name = "GATEWAY_URL", value = "https://${module.gateway_app.name}" },
+    { name = "GATEWAY_URL", value = "https://${module.gateway_app.fqdn}" },
     { name = "WEBSITE_URL", value = "http://localhost:3000" },
   ]
 }
