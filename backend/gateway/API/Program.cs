@@ -10,9 +10,14 @@ var servicebusOptions = servicebusOptionsSection.Get<ServicebusOptions>();
 builder.Services.Configure<ServicebusOptions>(servicebusOptionsSection);
 
 // Messaging
-builder.Services.RegisterMessagingDependencies(servicebusOptions); var app = builder.Build();
+builder.Services.RegisterMessagingDependencies(servicebusOptions);
 
+// Reverse proxy
+builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection(ProxyOptions.ConfigurationEntry));
+
+var app = builder.Build();
 app.MapPost("/products", Endpoints.GenerateProducts);
+app.MapReverseProxy();
 
 app.Run();
 
