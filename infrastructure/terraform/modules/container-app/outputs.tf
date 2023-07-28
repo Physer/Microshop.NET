@@ -7,3 +7,8 @@ output "fqdn" {
   description = "The FQDN of the container app"
   value       = jsondecode(azapi_resource.microshop_container_app.output).properties.configuration.ingress.fqdn
 }
+
+output "id" {
+  description = "The ID of the container app"
+  value       = jsondecode(azapi_resource.microshop_container_app.output).id
+}

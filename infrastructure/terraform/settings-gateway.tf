@@ -8,5 +8,6 @@ locals {
     { name = "Servicebus__Port", value = 5672 },
     { name = "Servicebus__ManagementUsername", secretRef = local.rabbitmq_username },
     { name = "Servicebus__ManagementPassword", secretRef = local.rabbitmq_password },
+    { name = "ReverseProxy__Clusters__authentication__Destinations__authentication__Address", value = "https://${module.authentication_service.fqdn}" },
   ]
 }

@@ -40,8 +40,6 @@ module "gateway_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   ingress_enabled              = true
   allow_external_traffic       = true
-  secrets                      = local.gateway_secrets
-  appsettings                  = local.gateway_appsettings
   revision_suffix              = random_pet.revision_suffix.id
 }
 
@@ -114,4 +112,11 @@ module "authentication_service" {
   ingress_enabled              = true
   appsettings                  = local.authentication_service_appsettings
   revision_suffix              = random_pet.revision_suffix.id
+}
+
+module "gateway_app_settings" {
+  source           = "./modules/container-app-settings"
+  container_app_id = module.gateway_app.id
+  secrets          = local.gateway_secrets
+  appsettings      = local.gateway_appsettings
 }

@@ -17,7 +17,7 @@ resource "random_password" "authentication_database_user" {
 }
 
 resource "random_password" "authentication_database_password" {
-  length = 16
+  length  = 16
   special = false
 }
 
