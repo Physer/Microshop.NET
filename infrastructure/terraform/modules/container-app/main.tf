@@ -1,9 +1,14 @@
 resource "azapi_resource" "microshop_container_app" {
-  type                   = "Microsoft.App/containerApps@2022-11-01-preview"
-  name                   = "ca-microshop-${var.application_name}"
-  location               = var.location
-  parent_id              = var.resource_group_id
-  response_export_values = ["name", "properties.configuration.ingress.fqdn", "id"]
+  type      = "Microsoft.App/containerApps@2022-11-01-preview"
+  name      = "ca-microshop-${var.application_name}"
+  location  = var.location
+  parent_id = var.resource_group_id
+  response_export_values = [
+    "name",
+    "properties.configuration.ingress.fqdn",
+    "properties.customDomainVerificationId",
+    "id"
+  ]
   body = jsonencode({
     properties = {
       configuration = {
