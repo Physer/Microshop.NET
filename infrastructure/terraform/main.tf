@@ -18,6 +18,12 @@ provider "azurerm" {
   features {}
 }
 
+resource "random_pet" "revision_suffix" {
+  keepers = {
+    uuid = uuid()
+  }
+}
+
 resource "azurerm_resource_group" "rg_microshop" {
   name     = "rg-microshop-${var.environment}"
   location = var.location

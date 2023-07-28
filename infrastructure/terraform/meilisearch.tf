@@ -1,3 +1,18 @@
+resource "random_password" "meilisearch_api_key" {
+  length = 16
+}
+
+locals {
+  meilisearch_api_key = "meilisearch-api-key"
+  meilisearch_secrets = [
+    { name = (local.meilisearch_api_key), value = random_password.meilisearch_api_key.result }
+  ]
+  meilisearch_appsettings = [
+    { name = "MEILI_MASTER_KEY", secretRef = local.meilisearch_api_key }
+  ]
+}
+
+
 module "meilisearch_app" {
   source                       = "./modules/container-app"
   application_name             = "meilisearch"
