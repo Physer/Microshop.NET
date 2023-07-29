@@ -29,3 +29,18 @@ variable "environment" {
   description = "The environment to deploy to"
   type        = string
 }
+
+variable "container_app_id" {
+  description = "The ID of the Container App"
+  type        = string
+}
+
+variable "resource_group_id" {
+  description = "The ID of the resource group to create the managed TLS certficate in"
+  type        = string
+}
+
+variable "location" {
+  type    = string
+  default = "West Europe"
+}
