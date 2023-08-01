@@ -124,7 +124,7 @@ jobs:
         run: terraform workspace select -or-create production
 
       - name: Plan Terraform
-        run: terraform plan -no-color
+        run: terraform plan -no-color -input=false
 
       - name: Apply Terraform
         run: terraform apply -auto-approve
