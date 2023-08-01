@@ -35,6 +35,17 @@ variable "container_app_id" {
   type        = string
 }
 
+variable "container_environment_id" {
+  description = "The ID of the Container App Environment"
+  type        = string
+}
+
+variable "container_environment_name" {
+  description = "The name of the Container App Environment"
+  type        = string
+}
+
+
 variable "resource_group_id" {
   description = "The ID of the resource group to create the managed TLS certficate in"
   type        = string
