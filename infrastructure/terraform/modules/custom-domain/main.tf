@@ -74,3 +74,14 @@ resource "azapi_update_resource" "container_app_hostname_binding" {
     }
   })
 }
+
+resource "cloudflare_record" "proxied_cname_record" {
+  depends_on      = [azapi_update_resource.container_app_hostname_binding]
+  zone_id         = var.zone_id
+  name            = local.custom_hostname
+  value           = var.application_fqdn
+  type            = "CNAME"
+  ttl             = 1
+  allow_overwrite = true
+  proxied         = true
+}
