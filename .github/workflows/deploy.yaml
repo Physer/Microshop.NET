@@ -106,6 +106,8 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       TF_VAR_environment: ${{ vars.ENVIRONMENT }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
     defaults:
       run:
         working-directory: infrastructure/terraform
