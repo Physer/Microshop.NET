@@ -27,6 +27,7 @@ func main() {
 
 	apiBasePath := "/auth"
 	websiteBasePath := "/auth"
+	
 	err := supertokens.Init(supertokens.TypeInput{
 		Supertokens: &supertokens.ConnectionInfo{
 			ConnectionURI: superTokensCoreUrl,
