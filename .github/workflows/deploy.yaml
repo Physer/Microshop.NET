@@ -8,37 +8,8 @@ on:
       - main
 
 jobs:
-  retrieve-changes:
-    name: Retrieve changes
-    runs-on: ubuntu-latest
-    outputs:
-      gateway: ${{ steps.filter.outputs.gateway }}
-      indexing: ${{ steps.filter.outputs.indexing }}
-      products: ${{ steps.filter.outputs.products }}
-      pricing: ${{ steps.filter.outputs.pricing }}
-      authentication: ${{ steps.filter.outputs.authentication }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            gateway:
-              - 'backend/gateway/**'
-            indexing:
-              - 'backend/indexing/**'
-            products:
-              - 'backend/products/**'
-            pricing:
-              - 'backend/pricing/**'
-            authentication:
-              - 'backend/authentication/**'
-
   build-and-publish-gateway-service:
     name: Build and publish gateway service
-    needs: retrieve-changes
-    if: ${{ needs.retrieve-changes.outputs.gateway == 'true' }}
     uses: ./.github/workflows/build-publish-service.yaml
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
@@ -48,8 +19,6 @@ jobs:
 
   build-and-publish-indexing-service:
     name: Build and publish indexing service
-    needs: retrieve-changes
-    if: ${{ needs.retrieve-changes.outputs.indexing == 'true' }}
     uses: ./.github/workflows/build-publish-service.yaml
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
@@ -59,8 +28,6 @@ jobs:
 
   build-and-publish-products-service:
     name: Build and publish products service
-    needs: retrieve-changes
-    if: ${{ needs.retrieve-changes.outputs.products == 'true' }}
     uses: ./.github/workflows/build-publish-service.yaml
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
@@ -70,8 +37,6 @@ jobs:
 
   build-and-publish-pricing-service:
     name: Build and publish pricing service
-    needs: retrieve-changes
-    if: ${{ needs.retrieve-changes.outputs.pricing == 'true' }}
     uses: ./.github/workflows/build-publish-service.yaml
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
@@ -81,8 +46,6 @@ jobs:
 
   build-and-publish-authentication-service:
     name: Build and publish authentication service
-    needs: retrieve-changes
-    if: ${{ needs.retrieve-changes.outputs.authentication == 'true' }}
     uses: ./.github/workflows/build-publish-authentication.yaml
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
