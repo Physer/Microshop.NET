@@ -35,8 +35,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/supertokens/supertokens-golang v0.12.9 h1:z77BWYhNqN8eU9bG8LY3cHFtarXSuoJjYElgly1iCa8=
-github.com/supertokens/supertokens-golang v0.12.9/go.mod h1:Gqo2Uqu6xJ1uswLR/KXKkpurVqVa1uFMevOSRgCNAMg=
+github.com/supertokens/supertokens-golang v0.12.10 h1:hgrnsRPIjP6Ret7EqnbENKgRYqfaW870ekkwt7+2SBc=
+github.com/supertokens/supertokens-golang v0.12.10/go.mod h1:Gqo2Uqu6xJ1uswLR/KXKkpurVqVa1uFMevOSRgCNAMg=
 github.com/twilio/twilio-go v0.26.0 h1:wFW4oTe3/LKt6bvByP7eio8JsjtaLHjMQKOUEzQry7U=
 github.com/twilio/twilio-go v0.26.0/go.mod h1:lz62Hopu4vicpQ056H5TJ0JE4AP0rS3sQ35/ejmgOwE=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=

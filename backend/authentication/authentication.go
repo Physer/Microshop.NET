@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
+
+	"microshop/authentication/admin"
 
 	"github.com/joho/godotenv"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
@@ -23,11 +26,14 @@ func main() {
 	fmt.Println("Starting authentication service")
 	fmt.Println("Loading environment variables from .env file or the environment")
 	godotenv.Load("../../.env")
+	for _, element := range os.Environ() {
+		fmt.Printf("Loaded: %s \n", element)
+	}
 	setEnvironmentVariables()
 
 	apiBasePath := "/auth"
 	websiteBasePath := "/auth"
-	
+
 	err := supertokens.Init(supertokens.TypeInput{
 		Supertokens: &supertokens.ConnectionInfo{
 			ConnectionURI: superTokensCoreUrl,
@@ -45,6 +51,11 @@ func main() {
 			dashboard.Init(nil),
 		},
 	})
+
+	res, _ := admin.CreateDashboardUser(superTokensCoreUrl)
+	responseContent, _ := io.ReadAll(res.Body)
+	res.Body.Close()
+	fmt.Printf("Received response from creating dashboard user: %s with statuscode %d \n", string(responseContent), res.StatusCode)
 
 	if err != nil {
 		panic(err.Error())
@@ -80,13 +91,9 @@ func corsMiddleware(next http.Handler) http.Handler {
 
 func setEnvironmentVariables() {
 	fmt.Println("Setting environment variables")
-	for _, element := range os.Environ() {
-		fmt.Printf("Loaded: %s \n", element)
-	}
 	superTokensCoreUrl = os.Getenv("AUTHENTICATION_CORE_URL")
 	superTokensBackendPort, _ = strconv.Atoi(os.Getenv("AUTHENTICATION_BACKEND_PORT"))
 	gatewayUrl = os.Getenv("GATEWAY_URL")
 	websiteUrl = os.Getenv("WEBSITE_URL")
-
 	fmt.Printf("Loaded %d environment variables \n", len(os.Environ()))
 }

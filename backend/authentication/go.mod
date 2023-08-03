@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/joho/godotenv v1.5.1
-	github.com/supertokens/supertokens-golang v0.12.9
+	github.com/supertokens/supertokens-golang v0.12.10
 )
 
 require (
