@@ -52,7 +52,7 @@ func main() {
 		},
 	})
 
-	res, _ := admin.CreateDashboardUser(superTokensCoreUrl)
+	res := admin.CreateDashboardUser(superTokensCoreUrl)
 	responseContent, _ := io.ReadAll(res.Body)
 	res.Body.Close()
 	fmt.Printf("Received response from creating dashboard user: %s with statuscode %d \n", string(responseContent), res.StatusCode)

@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func CreateDashboardUser(supertokensCoreUrl string) (*http.Response, error) {
+func CreateDashboardUser(supertokensCoreUrl string) *http.Response {
 	dashboardUserEmail := os.Getenv("DASHBOARD_USER_EMAIL")
 	dashboardUserPassword := os.Getenv("DASHBOARD_USER_PASSWORD")
 	requestBody := `{"email": "%s","password": "%s"}`
@@ -21,6 +21,9 @@ func CreateDashboardUser(supertokensCoreUrl string) (*http.Response, error) {
 	httpRequest.Header.Add("rid", "dashboard")
 	client := http.DefaultClient
 	res, err := client.Do(httpRequest)
+	if err != nil {
+		panic(err.Error())
+	}
 
-	return res, err
+	return res
 }
