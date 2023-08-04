@@ -13,7 +13,9 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/supertokens/supertokens-golang/recipe/dashboard"
 	"github.com/supertokens/supertokens-golang/recipe/emailpassword"
+	"github.com/supertokens/supertokens-golang/recipe/emailpassword/epmodels"
 	"github.com/supertokens/supertokens-golang/recipe/session"
+	"github.com/supertokens/supertokens-golang/recipe/userroles"
 	"github.com/supertokens/supertokens-golang/supertokens"
 )
 
@@ -46,12 +48,36 @@ func main() {
 			WebsiteBasePath: &websiteBasePath,
 		},
 		RecipeList: []supertokens.Recipe{
-			emailpassword.Init(nil),
+			emailpassword.Init(&epmodels.TypeInput{
+				Override: &epmodels.OverrideStruct{
+					Functions: func(originalImplementation epmodels.RecipeInterface) epmodels.RecipeInterface {
+						originalSignUp := *originalImplementation.SignUp
+
+						(*originalImplementation.SignUp) = func(email, password string, userContext supertokens.UserContext) (epmodels.SignUpResponse, error) {
+
+							response, err := originalSignUp(email, password, userContext)
+							if err != nil {
+								return epmodels.SignUpResponse{}, err
+							}
+
+							if response.OK != nil {
+								user := response.OK.User
+								admin.AddRoleToUser(user.ID, "user")
+							}
+							return response, nil
+						}
+
+						return originalImplementation
+					},
+				},
+			}),
 			session.Init(nil),
 			dashboard.Init(nil),
+			userroles.Init(nil),
 		},
 	})
 
+	admin.CreateRole("user", "read")
 	res := admin.CreateDashboardUser(superTokensCoreUrl)
 	responseContent, _ := io.ReadAll(res.Body)
 	res.Body.Close()

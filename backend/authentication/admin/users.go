@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/supertokens/supertokens-golang/recipe/userroles"
 )
 
 func CreateDashboardUser(supertokensCoreUrl string) *http.Response {
@@ -26,4 +28,14 @@ func CreateDashboardUser(supertokensCoreUrl string) *http.Response {
 	}
 
 	return res
+}
+
+func AddRoleToUser(userId string, roleName string) bool {
+	fmt.Printf("Adding role %s to user %s \n", roleName, userId)
+	response, err := userroles.AddRoleToUser(userId, roleName, nil)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return !response.OK.DidUserAlreadyHaveRole && response.UnknownRoleError == nil
 }
