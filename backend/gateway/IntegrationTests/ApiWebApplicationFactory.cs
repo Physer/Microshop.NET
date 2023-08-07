@@ -4,6 +4,7 @@ using Messaging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IntegrationTests;
 
@@ -17,9 +18,13 @@ internal class ApiWebApplicationFactory : WebApplicationFactory<Program>
     {
         var inMemoryConfiguration = new ConfigurationBuilder().AddInMemoryCollection(_configuration).Build();
         var servicebusOptionsSection = inMemoryConfiguration.GetSection(ServicebusOptions.ConfigurationEntry);
-        var servicebusOptions = servicebusOptionsSection.Get<ServicebusOptions>(); 
+        var servicebusOptions = servicebusOptionsSection.Get<ServicebusOptions>();
 
         builder.UseConfiguration(inMemoryConfiguration);
-        builder.ConfigureServices(services => services.AddMassTransitTestHarness(cfg => cfg.ConfigureBusRegistration(servicebusOptions)));
+        builder.ConfigureServices(services =>
+        {
+            services.AddAuthentication(IntegrationAuthenticationHandler.IntegrationTestSchema).AddScheme<IntegrationAuthenticationOptions, IntegrationAuthenticationHandler>(IntegrationAuthenticationHandler.IntegrationTestSchema, _ => { });
+            services.AddMassTransitTestHarness(cfg => cfg.ConfigureBusRegistration(servicebusOptions));
+        });
     }
 }
