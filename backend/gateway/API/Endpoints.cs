@@ -1,7 +1,9 @@
 ﻿using Application.Interfaces.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("UnitTests")]
 namespace API;
 
 public static class Endpoints
