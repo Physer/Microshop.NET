@@ -1,8 +1,8 @@
+using API;
 using API.Authentication;
 using Application.Options;
 using Messaging;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
