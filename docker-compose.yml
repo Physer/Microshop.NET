@@ -46,7 +46,7 @@ services:
     container_name: gateway
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.dotnet
+      dockerfile: infrastructure/Dockerfile.api
       args:
         - SERVICE_NAME=gateway
     environment:
@@ -63,7 +63,7 @@ services:
     container_name: products
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.dotnet
+      dockerfile: infrastructure/Dockerfile.api
       args:
         - SERVICE_NAME=products
     environment:
@@ -77,7 +77,7 @@ services:
     container_name: indexing
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.dotnet
+      dockerfile: infrastructure/Dockerfile.api
       args:
         - SERVICE_NAME=indexing
     environment:
@@ -94,7 +94,7 @@ services:
     container_name: pricing
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.dotnet
+      dockerfile: infrastructure/Dockerfile.api
       args:
         - SERVICE_NAME=pricing
     environment:
@@ -120,3 +120,13 @@ services:
     restart: always
     ports:
       - 5004:80
+  admin_ui:
+    container_name: admin_ui
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.webassembly
+      args:
+        - SERVICE_NAME=admin-ui
+    restart: always
+    ports:
+      - 3000:80
