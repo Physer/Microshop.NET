@@ -8,11 +8,16 @@ resource "random_password" "authentication_database_password" {
   special = false
 }
 
+resource "random_password" "dashboard_user_password" {
+  length = 16
+}
+
 locals {
   database_name                            = "supertokens"
   authentication_database_connectionstring = "authentication-database-connectionstring"
   authentication_database_user             = "authentication-database-user"
   authentication_database_password         = "authentication-database-password"
+  dashboard_user_password                  = "dashboard-user-password"
 
   authentication_database_secrets = [
     { name = (local.authentication_database_user), value = random_password.authentication_database_user.result },
@@ -31,11 +36,16 @@ locals {
     { name = "POSTGRESQL_CONNECTION_URI", secretRef = local.authentication_database_connectionstring },
   ]
 
+  authentication_service_secrets = [
+    { name = (local.dashboard_user_password), value = random_password.dashboard_user_password.result },
+  ]
   authentication_service_appsettings = [
     { name = "AUTHENTICATION_CORE_URL", value = "https://${module.authentication_core.fqdn}" },
     { name = "AUTHENTICATION_BACKEND_PORT", value = 80 },
     { name = "GATEWAY_URL", value = "https://${module.gateway_app.fqdn}" },
     { name = "WEBSITE_URL", value = "http://localhost:3000" },
+    { name = "DASHBOARD_USER_EMAIL", value = "admin@microshop.rocks" },
+    { name = "DASHBOARD_USER_PASSWORD", secretRef = local.dashboard_user_password },
   ]
 }
 
@@ -74,6 +84,7 @@ module "authentication_service" {
   image_name                   = "physer/microshop-authentication:main"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   ingress_enabled              = true
+  secrets                      = local.authentication_service_secrets
   appsettings                  = local.authentication_service_appsettings
   revision_suffix              = random_pet.revision_suffix.id
 }
