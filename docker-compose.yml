@@ -53,12 +53,15 @@ services:
       - Servicebus__BaseUrl=rabbitmq
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
+      - ReverseProxy__Routes__authentication__Match__Hosts__0=auth.localhost
       - ReverseProxy__Clusters__authentication__Destinations__authentication__Address=http://authentication_service
+      - ReverseProxy__Routes__admin__Match__Hosts__0=admin.localhost
+      - ReverseProxy__Clusters__admin__Destinations__admin__Address=http://admin_ui
       - Authentication__BaseUrl=http://authentication_service
       - Authentication__Issuer=http://localhost:5000/auth
     restart: always
     ports:
-      - 5000:80
+      - 80:80
   products:
     container_name: products
     build:
