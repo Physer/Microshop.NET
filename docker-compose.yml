@@ -54,6 +54,8 @@ services:
       - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
       - ReverseProxy__Clusters__authentication__Destinations__authentication__Address=http://authentication_service
+      - Authentication__BaseUrl=http://authentication_service
+      - Authentication__Issuer=http://localhost:5000/auth
     restart: always
     ports:
       - 5000:80
