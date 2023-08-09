@@ -18,10 +18,12 @@ internal class MicroshopAuthenticationHandlerBuilder
     private readonly ISystemClock _clock;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IOptions<AuthenticationOptions> _authenticationOptions;
-
+    
     public MicroshopAuthenticationHandlerBuilder()
     {
         _options = Substitute.For<IOptionsMonitor<JwtBearerOptions>>();
+        _options.Get(Arg.Any<string>()).Returns(new JwtBearerOptions());
+
         _logger = Substitute.For<ILoggerFactory>();
         _encoder = Substitute.For<UrlEncoder>();
         _clock = Substitute.For<ISystemClock>();
