@@ -25,15 +25,15 @@ jobs:
         with:
           filters: |
             gateway:
-              - 'backend/gateway/**'
+              - 'apps/gateway/**'
             indexing:
-              - 'backend/indexing/**'
+              - 'apps/indexing/**'
             products:
-              - 'backend/products/**'
+              - 'apps/products/**'
             pricing:
-              - 'backend/pricing/**'
+              - 'apps/pricing/**'
             authentication:
-              - 'backend/authentication/**'
+              - 'apps/authentication/**'
 
   build-and-publish-gateway-service:
     name: Build and publish gateway service

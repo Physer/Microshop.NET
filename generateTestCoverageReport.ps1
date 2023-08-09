@@ -1,11 +1,11 @@
-$backendServiceName = $Args[0]
-if (!$backendServiceName) {
+$serviceName.dotnet = $Args[0]
+if (!$serviceName.dotnet) {
   Write-Error 'Please provide a back-end service name as argument'
   exit
 }
 
-$backendServicePath = "./backend/$($backendServiceName)"
-Push-Location -Path $backendServicePath
+$servicePath = "./apps/$($serviceName.dotnet)"
+Push-Location -Path $servicePath
 
 $coveragePath = "./coverage"
 if (Test-Path $coveragePath) {

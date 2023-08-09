@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend/${{ inputs.service-name }}
+        working-directory: apps/${{ inputs.service-name }}
     steps:
       - uses: actions/checkout@v3
 
@@ -72,7 +72,7 @@ jobs:
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
           context: .
-          file: ./infrastructure/Dockerfile.backend
+          file: ./infrastructure/Dockerfile.dotnet
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

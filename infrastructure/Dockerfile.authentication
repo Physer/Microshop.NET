@@ -1,9 +1,9 @@
 FROM golang:bookworm AS build-stage
 
 WORKDIR /app
-COPY backend/authentication/go.mod backend/authentication/go.sum ./
+COPY apps/authentication/go.mod apps/authentication/go.sum ./
 RUN go mod download
-COPY backend/authentication/ ./
+COPY apps/authentication/ ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o /auth
 
 FROM alpine:latest AS build-release-stage
