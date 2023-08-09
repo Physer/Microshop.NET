@@ -113,6 +113,7 @@ jobs:
         build-and-publish-gateway-service,
         build-and-publish-pricing-service,
         build-and-publish-authentication-service,
+        build-and-publish-admin-ui-service
       ]
     runs-on: ubuntu-latest
     env:
