@@ -17,6 +17,7 @@ jobs:
       products: ${{ steps.filter.outputs.products }}
       pricing: ${{ steps.filter.outputs.pricing }}
       authentication: ${{ steps.filter.outputs.authentication }}
+      admin-ui: ${{ steps.filter.outputs.admin-ui }}
     steps:
       - uses: actions/checkout@v3
 
@@ -34,6 +35,8 @@ jobs:
               - 'apps/pricing/**'
             authentication:
               - 'apps/authentication/**'
+            admin-ui:
+              - 'apps/admin-ui/**'
 
   build-and-publish-gateway-service:
     name: Build and publish gateway service
@@ -84,6 +87,18 @@ jobs:
     needs: retrieve-changes
     if: ${{ needs.retrieve-changes.outputs.authentication == 'true' }}
     uses: ./.github/workflows/build-publish-authentication.yaml
+    secrets:
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+
+  build-and-publish-admin-ui-service:
+    name: Build and publish admin-ui service
+    needs: retrieve-changes
+    if: ${{ needs.retrieve-changes.outputs.admin-ui == 'true' }}
+    uses: ./.github/workflows/build-publish-service.yaml
+    with:
+      dockerfile-type: webassembly
+      service-name: admin-ui
     secrets:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
