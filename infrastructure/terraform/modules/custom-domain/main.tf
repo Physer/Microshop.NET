@@ -1,11 +1,6 @@
-locals {
-  custom_hostname    = var.environment == "production" ? var.application_name : "${var.environment}-${var.application_name}"
-  custom_domain_name = "${local.custom_hostname}.microshop.rocks"
-}
-
 resource "cloudflare_record" "cname_record" {
   zone_id = var.zone_id
-  name    = local.custom_hostname
+  name    = var.cname
   value   = var.application_fqdn
   type    = "CNAME"
   ttl     = 3600
@@ -28,7 +23,7 @@ resource "azapi_update_resource" "container_app_hostname" {
         ingress = {
           customDomains = [
             {
-              name        = local.custom_domain_name
+              name        = var.domain_name
               bindingType = "Disabled"
             }
           ]
@@ -47,7 +42,7 @@ resource "azapi_resource" "managed_tls_certificate" {
   body = jsonencode({
     properties = {
       domainControlValidation = "HTTP"
-      subjectName             = local.custom_domain_name
+      subjectName             = var.domain_name
   } })
 }
 
@@ -64,7 +59,7 @@ resource "azapi_update_resource" "container_app_hostname_binding" {
         ingress = {
           customDomains = [
             {
-              name          = local.custom_domain_name
+              name          = var.domain_name
               bindingType   = "SniEnabled"
               certificateId = azapi_resource.managed_tls_certificate.id
             }
@@ -78,7 +73,7 @@ resource "azapi_update_resource" "container_app_hostname_binding" {
 resource "cloudflare_record" "proxied_cname_record" {
   depends_on      = [azapi_update_resource.container_app_hostname_binding]
   zone_id         = var.zone_id
-  name            = local.custom_hostname
+  name            = var.cname
   value           = var.application_fqdn
   type            = "CNAME"
   ttl             = 1

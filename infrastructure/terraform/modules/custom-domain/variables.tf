@@ -55,3 +55,13 @@ variable "location" {
   type    = string
   default = "West Europe"
 }
+
+variable "cname" {
+  description = "The CNAME of the custom domain"
+  type = string
+}
+
+variable "domain_name" {
+  description = "The friendly domain name for use on the World Wide Web"
+  type = string
+}
