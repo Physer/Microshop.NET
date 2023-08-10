@@ -78,7 +78,6 @@ resource "azapi_update_resource" "container_app_hostname_binding" {
     azapi_resource.managed_tls_certificate,
     azapi_update_resource.container_app_hostname
   ]
-  for_each    = var.application_names
   type        = "Microsoft.App/containerApps@2023-04-01-preview"
   resource_id = var.container_app_id
   body = jsonencode({
@@ -86,13 +85,11 @@ resource "azapi_update_resource" "container_app_hostname_binding" {
       configuration = {
         secrets = var.secrets
         ingress = {
-          customDomains = [
-            {
-              name          = var.environment == "production" ? "${each.key}.microshop.rocks" : "${var.environment}-${each.key}.microshop.rocks"
-              bindingType   = "SniEnabled"
-              certificateId = azapi_resource.managed_tls_certificate[each.key].id
-            }
-          ]
+          customDomains = [for name in var.application_names : {
+            name          = var.environment == "production" ? "${name}.microshop.rocks" : "${var.environment}-${name}.microshop.rocks"
+            bindingType   = "SniEnabled"
+            certificateId = azapi_resource.managed_tls_certificate[name].id
+          }]
         }
       }
     }
@@ -111,7 +108,7 @@ resource "cloudflare_record" "proxied_cname_record" {
   depends_on      = [time_sleep.wait_to_proxy]
   for_each        = var.application_names
   zone_id         = var.zone_id
-  name            = var.environment == "production" ? "asuid.${each.key}" : "asuid.${var.environment}-${each.key}"
+  name            = var.environment == "production" ? each.key : "${var.environment}-${each.key}"
   value           = var.application_fqdn
   type            = "CNAME"
   ttl             = 1
