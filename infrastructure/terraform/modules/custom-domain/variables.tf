@@ -1,22 +1,16 @@
-variable "api_token" {
-  description = "The Cloudflare API token for interfacing with the DNS zone API"
-  sensitive   = true
-  type        = string
-}
-
 variable "zone_id" {
   description = "The Zone ID for the Cloudflare account"
   sensitive   = true
   type        = string
 }
 
-variable "application_name" {
-  description = "The name of the application to create the CNAME for"
-  type        = string
+variable "application_names" {
+  description = "The names of the applications to create the CNAME for"
+  type        = set(string)
 }
 
 variable "application_fqdn" {
-  description = "The FQDN to point the CNAME to"
+  description = "The FQDN to use as the CNAME target"
   type        = string
 }
 
@@ -54,16 +48,6 @@ variable "resource_group_id" {
 variable "location" {
   type    = string
   default = "West Europe"
-}
-
-variable "cname" {
-  description = "The CNAME of the custom domain"
-  type        = string
-}
-
-variable "domain_name" {
-  description = "The friendly domain name for use on the World Wide Web"
-  type        = string
 }
 
 variable "secrets" {

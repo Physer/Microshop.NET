@@ -8,6 +8,14 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.5.1"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 4.0"
+    }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "~> 1.7.0"
+    }
   }
   backend "azurerm" {
     key = "terraform.tfstate"
@@ -16,6 +24,10 @@ terraform {
 
 provider "azurerm" {
   features {}
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }
 
 resource "random_pet" "revision_suffix" {

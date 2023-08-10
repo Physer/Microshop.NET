@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    azapi = {
+      source = "Azure/azapi"
+    }
+  }
+}
+
 resource "azapi_resource" "microshop_container_app" {
   type      = "Microsoft.App/containerApps@2022-11-01-preview"
   name      = "ca-microshop-${var.application_name}"
