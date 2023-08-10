@@ -20,4 +20,5 @@ module "products_app" {
   secrets                      = local.products_secrets
   appsettings                  = local.products_appsettings
   revision_suffix              = random_pet.revision_suffix.id
+  location                     = azurerm_resource_group.rg_microshop.location
 }

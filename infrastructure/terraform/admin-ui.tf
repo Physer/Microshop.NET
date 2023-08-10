@@ -6,4 +6,5 @@ module "admin_ui_app" {
   ingress_enabled              = true
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   revision_suffix              = random_pet.revision_suffix.id
+  location                     = azurerm_resource_group.rg_microshop.location
 }

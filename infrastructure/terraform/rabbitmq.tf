@@ -33,4 +33,5 @@ module "rabbitmq_app" {
   appsettings                  = local.rabbitmq_appsettings
   ingress_enabled              = true
   revision_suffix              = random_pet.revision_suffix.id
+  location                     = azurerm_resource_group.rg_microshop.location
 }

@@ -25,4 +25,5 @@ module "indexing_app" {
   secrets                      = local.indexing_secrets
   appsettings                  = local.indexing_appsettings
   revision_suffix              = random_pet.revision_suffix.id
+  location                     = azurerm_resource_group.rg_microshop.location
 }

@@ -62,6 +62,7 @@ module "authentication_database" {
   secrets                      = local.authentication_database_secrets
   appsettings                  = local.authentication_database_appsettings
   revision_suffix              = random_pet.revision_suffix.id
+  location                     = azurerm_resource_group.rg_microshop.location
 }
 
 module "authentication_core" {
@@ -75,6 +76,7 @@ module "authentication_core" {
   secrets                      = local.authentication_core_secrets
   appsettings                  = local.authentication_core_appsettings
   revision_suffix              = random_pet.revision_suffix.id
+  location                     = azurerm_resource_group.rg_microshop.location
 }
 
 module "authentication_service" {
@@ -87,5 +89,6 @@ module "authentication_service" {
   secrets                      = local.authentication_service_secrets
   appsettings                  = local.authentication_service_appsettings
   revision_suffix              = random_pet.revision_suffix.id
+  location                     = azurerm_resource_group.rg_microshop.location
 }
 
