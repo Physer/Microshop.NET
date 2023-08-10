@@ -58,10 +58,19 @@ variable "location" {
 
 variable "cname" {
   description = "The CNAME of the custom domain"
-  type = string
+  type        = string
 }
 
 variable "domain_name" {
   description = "The friendly domain name for use on the World Wide Web"
-  type = string
+  type        = string
+}
+
+variable "secrets" {
+  description = "The (existing) application secrets of the container"
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
 }
