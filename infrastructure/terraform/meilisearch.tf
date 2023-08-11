@@ -23,6 +23,5 @@ module "meilisearch_app" {
   secrets                      = local.meilisearch_secrets
   appsettings                  = local.meilisearch_appsettings
   ingress_enabled              = true
-  revision_suffix              = random_pet.revision_suffix.id
   location                     = azurerm_resource_group.rg_microshop.location
 }

@@ -20,6 +20,5 @@ module "pricing_app" {
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   secrets                      = local.pricing_secrets
   appsettings                  = local.pricing_appsettings
-  revision_suffix              = random_pet.revision_suffix.id
   location                     = azurerm_resource_group.rg_microshop.location
 }
