@@ -18,6 +18,7 @@ jobs:
       pricing: ${{ steps.filter.outputs.pricing }}
       authentication: ${{ steps.filter.outputs.authentication }}
       admin-ui: ${{ steps.filter.outputs.admin-ui }}
+      api: ${{ steps.filter.outputs.api }}
     steps:
       - uses: actions/checkout@v3
 
@@ -37,6 +38,8 @@ jobs:
               - 'apps/authentication/**'
             admin-ui:
               - 'apps/admin-ui/**'
+            api:
+              - 'apps/api/**'
 
   build-and-publish-gateway-service:
     name: Build and publish gateway service
@@ -104,6 +107,17 @@ jobs:
       docker-username: ${{ secrets.DOCKER_USERNAME }}
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
 
+  build-and-publish-api-service:
+    name: Build and publish API service
+    needs: retrieve-changes
+    if: ${{ needs.retrieve-changes.outputs.api == 'true' }}
+    uses: ./.github/workflows/build-publish-service.yaml
+    with:
+      service-name: api
+    secrets:
+      docker-username: ${{ secrets.DOCKER_USERNAME }}
+      docker-password: ${{ secrets.DOCKER_PASSWORD }}
+
   deploy_terraform_resources:
     name: Deploy resources to Azure using Terraform
     if: ${{ always() }}
@@ -114,7 +128,8 @@ jobs:
         build-and-publish-gateway-service,
         build-and-publish-pricing-service,
         build-and-publish-authentication-service,
-        build-and-publish-admin-ui-service
+        build-and-publish-admin-ui-service,
+        build-and-publish-api-service,
       ]
     runs-on: ubuntu-latest
     env:
