@@ -48,5 +48,5 @@ module "gateway_domain_settings" {
   container_environment_name = azurerm_container_app_environment.cae_microshop.name
   resource_group_id          = azurerm_resource_group.rg_microshop.id
   secrets                    = local.gateway_secrets
-  application_names          = toset(["admin", "authentication"])
+  application_names          = toset(["admin", "authentication", "api"])
 }

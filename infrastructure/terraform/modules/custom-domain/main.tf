@@ -16,7 +16,6 @@ resource "cloudflare_record" "cname_record" {
   value           = var.application_fqdn
   type            = "CNAME"
   ttl             = 3600
-  allow_overwrite = true
 }
 
 resource "cloudflare_record" "txt_record" {
@@ -26,7 +25,6 @@ resource "cloudflare_record" "txt_record" {
   value           = var.domain_identifier
   type            = "TXT"
   ttl             = 3600
-  allow_overwrite = true
 }
 
 resource "time_sleep" "wait_for_dns" {
@@ -112,6 +110,5 @@ resource "cloudflare_record" "proxied_cname_record" {
   value           = var.application_fqdn
   type            = "CNAME"
   ttl             = 1
-  allow_overwrite = true
   proxied         = true
 }
