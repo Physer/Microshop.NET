@@ -103,7 +103,7 @@ resource "time_sleep" "wait_to_proxy" {
 }
 
 resource "cloudflare_record" "proxied_cname_record" {
-  depends_on      = [time_sleep.wait_to_proxy]
+  depends_on      = [time_sleep.wait_to_proxy, cloudflare_record.cname_record]
   for_each        = var.application_names
   zone_id         = var.zone_id
   name            = var.environment == "production" ? each.key : "${var.environment}-${each.key}"
