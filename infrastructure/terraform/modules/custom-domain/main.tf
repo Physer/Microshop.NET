@@ -10,21 +10,21 @@ terraform {
 }
 
 resource "cloudflare_record" "cname_record" {
-  for_each        = var.application_names
-  zone_id         = var.zone_id
-  name            = var.environment == "production" ? each.key : "${var.environment}-${each.key}"
-  value           = var.application_fqdn
-  type            = "CNAME"
-  ttl             = 3600
+  for_each = var.application_names
+  zone_id  = var.zone_id
+  name     = var.environment == "production" ? each.key : "${var.environment}-${each.key}"
+  value    = var.application_fqdn
+  type     = "CNAME"
+  ttl      = 3600
 }
 
 resource "cloudflare_record" "txt_record" {
-  for_each        = var.application_names
-  zone_id         = var.zone_id
-  name            = var.environment == "production" ? "asuid.${each.key}" : "asuid.${var.environment}-${each.key}"
-  value           = var.domain_identifier
-  type            = "TXT"
-  ttl             = 3600
+  for_each = var.application_names
+  zone_id  = var.zone_id
+  name     = var.environment == "production" ? "asuid.${each.key}" : "asuid.${var.environment}-${each.key}"
+  value    = var.domain_identifier
+  type     = "TXT"
+  ttl      = 3600
 }
 
 resource "time_sleep" "wait_for_dns" {
@@ -111,4 +111,5 @@ resource "cloudflare_record" "proxied_cname_record" {
   type            = "CNAME"
   ttl             = 1
   proxied         = true
+  allow_overwrite = true
 }
