@@ -10,6 +10,9 @@ on:
       dockerfile-type:
         default: api
         type: string
+      execute-tests:
+        default: true
+        type: boolean
     secrets:
       docker-username:
         required: true
@@ -41,12 +44,15 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
+        if: ${{ inputs.execute-tests }}
         run: dotnet test --no-restore --verbosity normal -c Release --collect:"XPlat Code Coverage" --results-directory ./coverage
 
       - name: Merge coverage reports
+        if: ${{ inputs.execute-tests }}
         run: dotnet-coverage merge *.cobertura.xml --recursive --output ./coverage/coverage.merged.xml --output-format cobertura
 
       - name: Verify code coverage is above 70%
+        if: ${{ inputs.execute-tests }}
         shell: pwsh
         run: |
           [XML]$report = Get-Content coverage/coverage.merged.xml

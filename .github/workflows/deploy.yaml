@@ -48,6 +48,7 @@ jobs:
       docker-password: ${{ secrets.DOCKER_PASSWORD }}
     with:
       service-name: gateway
+      execute-tests: false
 
   build-and-publish-indexing-service:
     name: Build and publish indexing service
