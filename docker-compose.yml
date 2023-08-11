@@ -50,15 +50,12 @@ services:
       args:
         - SERVICE_NAME=gateway
     environment:
-      - Servicebus__BaseUrl=rabbitmq
-      - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
-      - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
       - ReverseProxy__Routes__authentication__Match__Hosts__0=auth.localhost
       - ReverseProxy__Clusters__authentication__Destinations__authentication__Address=http://authentication_service
       - ReverseProxy__Routes__admin__Match__Hosts__0=admin.localhost
       - ReverseProxy__Clusters__admin__Destinations__admin__Address=http://admin_ui
-      - Authentication__BaseUrl=http://authentication_service
-      - Authentication__Issuer=http://localhost:5000/auth
+      - ReverseProxy__Routes__api__Match__Hosts__0=api.localhost
+      - ReverseProxy__Clusters__api__Destinations__api__Address=http://api
     restart: always
     ports:
       - 80:80
@@ -133,3 +130,19 @@ services:
     restart: always
     ports:
       - 3000:80
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.api
+      args:
+        - SERVICE_NAME=api
+    environment:
+      - Servicebus__BaseUrl=rabbitmq
+      - Servicebus__ManagementUsername=${SERVICEBUS_MANAGEMENT_USERNAME}
+      - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
+      - Authentication__BaseUrl=http://authentication_service
+      - Authentication__Issuer=http://localhost:5000/auth
+    restart: always
+    ports:
+      - 5005:80
