@@ -56,7 +56,7 @@ module "authentication_database" {
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "postgres:latest"
   port                         = 5432
-  transport                    = "tcp"
+  transport                    = "Tcp"
   ingress_enabled              = true
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   secrets                      = local.authentication_database_secrets

@@ -28,7 +28,7 @@ module "rabbitmq_app" {
   image_name                   = "masstransit/rabbitmq:latest"
   resource_group_id            = azurerm_resource_group.rg_microshop.id
   port                         = 5672
-  transport                    = "tcp"
+  transport                    = "Tcp"
   secrets                      = local.rabbitmq_secrets
   appsettings                  = local.rabbitmq_appsettings
   ingress_enabled              = true

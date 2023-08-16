@@ -48,7 +48,7 @@ variable "port" {
 
 variable "transport" {
   type    = string
-  default = "auto"
+  default = "Auto"
 }
 
 variable "scale_max" {

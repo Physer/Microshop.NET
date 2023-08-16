@@ -25,7 +25,7 @@ resource "azapi_resource" "microshop_container_app" {
           allowInsecure = false,
           external      = var.allow_external_traffic
           targetPort    = var.port,
-          exposedPort   = var.transport == "tcp" ? var.port : null,
+          exposedPort   = var.transport == "Tcp" ? var.port : 0,
           traffic = [{
             latestRevision = true,
             weight         = 100
