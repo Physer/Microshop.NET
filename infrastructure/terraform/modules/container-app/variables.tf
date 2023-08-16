@@ -53,12 +53,12 @@ variable "transport" {
 
 variable "scale_max" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "scale_min" {
   type    = number
-  default = 1
+  default = 0
 }
 
 variable "allow_external_traffic" {
