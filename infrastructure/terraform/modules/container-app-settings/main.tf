@@ -18,7 +18,6 @@ resource "azapi_update_resource" "microshop_container_app_settings" {
         containers = [{
           env = var.appsettings
         }]
-        revisionSuffix = null
       }
     }
   })
