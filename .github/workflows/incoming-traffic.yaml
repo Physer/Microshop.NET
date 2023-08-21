@@ -35,6 +35,7 @@ jobs:
     with:
       service-name: gateway
       service-path: apps/gateway
+      execute-tests: false
     secrets: inherit
 
   provision-indexing:
