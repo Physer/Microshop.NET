@@ -1,5 +1,9 @@
+locals {
+  resource_group_name = "rg-microshop-${var.environment}"
+}
+
 data "azurerm_resource_group" "rg_microshop" {
-  name = "rg-microshop-${var.environment}"
+  name = local.resource_group_name
 }
 
 data "azurerm_container_app_environment" "cae_microshop" {
