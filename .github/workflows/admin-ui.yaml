@@ -24,6 +24,7 @@ jobs:
 
   provision-admin-ui:
     name: Deploy the Admin UI
+    needs: build-publish-admin-ui
     uses: ./.github/workflows/provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}
