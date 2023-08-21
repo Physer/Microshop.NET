@@ -8,7 +8,7 @@ terraform {
 
 resource "azapi_resource" "microshop_container_app" {
   type      = "Microsoft.App/containerApps@2022-11-01-preview"
-  name      = "ca-microshop-${var.application_name}"
+  name      = "ca-${var.application_name}"
   location  = var.location
   parent_id = var.resource_group_id
   response_export_values = [
@@ -38,7 +38,7 @@ resource "azapi_resource" "microshop_container_app" {
       template = {
         containers = [{
           image = var.image_name,
-          name  = "ca-microshop-${var.application_name}-container",
+          name  = "ca-${var.application_name}-container",
           resources = {
             cpu    = 0.25,
             memory = "0.5Gi",
