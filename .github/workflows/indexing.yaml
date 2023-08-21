@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - ".github"
+      - ".github/workflows"
       - "infrastructure/terraform/internal/indexing"
       - "infrastructure/terraform/modules"
       - "apps/indexing"
