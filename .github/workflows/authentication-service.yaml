@@ -3,11 +3,6 @@ concurrency: ci-authentication
 
 on:
   workflow_call:
-    secrets:
-      docker-username:
-        required: true
-      docker-password:
-        required: true
 
 jobs:
   build-and-publish-services:
@@ -30,8 +25,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
-          username: ${{ secrets.docker-username }}
-          password: ${{ secrets.docker-password }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
