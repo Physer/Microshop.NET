@@ -16,3 +16,4 @@ jobs:
       service-name: generic-resources
       infrastructure-path: generic
       environment: ${{ vars.ENVIRONMENT }}
+    secrets: inherit
