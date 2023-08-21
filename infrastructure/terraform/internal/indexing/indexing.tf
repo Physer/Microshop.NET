@@ -17,7 +17,7 @@ locals {
 
 
 module "indexing_app" {
-  source                       = "./modules/container-app"
+  source                       = "../../modules/container-app"
   application_name             = "indexing"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-indexing:main"

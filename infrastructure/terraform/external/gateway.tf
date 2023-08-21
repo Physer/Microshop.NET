@@ -28,7 +28,7 @@ module "gateway_app_settings" {
 
 module "gateway_domain_settings" {
   depends_on                 = [module.gateway_app_settings]
-  source                     = "./modules/custom-domain"
+  source                     = "../modules/container-app"
   zone_id                    = var.cloudflare_zone_id
   environment                = var.environment
   application_fqdn           = module.gateway_app.fqdn

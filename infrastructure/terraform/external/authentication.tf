@@ -51,7 +51,7 @@ locals {
 
 
 module "authentication_database" {
-  source                       = "./modules/container-app"
+  source                       = "../modules/container-app"
   application_name             = "authentication-db"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "postgres:latest"
@@ -65,7 +65,7 @@ module "authentication_database" {
 }
 
 module "authentication_core" {
-  source                       = "./modules/container-app"
+  source                       = "../modules/container-app"
   application_name             = "authentication-core"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "registry.supertokens.io/supertokens/supertokens-postgresql:6.0"
@@ -78,7 +78,7 @@ module "authentication_core" {
 }
 
 module "authentication_service" {
-  source                       = "./modules/container-app"
+  source                       = "../modules/container-app"
   application_name             = "authentication-svc"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-authentication:main"

@@ -33,7 +33,7 @@ locals {
 }
 
 module "rabbitmq_app" {
-  source                       = "../../modules/container-app"
+  source                       = "../modules/container-app"
   application_name             = "rabbitmq"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "masstransit/rabbitmq:latest"
@@ -48,7 +48,7 @@ module "rabbitmq_app" {
 }
 
 module "meilisearch_app" {
-  source                       = "../../modules/container-app"
+  source                       = "../modules/container-app"
   application_name             = "meilisearch"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "getmeili/meilisearch:latest"
