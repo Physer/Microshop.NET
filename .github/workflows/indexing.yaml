@@ -19,7 +19,6 @@ jobs:
     with:
       service-name: indexing
       service-path: apps/indexing
-      dockerfile-type: webassembly
     secrets: inherit
 
   provision-indexing:
