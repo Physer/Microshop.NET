@@ -1,0 +1,33 @@
+name: Deploy Indexing service
+concurrency: indexing
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github"
+      - "infrastructure/terraform/internal/indexing"
+      - "infrastructure/terraform/modules"
+      - "apps/indexing"
+
+jobs:
+  build-publish-indexing:
+    name: Build and publish the Indexing service
+    uses: ./.github/workflows/dotnet-service.yaml
+    with:
+      service-name: indexing
+      service-path: apps/indexing
+      dockerfile-type: webassembly
+    secrets: inherit
+
+  provision-indexing:
+    name: Deploy the Indexing service
+    needs: build-publish-indexing
+    uses: ./.github/workflows/provision.yaml
+    with:
+      environment: ${{ vars.ENVIRONMENT }}
+      infrastructure-path: internal/indexing
+      service-name: indexing
+    secrets: inherit
