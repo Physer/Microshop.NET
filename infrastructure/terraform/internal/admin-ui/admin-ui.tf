@@ -4,7 +4,7 @@ data "azurerm_resource_group" "rg_microshop" {
 
 data "azurerm_container_app_environment" "cae_microshop" {
   name                = "cae-${var.environment}"
-  resource_group_name = "rg-microshop-${var.environment}"
+  resource_group_name = local.resource_group_name
 }
 
 module "admin_ui_app" {
