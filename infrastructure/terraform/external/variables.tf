@@ -18,3 +18,8 @@ variable "cloudflare_zone_id" {
   sensitive   = true
   type        = string
 }
+
+variable "application_names" {
+  description = "A set of application names to create DNS records for"
+  type = set(string)
+}

@@ -31,11 +31,11 @@ module "gateway_domain_settings" {
   source                     = "../modules/custom-domain"
   zone_id                    = var.cloudflare_zone_id
   environment                = var.environment
+  application_names          = var.application_names
   application_fqdn           = module.gateway_app.fqdn
   domain_identifier          = module.gateway_app.custom_domain_verification_id
   container_app_id           = module.gateway_app.id
   container_environment_id   = data.azurerm_container_app_environment.cae_microshop.id
   container_environment_name = data.azurerm_container_app_environment.cae_microshop.name
   resource_group_id          = data.azurerm_resource_group.rg_microshop.id
-  application_names          = toset(["admin", "authentication", "api"])
 }
