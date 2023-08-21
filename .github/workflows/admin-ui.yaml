@@ -1,0 +1,32 @@
+name: Deploy Admin UI
+concurrency: admin-ui
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/.github"
+      - "**/infrastructure/terraform/internal/admin-ui"
+      - "**/infrastructure/terraform/modules"
+      - "**/apps/admin-ui"
+
+jobs:
+  build-publish-admin-ui:
+    name: Build and publish the Admin UI
+    uses: ./.github/workflows/dotnet-service.yaml
+    with:
+      service-name: admin-ui
+      service-path: apps/admin-ui
+      dockerfile-type: webassembly
+    secrets: inherit
+
+  provision-admin-ui:
+    name: Deploy the Admin UI
+    uses: ./.github/workflows/provision.yaml
+    with:
+      environment: ${{ vars.ENVIRONMENT }}
+      infrastructure-path: internal/admin-ui
+      service-name: admin-ui
+    secrets: inherit
