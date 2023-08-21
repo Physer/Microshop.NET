@@ -7,10 +7,10 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows"
-      - "infrastructure/terraform/internal/indexing"
-      - "infrastructure/terraform/modules"
-      - "apps/indexing"
+      - ".github/workflows/**"
+      - "infrastructure/terraform/internal/indexing/**"
+      - "infrastructure/terraform/modules/**"
+      - "apps/indexing/**"
 
 jobs:
   build-publish-indexing:
