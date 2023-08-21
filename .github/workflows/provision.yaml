@@ -1,0 +1,53 @@
+name: Provision infrastructure (reusable workflow)
+concurrency: ci-${{ inputs.service-name }}
+
+on:
+  workflow_call:
+    inputs:
+      service-name:
+        required: true
+        type: string
+      infrastructure-path:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+      application-names:
+        required: true
+        type: string
+        default: ''
+
+jobs:
+  deploy_terraform_resources:
+    name: Deploy resources to Azure using Terraform
+    runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      TF_VAR_environment: ${{ inputs.environment }}
+      TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+      TF_VAR_application_names: ${{ inputs.application-names }}
+    defaults:
+      run:
+        working-directory: infrastructure/terraform/${{ inputs.infrastructure-path }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Initialize Terraform
+        run: terraform init -backend-config="config.azure.tfbackend"
+
+      - name: Set Terraform workspace
+        run: terraform workspace select -or-create production
+
+      - name: Plan Terraform
+        run: terraform plan -no-color -input=false
+
+      - name: Apply Terraform
+        run: terraform apply -auto-approve
