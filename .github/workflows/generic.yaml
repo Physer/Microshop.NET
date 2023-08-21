@@ -11,7 +11,7 @@ on:
 
 jobs:
   provision-generic-resources:
-    uses: ./github/workflows/provision.yaml
+    uses: ./.github/workflows/provision.yaml
     with:
       service-name: generic-resources
       infrastructure-path: generic
