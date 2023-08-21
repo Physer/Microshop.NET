@@ -59,3 +59,4 @@ jobs:
       infrastructure-path: dns-proxy
       service-name: dns-proxy
       application-names: ${{ vars.APPLICATION_NAMES }}
+    secrets: inherit
