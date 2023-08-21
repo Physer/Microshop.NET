@@ -38,7 +38,7 @@ jobs:
       execute-tests: false
     secrets: inherit
 
-  provision-indexing:
+  provision-incoming-traffic-services:
     name: Deploy the services serving traffic
     needs:
       [build-publish-api, build-publish-authentication, build-publish-gateway]
@@ -47,4 +47,15 @@ jobs:
       environment: ${{ vars.ENVIRONMENT }}
       infrastructure-path: external
       service-name: incoming-traffic
+      application-names: ${{ vars.APPLICATION_NAMES }}
     secrets: inherit
+
+  proxy-records:
+    name: Proxy DNS records for the services receiving traffic
+    needs: provision-incoming-traffic-services
+    uses: ./.github/workflows/reusable-provision.yaml
+    with:
+      environment: ${{ vars.ENVIRONMENT }}
+      infrastructure-path: dns-proxy
+      service-name: dns-proxy
+      application-names: ${{ vars.APPLICATION_NAMES }}
