@@ -7,10 +7,10 @@ on:
     branches:
       - main
     paths:
-      - ".github"
-      - "infrastructure/terraform/internal/admin-ui"
-      - "infrastructure/terraform/modules"
-      - "apps/admin-ui"
+      - ".github/workflows/**"
+      - "infrastructure/terraform/internal/admin-ui/**"
+      - "infrastructure/terraform/modules/**"
+      - "apps/admin-ui/**"
 
 jobs:
   build-publish-admin-ui:
