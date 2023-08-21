@@ -1,0 +1,32 @@
+name: Deploy Pricing service
+concurrency: pricing
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "infrastructure/terraform/internal/pricing/**"
+      - "infrastructure/terraform/modules/**"
+      - "apps/pricing/**"
+
+jobs:
+  build-publish-pricing:
+    name: Build and publish the Pricing service
+    uses: ./.github/workflows/dotnet-service.yaml
+    with:
+      service-name: pricing
+      service-path: apps/pricing
+    secrets: inherit
+
+  provision-pricing:
+    name: Deploy the Pricing service
+    needs: build-publish-pricing
+    uses: ./.github/workflows/provision.yaml
+    with:
+      environment: ${{ vars.ENVIRONMENT }}
+      infrastructure-path: internal/pricing
+      service-name: pricing
+    secrets: inherit

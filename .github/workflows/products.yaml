@@ -1,0 +1,32 @@
+name: Deploy Products service
+concurrency: products
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "infrastructure/terraform/internal/products/**"
+      - "infrastructure/terraform/modules/**"
+      - "apps/products/**"
+
+jobs:
+  build-publish-products:
+    name: Build and publish the Products service
+    uses: ./.github/workflows/dotnet-service.yaml
+    with:
+      service-name: products
+      service-path: apps/products
+    secrets: inherit
+
+  provision-products:
+    name: Deploy the Products service
+    needs: build-publish-products
+    uses: ./.github/workflows/provision.yaml
+    with:
+      environment: ${{ vars.ENVIRONMENT }}
+      infrastructure-path: internal/products
+      service-name: products
+    secrets: inherit
