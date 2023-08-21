@@ -18,7 +18,7 @@ on:
 jobs:
   build-publish-api:
     name: Build and publish the API
-    uses: ./.github/workflows/dotnet-service.yaml
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
     with:
       service-name: api
       service-path: apps/api
@@ -26,12 +26,12 @@ jobs:
 
   build-publish-authentication:
     name: Build and publish the Authentication service
-    uses: ./.github/workflows/authentication-service.yaml
+    uses: ./.github/workflows/reusable-authentication-service.yaml
     secrets: inherit
 
   build-publish-gateway:
     name: Build and publish the Gateway
-    uses: ./.github/workflows/dotnet-service.yaml
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
     with:
       service-name: gateway
       service-path: apps/gateway
@@ -42,7 +42,7 @@ jobs:
     name: Deploy the services serving traffic
     needs:
       [build-publish-api, build-publish-authentication, build-publish-gateway]
-    uses: ./.github/workflows/provision.yaml
+    uses: ./.github/workflows/reusable-provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}
       infrastructure-path: external

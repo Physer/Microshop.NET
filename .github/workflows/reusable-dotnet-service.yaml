@@ -1,4 +1,4 @@
-name: Build and publish a .NET service template
+name: "[Reusable] Build and publish a .NET service"
 concurrency: ci-${{ inputs.service-name }}
 
 on:

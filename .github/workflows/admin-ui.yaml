@@ -15,7 +15,7 @@ on:
 jobs:
   build-publish-admin-ui:
     name: Build and publish the Admin UI
-    uses: ./.github/workflows/dotnet-service.yaml
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
     with:
       service-name: admin-ui
       service-path: apps/admin-ui
@@ -25,7 +25,7 @@ jobs:
   provision-admin-ui:
     name: Deploy the Admin UI
     needs: build-publish-admin-ui
-    uses: ./.github/workflows/provision.yaml
+    uses: ./.github/workflows/reusable-provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}
       infrastructure-path: internal/admin-ui

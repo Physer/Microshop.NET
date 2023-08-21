@@ -15,7 +15,7 @@ on:
 jobs:
   build-publish-products:
     name: Build and publish the Products service
-    uses: ./.github/workflows/dotnet-service.yaml
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
     with:
       service-name: products
       service-path: apps/products
@@ -24,7 +24,7 @@ jobs:
   provision-products:
     name: Deploy the Products service
     needs: build-publish-products
-    uses: ./.github/workflows/provision.yaml
+    uses: ./.github/workflows/reusable-provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}
       infrastructure-path: internal/products

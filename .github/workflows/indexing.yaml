@@ -15,7 +15,7 @@ on:
 jobs:
   build-publish-indexing:
     name: Build and publish the Indexing service
-    uses: ./.github/workflows/dotnet-service.yaml
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
     with:
       service-name: indexing
       service-path: apps/indexing
@@ -24,7 +24,7 @@ jobs:
   provision-indexing:
     name: Deploy the Indexing service
     needs: build-publish-indexing
-    uses: ./.github/workflows/provision.yaml
+    uses: ./.github/workflows/reusable-provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}
       infrastructure-path: internal/indexing

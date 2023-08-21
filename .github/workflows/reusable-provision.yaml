@@ -1,4 +1,4 @@
-name: Provision infrastructure (reusable workflow)
+name: "[Reusable] Provision infrastructure"
 concurrency: ci-${{ inputs.service-name }}
 
 on:
