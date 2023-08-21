@@ -59,3 +59,29 @@ module "meilisearch_app" {
   ingress_enabled              = true
   location                     = azurerm_resource_group.rg_microshop.location
 }
+
+output "rabbitmq_username_reference" {
+  value = local.rabbitmq_username
+}
+
+output "rabbitmq_username" {
+  value = random_string.rabbitmq_username.result
+}
+
+output "rabbitmq_password_reference" {
+  value = local.rabbitmq_password
+}
+
+output "rabbitmq_password" {
+  value     = random_password.rabbitmq_password.result
+  sensitive = true
+}
+
+output "meilisearch_api_key_reference" {
+  value = local.meilisearch_api_key
+}
+
+output "meilisearch_api_key" {
+  value     = random_password.meilisearch_api_key.result
+  sensitive = true
+}
