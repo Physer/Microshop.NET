@@ -52,6 +52,36 @@ The Gateway is set-up using [Microsoft's YARP](https://microsoft.github.io/rever
 All inbound traffic to Microshop.NET will go through the Gateway, never directly to downstream services.
 Note that this does not apply to service-to-service communication, only for external communication (e.g. a front-end).
 
+## Admin UI
+
+### Overview
+
+The Admin UI is a Blazor WebAssembly application that is responsible for interfacing with the API service and Authentication service to handle administrative actions (e.g. generate data or create a user).
+
+## Authentication service
+
+### Overview
+
+The Authentication is an application written in [Go](https://go.dev/) as a backend to SuperTokens, a self-hosted open-source authentication service. To read more about this choice, please refer to the [Architecture Decision Record (ADR)](./docs/ADRs/supertokens-for-authentication.md).
+
+This service is responsible for bootstrapping the authentication dashboard as well as all the authentication and authorization API endpoints that are being exposed through the [YARP Gateway](#gateway-service).
+
+## API
+
+### Overview
+
+The API is responsible for any user interaction with the downstream services. For instance, this API is used to let the Admin UI interface with the downstream services using events.
+
+### Supported messages
+
+#### Consuming
+
+- None
+
+#### Publishing
+
+- GenerateProducts
+
 ## Products service
 
 ### Overview
@@ -59,13 +89,11 @@ Note that this does not apply to service-to-service communication, only for exte
 The Products service is responsible for generating and storing product data.
 This only includes directly related product data, so things like prices and stock information is not part of this service.
 
-The Products service exposes an endpoint: `POST /products`. This endpoint will generate a pre-configured amount of fake products. After the generation of the products, the service publishes a message on the servicebus: `ProductsGenerated`. This message contains all the products generated.
-
 ### Supported messages
 
 #### Consuming
 
-- None
+- GenerateProducts
 
 #### Publishing
 
@@ -118,11 +146,34 @@ The search index is a [MeiliSearch](https://www.meilisearch.com/) index. The app
 
 # Message overview
 
+## GenerateProducts
+
+The GenerateProducts message is sent out when the API endpoint to generate product data is called. This message doesn't contain any data directly but instead is used as a trigger for other services.
+
+Example payload:
+
+```json
+{
+  "messageId": "58010000-eace-e070-f3b8-08dba31489f0",
+  "requestId": null,
+  "correlationId": null,
+  "conversationId": "58010000-eace-e070-fb23-08dba31489f0",
+  "initiatorId": null,
+  "sourceAddress": "rabbitmq://localhost/NL524_API_bus_myyoyy8k35o8ywk1bdp4gr6rns?temporary=true",
+  "destinationAddress": "rabbitmq://localhost/Messaging.Messages:GenerateProducts",
+  "responseAddress": null,
+  "faultAddress": null,
+  "messageType": ["urn:message:Messaging.Messages:GenerateProducts"],
+  "message": {}
+}
+```
+
 ## ProductsGenerated
 
 The ProductsGenerated message is sent out whenever product master data is generated. This message contains all products and their data.
 
 Example payload:
+
 ```json
 {
   "messageId": "07000000-ac12-0242-86c8-08db862bddb2",
@@ -152,6 +203,7 @@ Example payload:
 The PricesGenerated message is sent out whenever price data is generated. This message contains all prices per product.
 
 Example payload:
+
 ```json
 {
   "messageId": "07000000-ac12-0242-4d6b-08db862c2c2c",
@@ -214,23 +266,24 @@ If you wish to run the platform locally, follow these steps:
 5. Run `docker-compose up`
 6. See the Docker container overview and their logs for the results
 
-Upon the start of the platform, products will be generated and indexed in the Search Index.
-If you so desire, you can change the MeiliSearch docker container to expose port `7700` to view the indexed data.
+The YARP gateway is now available with the following URLs:
+- `http://auth.localhost` - routing to the Authentication service
+- `http://api.localhost` - routing to the API
+- `http://admin.localhost` - routing to the Admin UI web interface
+- `http://index.localhost` - routing to the Meilisearch Index web interface
 
 # Deploying the platform to your own Azure tenant
 
 If you want to host this platform on your own Azure tenant, follow these steps:
 
-_Note: Microshop.NET uses Terraform remote state in an Azure Storage Account. These steps assume you're able to set up such an account and its containers accordingly._
+**Prerequisites:**
+- A Cloudflare account with a website to provision DNS records for
+- An Azure account with a pre-configured storage account for storing Terraform state in
 
-1. Navigate to the `~/infrastructure/terraform` directory
-2. Open the `config.azure.tfbackend` file
-3. Either set up an Azure Storage Account with the specified Terraform state data or change the data to match your remote state storage in Azure
-4. Initialize the Terraform state by running `terraform init -backend-config="config.azure.tfbackend"` (or omit the argument if not leveraging remote state)
-5. Plan the Terraform deployment by executing `terraform plan`
-6. Apply the Terraform deployment by executing `terraform apply`
+If these details are not provided, the applications won't fully be provisioned.
 
-Optionally you can add a file `terraform.tfvars` to this folder that includes predefined variable values, so you don't have to specify them when you run the `terraform` commands.
+---
+_WIP_ A useful script to kickstart this locally is under development.
 
 # Questions and comments
 
