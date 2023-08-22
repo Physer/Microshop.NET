@@ -15,7 +15,15 @@ on:
         type: string
       application-names:
         type: string
-        default: ''
+        default: ""
+      supertokens-core-docker-image-version:
+        type: string
+      postgres-docker-image-version:
+        type: string
+      rabbitmq-docker-image-version:
+        type: string
+      meilisearch-docker-image-version:
+        type: string
 
 jobs:
   deploy_terraform_resources:
@@ -30,6 +38,10 @@ jobs:
       TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
       TF_VAR_application_names: ${{ inputs.application-names }}
+      TF_VAR_supertokens_core_docker_image_version: ${{ inputs.supertokens-core-docker-image-version }}
+      TF_VAR_postgres_docker_image_version: ${{ inputs.postgres-docker-image-version }}
+      TF_VAR_rabbitmq_docker_image_version: ${{ inputs.rabbitmq-docker-image-version }}
+      TF_VAR_meilisearch_docker_image_version: ${{ inputs.meilisearch-docker-image-version }}
     defaults:
       run:
         working-directory: infrastructure/terraform/${{ inputs.infrastructure-path }}

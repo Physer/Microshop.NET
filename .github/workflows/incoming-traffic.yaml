@@ -48,6 +48,8 @@ jobs:
       infrastructure-path: external
       service-name: incoming-traffic
       application-names: ${{ vars.APPLICATION_NAMES }}
+      supertokens-core-docker-image-version: ${{ vars.DOCKER_SUPERTOKENS_CORE_VERSION }}
+      postgres-docker-image-version: ${{ vars.DOCKER_POSTGRES_VERSION }}
     secrets: inherit
 
   proxy-records:

@@ -53,7 +53,7 @@ module "authentication_database" {
   source                       = "../modules/container-app"
   application_name             = "authentication-db"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
-  image_name                   = "postgres:latest"
+  image_name                   = "postgres:${var.postgres_docker_image_version}"
   port                         = 5432
   transport                    = "Tcp"
   ingress_enabled              = true
@@ -67,7 +67,7 @@ module "authentication_core" {
   source                       = "../modules/container-app"
   application_name             = "authentication-core"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
-  image_name                   = "registry.supertokens.io/supertokens/supertokens-postgresql:6.0"
+  image_name                   = "registry.supertokens.io/supertokens/supertokens-postgresql:${var.supertokens_core_docker_image_version}"
   resource_group_id            = data.azurerm_resource_group.rg_microshop.id
   port                         = 3567
   ingress_enabled              = true

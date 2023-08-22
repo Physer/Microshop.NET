@@ -21,5 +21,15 @@ variable "cloudflare_zone_id" {
 
 variable "application_names" {
   description = "A set of application names to create DNS records for"
-  type = set(string)
+  type        = set(string)
+}
+
+variable "supertokens_core_docker_image_version" {
+  description = "The docker image version of the Supertokens Core application"
+  type        = string
+}
+
+variable "postgres_docker_image_version" {
+  description = "The docker image version of the Postgres SQL database"
+  type        = string
 }
