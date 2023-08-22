@@ -3,7 +3,7 @@ services:
   # Managed services
   rabbitmq:
     container_name: rabbitmq
-    image: masstransit/rabbitmq:latest
+    image: masstransit/rabbitmq:${DOCKER_RABBITMQ_VERSION}
     restart: always
     ports:
       - 5672:5672
@@ -13,7 +13,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=${SERVICEBUS_MANAGEMENT_PASSWORD}
   meilisearch:
     container_name: meilisearch
-    image: getmeili/meilisearch:latest
+    image: getmeili/meilisearch:${DOCKER_MEILISEARCH_VERSION}
     environment:
       - MEILI_MASTER_KEY=${MEILISEARCH_MASTER_KEY}
     restart: always
@@ -23,7 +23,7 @@ services:
   # Authentication services
   authentication_database:
     container_name: authentication_database
-    image: "postgres:latest"
+    image: "postgres:${DOCKER_POSTGRES_VERSION}"
     environment:
       - POSTGRES_USER=${AUTH_DB_USER}
       - POSTGRES_PASSWORD=${AUTH_DB_PASSWORD}
@@ -34,7 +34,7 @@ services:
 
   authentication_core:
     container_name: authentication_core
-    image: registry.supertokens.io/supertokens/supertokens-postgresql:6.0
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:${DOCKER_SUPERTOKENS_CORE_VERSION}
     ports:
       - 3567:3567
     environment:
@@ -131,7 +131,7 @@ services:
         - SERVICE_NAME=admin-ui
     restart: always
     ports:
-      - 3000:80
+      - 5005:80
   api:
     container_name: api
     build:
@@ -147,4 +147,4 @@ services:
       - Authentication__Issuer=http://localhost:5000/auth
     restart: always
     ports:
-      - 5005:80
+      - 5006:80
