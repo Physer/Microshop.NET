@@ -30,3 +30,8 @@ data "azurerm_container_app" "ca_admin_ui" {
   resource_group_name = local.resource_group_name
   name                = "ca-admin-ui"
 }
+
+data "azurerm_container_app" "ca_meilisearch" {
+  resource_group_name = local.resource_group_name
+  name                = "ca-meilisearch"
+}

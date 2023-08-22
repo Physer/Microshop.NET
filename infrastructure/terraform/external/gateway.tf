@@ -5,7 +5,9 @@ locals {
     { name = "ReverseProxy__Routes__admin__Match__Hosts__0", value = var.environment == "production" ? "admin.microshop.rocks" : "${var.environment}-admin.microshop.rocks" },
     { name = "ReverseProxy__Clusters__admin__Destinations__admin__Address", value = "https://${data.azurerm_container_app.ca_admin_ui.ingress[0].fqdn}" },
     { name = "ReverseProxy__Routes__api__Match__Hosts__0", value = var.environment == "production" ? "api.microshop.rocks" : "${var.environment}-api.microshop.rocks" },
-    { name = "ReverseProxy__Clusters__api__Destinations__api__Address", value = "https://${module.api_app.fqdn}" }
+    { name = "ReverseProxy__Clusters__api__Destinations__api__Address", value = "https://${module.api_app.fqdn}" },
+    { name = "ReverseProxy__Clusters__index__Destinations__index__Address", value = "https://${data.azurerm_container_app.ca_meilisearch.ingress[0].fqdn}" },
+    { name = "ReverseProxy__Routes__index__Match__Hosts__0", value = var.environment == "production" ? "index.microshop.rocks" : "${var.environment}-index.microshop.rocks" }
   ]
 }
 
