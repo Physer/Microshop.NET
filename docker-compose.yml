@@ -56,6 +56,8 @@ services:
       - ReverseProxy__Clusters__admin__Destinations__admin__Address=http://admin_ui
       - ReverseProxy__Routes__api__Match__Hosts__0=api.localhost
       - ReverseProxy__Clusters__api__Destinations__api__Address=http://api
+      - ReverseProxy__Clusters__index__Destinations__index__Address=http://meilisearch:7700
+      - ReverseProxy__Routes__index__Match__Hosts__0=index.localhost
     restart: always
     ports:
       - 80:80
