@@ -1,5 +1,32 @@
 ﻿@page "/login"
+@using Authentication.Models;
+@using Web.Services;
+@inject AuthenticationService authenticationService;
 
 <h3>Sign In</h3>
 
-<p>Please sign in!</p>
+<EditForm Model="@Model" OnSubmit="@SubmitAsync">
+    <InputText @bind-Value="Model!.Username" />
+    <InputText @bind-Value="Model!.Password" />
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    public SignInModel? Model { get; set; }
+
+    protected override void OnInitialized() => Model ??= new();
+
+    private async Task SubmitAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Model?.Username) || string.IsNullOrWhiteSpace(Model?.Password))
+            return;
+
+        await authenticationService.SignInAsync(Model.Username, Model.Password);
+    }
+
+    public class SignInModel
+    {
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+    }
+}
