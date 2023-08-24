@@ -5,7 +5,7 @@
     <Found Context="routeData">
         @if (string.IsNullOrWhiteSpace(_token))
         {
-            <p>NO TOKEN</p>
+            <RedirectToLogin />
         }
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
