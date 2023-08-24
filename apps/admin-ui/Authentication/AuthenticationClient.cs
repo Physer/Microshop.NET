@@ -13,7 +13,8 @@ internal class AuthenticationClient : IAuthenticationClient
     public async Task<SignInResult> SignInAsync(string username, string password)
     {
         var signInRequest = new SignInRequest(username, password);
-        var response = await _httpClient.PostAsync("/auth/signup", new StringContent(JsonSerializer.Serialize(signInRequest)));
+        var serializedSignInRequest = JsonSerializer.Serialize(signInRequest, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        var response = await _httpClient.PostAsync("/auth/signup", new StringContent(serializedSignInRequest));
 
         return new(false, default);
     }
