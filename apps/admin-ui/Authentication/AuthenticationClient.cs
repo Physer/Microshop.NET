@@ -14,8 +14,11 @@ internal class AuthenticationClient : IAuthenticationClient
     {
         var signInRequest = new SignInRequest(username, password);
         var serializedSignInRequest = JsonSerializer.Serialize(signInRequest, new JsonSerializerOptions(JsonSerializerDefaults.Web));
-        var response = await _httpClient.PostAsync("/auth/signup", new StringContent(serializedSignInRequest));
+        var response = await _httpClient.PostAsync("/auth/signin", new StringContent(serializedSignInRequest));
+        if (!response.Headers.TryGetValues("st-access-token", out var accessTokenResponse) && accessTokenResponse?.Any() == false)
+            return new();
 
-        return new(false, default);
+        var accessToken = accessTokenResponse is not null ? accessTokenResponse.FirstOrDefault() : string.Empty;
+        return string.IsNullOrWhiteSpace(accessToken) ? new() : new(true, accessToken);
     }
 }

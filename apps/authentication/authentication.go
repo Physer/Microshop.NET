@@ -100,7 +100,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 	fmt.Println("Configuring middleware")
 	return http.HandlerFunc(func(response http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Incoming %s request to %s \n", r.Method, r.URL)
-		response.Header().Set("Access-Control-Allow-Origin", websiteUrl)
+		response.Header().Set("Access-Control-Allow-Origin", "*")
 		response.Header().Set("Access-Control-Allow-Credentials", "true")
 		if r.Method == "OPTIONS" {
 			response.Header().Set("Access-Control-Allow-Headers",
