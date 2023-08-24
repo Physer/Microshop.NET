@@ -1,5 +1,8 @@
 locals {
   resource_group_name = "rg-microshop-${var.environment}"
+  admin_ui_appsettings = [
+    { name = "Authentication__BaseUrl", value = "auth.microshop.rocks" },
+  ]
 }
 
 data "azurerm_resource_group" "rg_microshop" {
@@ -19,4 +22,5 @@ module "admin_ui_app" {
   ingress_enabled              = true
   resource_group_id            = data.azurerm_resource_group.rg_microshop.id
   location                     = data.azurerm_resource_group.rg_microshop.location
+  appsettings                  = local.admin_ui_appsettings
 }
