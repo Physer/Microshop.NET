@@ -45,7 +45,7 @@ locals {
     { name = "GATEWAY_URL", value = "https://${module.gateway_app.fqdn}" },
     { name = "WEBSITE_URL", value = "http://localhost:3000" },
     { name = "DASHBOARD_USER_EMAIL", value = "admin@microshop.rocks" },
-    { name = "authentication_dashboard_password", secretRef = local.authentication_dashboard_password },
+    { name = "DASHBOARD_USER_PASSWORD", secretRef = local.authentication_dashboard_password },
   ]
 }
 
