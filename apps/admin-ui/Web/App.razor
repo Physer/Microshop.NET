@@ -1,12 +1,9 @@
 ﻿@using Web.Services
 @inject AuthenticationService authenticationService
+@inject NavigationManager navigationManager
 
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        @if (string.IsNullOrWhiteSpace(_token))
-        {
-            <RedirectToLogin />
-        }
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
@@ -19,10 +16,9 @@
 </Router>
 
 @code {
-    private string? _token;
-
     protected override async Task OnInitializedAsync()
     {
-        _token = await authenticationService.GetTokenAsync();
+        if (string.IsNullOrWhiteSpace(await authenticationService.GetTokenAsync()))
+            navigationManager.NavigateTo("/login");
     }
 }
