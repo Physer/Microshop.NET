@@ -23,6 +23,7 @@ var superTokensCoreUrl string
 var superTokensBackendPort int
 var gatewayUrl string
 var websiteUrl string
+var adminKey string
 
 func main() {
 	fmt.Println("Starting authentication service")
@@ -62,6 +63,11 @@ func main() {
 
 							if response.OK != nil {
 								user := response.OK.User
+								request := supertokens.GetRequestFromUserContext(userContext)
+								providedAdminKey := request.Header.Get("X-Admin-Key")
+								if providedAdminKey != "" && providedAdminKey == adminKey {
+									admin.AddRoleToUser(user.ID, "admin")
+								}
 								admin.AddRoleToUser(user.ID, "user")
 							}
 							return response, nil
@@ -78,6 +84,7 @@ func main() {
 	})
 
 	admin.CreateRole("user", "read")
+	admin.CreateRole("admin", "read", "write")
 	res := admin.CreateDashboardUser(superTokensCoreUrl)
 	responseContent, _ := io.ReadAll(res.Body)
 	res.Body.Close()
@@ -121,5 +128,6 @@ func setEnvironmentVariables() {
 	superTokensBackendPort, _ = strconv.Atoi(os.Getenv("AUTHENTICATION_BACKEND_PORT"))
 	gatewayUrl = os.Getenv("GATEWAY_URL")
 	websiteUrl = os.Getenv("WEBSITE_URL")
+	adminKey = os.Getenv("ADMIN_KEY")
 	fmt.Printf("Loaded %d environment variables \n", len(os.Environ()))
 }
