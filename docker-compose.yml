@@ -119,6 +119,7 @@ services:
       - WEBSITE_URL=http://localhost:3000
       - DASHBOARD_USER_EMAIL=${DASHBOARD_USER_EMAIL}
       - DASHBOARD_USER_PASSWORD=${DASHBOARD_USER_PASSWORD}
+      - ADMIN_KEY=${ADMIN_KEY}
     restart: always
     ports:
       - 5004:80
