@@ -1,5 +1,6 @@
 ﻿using Application.Authentication;
 using Authentication.Models;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json;
 
 namespace Authentication;
@@ -19,6 +20,17 @@ internal class AuthenticationClient : IAuthenticationClient
             return new();
 
         var accessToken = accessTokenResponse is not null ? accessTokenResponse.FirstOrDefault() : string.Empty;
-        return string.IsNullOrWhiteSpace(accessToken) ? new() : new(true, accessToken);
+        return string.IsNullOrWhiteSpace(accessToken) ? new() : new(AccessTokenHasAdminRights(accessToken), accessToken);
+    }
+
+    private static bool AccessTokenHasAdminRights(string token)
+    {
+        var foo = new JwtSecurityTokenHandler().ReadJwtToken(token);
+        var rolesClaim = foo.Claims.FirstOrDefault(claim => claim.Type.Equals("st-role", StringComparison.InvariantCultureIgnoreCase));
+        if (rolesClaim is null)
+            return false;
+
+        var roles = JsonSerializer.Deserialize<RolesClaimModel>(rolesClaim.Value, new JsonSerializerOptions(JsonSerializerDefaults.Web))?.Roles;
+        return roles is not null && roles.Any(role => role.Equals("admin", StringComparison.InvariantCultureIgnoreCase));
     }
 }
