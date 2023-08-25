@@ -12,12 +12,18 @@ resource "random_password" "authentication_dashboard_password" {
   length = 16
 }
 
+resource "random_password" "authentication_admin_key" {
+  length  = 16
+  special = false
+}
+
 locals {
   authentication_database_name             = "supertokens"
   authentication_database_connectionstring = "authentication-database-connectionstring"
   authentication_database_user             = "authentication-database-user"
   authentication_database_password         = "authentication-database-password"
   authentication_dashboard_password        = "dashboard-user-password"
+  authentication_admin_key                 = "authentication-admin-key"
 
   authentication_database_secrets = [
     { name = (local.authentication_database_user), value = random_password.authentication_database_user.result },
@@ -38,6 +44,8 @@ locals {
 
   authentication_service_secrets = [
     { name = (local.authentication_dashboard_password), value = random_password.authentication_dashboard_password.result },
+    { name = (local.authentication_dashboard_password), value = random_password.authentication_dashboard_password.result },
+    { name = (local.authentication_admin_key), value = random_password.authentication_admin_key.result },
   ]
   authentication_service_appsettings = [
     { name = "AUTHENTICATION_CORE_URL", value = "https://${module.authentication_core.fqdn}" },
@@ -46,6 +54,7 @@ locals {
     { name = "WEBSITE_URL", value = "http://localhost:3000" },
     { name = "DASHBOARD_USER_EMAIL", value = "admin@microshop.rocks" },
     { name = "DASHBOARD_USER_PASSWORD", secretRef = local.authentication_dashboard_password },
+    { name = "ADMIN_KEY", secretRef = local.authentication_admin_key },
   ]
 }
 
