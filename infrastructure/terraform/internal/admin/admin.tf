@@ -11,7 +11,7 @@ data "azurerm_container_app_environment" "cae_microshop" {
   resource_group_name = local.resource_group_name
 }
 
-module "admin_ui_app" {
+module "admin_app" {
   source                       = "../../modules/container-app"
   application_name             = "admin"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id

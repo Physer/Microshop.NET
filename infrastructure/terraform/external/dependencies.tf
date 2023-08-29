@@ -26,11 +26,6 @@ data "azurerm_container_app" "ca_rabbitmq" {
   name                = "ca-rabbitmq"
 }
 
-data "azurerm_container_app" "ca_admin_ui" {
-  resource_group_name = local.resource_group_name
-  name                = "ca-admin-ui"
-}
-
 data "azurerm_container_app" "ca_admin" {
   resource_group_name = local.resource_group_name
   name                = "ca-admin"

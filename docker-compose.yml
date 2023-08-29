@@ -53,7 +53,7 @@ services:
       - ReverseProxy__Routes__authentication__Match__Hosts__0=auth.localhost
       - ReverseProxy__Clusters__authentication__Destinations__authentication__Address=http://authentication_service
       - ReverseProxy__Routes__admin__Match__Hosts__0=admin.localhost
-      - ReverseProxy__Clusters__admin__Destinations__admin__Address=http://admin_ui
+      - ReverseProxy__Clusters__admin__Destinations__admin__Address=http://admin
       - ReverseProxy__Routes__api__Match__Hosts__0=api.localhost
       - ReverseProxy__Clusters__api__Destinations__api__Address=http://api
       - ReverseProxy__Clusters__index__Destinations__index__Address=http://meilisearch:7700
@@ -123,16 +123,6 @@ services:
     restart: always
     ports:
       - 5004:80
-  admin_ui:
-    container_name: admin_ui
-    build:
-      context: .
-      dockerfile: infrastructure/Dockerfile.webassembly
-      args:
-        - SERVICE_NAME=admin-ui
-    restart: always
-    ports:
-      - 5005:80
   api:
     container_name: api
     build:
