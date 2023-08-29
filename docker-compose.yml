@@ -46,7 +46,7 @@ services:
     container_name: gateway
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.api
+      dockerfile: infrastructure/Dockerfile.dotnet
       args:
         - SERVICE_NAME=gateway
     environment:
@@ -65,7 +65,7 @@ services:
     container_name: products
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.api
+      dockerfile: infrastructure/Dockerfile.dotnet
       args:
         - SERVICE_NAME=products
     environment:
@@ -79,7 +79,7 @@ services:
     container_name: indexing
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.api
+      dockerfile: infrastructure/Dockerfile.dotnet
       args:
         - SERVICE_NAME=indexing
     environment:
@@ -96,7 +96,7 @@ services:
     container_name: pricing
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.api
+      dockerfile: infrastructure/Dockerfile.dotnet
       args:
         - SERVICE_NAME=pricing
     environment:
@@ -137,7 +137,7 @@ services:
     container_name: api
     build:
       context: .
-      dockerfile: infrastructure/Dockerfile.api
+      dockerfile: infrastructure/Dockerfile.dotnet
       args:
         - SERVICE_NAME=api
     environment:
@@ -149,3 +149,14 @@ services:
     restart: always
     ports:
       - 5006:80
+  admin:
+    container_name: admin
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile.dotnet
+      args:
+        - SERVICE_NAME=admin
+        - PROJECT_NAME=Web
+    restart: always
+    ports:
+      - 5007:80

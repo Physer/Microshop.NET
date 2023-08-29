@@ -1,12 +1,15 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 as build-env
 ARG SERVICE_NAME
+ARG PROJECT_NAME=API
 
 WORKDIR /src
 COPY apps/${SERVICE_NAME} .
-RUN dotnet publish API -c Release -o /publish
+RUN dotnet publish ${PROJECT_NAME} -c Release -o /publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 as runtime
+ARG PROJECT_NAME=API
+ENV PROJECT_NAME=$PROJECT_NAME
 
 WORKDIR /publish
 COPY --from=build-env /publish .
-ENTRYPOINT dotnet API.dll
+ENTRYPOINT dotnet ${PROJECT_NAME}.dll
