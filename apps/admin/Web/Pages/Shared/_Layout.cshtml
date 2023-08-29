@@ -4,12 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Microshop.NET - Admin portal</title>
+    <link rel="stylesheet" href="~/lib//bootstrap.min.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Web</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Microshop.NET</a>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
@@ -31,6 +32,7 @@
             &copy; @DateTime.UtcNow.Year - Microshop.NET
         </div>
     </footer>
+    <script type="text/javascript" src="~/lib//bootstrap.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
