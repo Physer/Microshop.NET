@@ -52,11 +52,11 @@ The Gateway is set-up using [Microsoft's YARP](https://microsoft.github.io/rever
 All inbound traffic to Microshop.NET will go through the Gateway, never directly to downstream services.
 Note that this does not apply to service-to-service communication, only for external communication (e.g. a front-end).
 
-## Admin UI
+## Admin portal
 
 ### Overview
 
-The Admin UI is a Blazor WebAssembly application that is responsible for interfacing with the API service and Authentication service to handle administrative actions (e.g. generate data or create a user).
+The Admin portal is a ASP.NET Razor Pages application that is responsible for interfacing with the API service and Authentication service to handle administrative actions (e.g. generate data or create a user).
 
 ## Authentication service
 
@@ -70,7 +70,7 @@ This service is responsible for bootstrapping the authentication dashboard as we
 
 ### Overview
 
-The API is responsible for any user interaction with the downstream services. For instance, this API is used to let the Admin UI interface with the downstream services using events.
+The API is responsible for any user interaction with the downstream services. For instance, this API is used to let the Admin portal interface with the downstream services using events.
 
 ### Supported messages
 
@@ -269,7 +269,7 @@ If you wish to run the platform locally, follow these steps:
 The YARP gateway is now available with the following URLs:
 - `http://auth.localhost` - routing to the Authentication service
 - `http://api.localhost` - routing to the API
-- `http://admin.localhost` - routing to the Admin UI web interface
+- `http://admin.localhost` - routing to the Admin portal web interface
 - `http://index.localhost` - routing to the Meilisearch Index web interface
 
 # Deploying the platform to your own Azure tenant
