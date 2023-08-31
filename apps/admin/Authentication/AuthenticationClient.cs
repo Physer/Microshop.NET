@@ -16,7 +16,7 @@ internal class AuthenticationClient : IAuthenticationClient
         _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
     }
 
-    public async Task<AuthenticationData> SigIn(string username, string password)
+    public async Task<AuthenticationData> SignInAsync(string username, string password)
     {
         var requestData = AuthenticationMapper.MapToRequest(username, password);
         var serializedRequestData = JsonSerializer.Serialize(requestData, _serializerOptions);
@@ -25,7 +25,7 @@ internal class AuthenticationClient : IAuthenticationClient
             throw new AuthenticationException();
 
         var parsedResponse = AuthenticationMapper.MapFromResponse(await response.Content.ReadAsStringAsync(), _serializerOptions);
-        if (parsedResponse.Status != AuthenticationStatus.OK)
+        if (!Enum.TryParse<AuthenticationStatus>(parsedResponse.Status, out var parsedStatus) && parsedStatus != AuthenticationStatus.OK)
             throw new AuthenticationException();
 
         if(!response.Headers.TryGetValues("st-access-token", out var accessTokenData) || accessTokenData?.Any() == false)

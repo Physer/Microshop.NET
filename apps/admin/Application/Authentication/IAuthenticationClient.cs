@@ -2,5 +2,5 @@
 
 public interface IAuthenticationClient
 {
-    Task<AuthenticationData> SigIn(string username, string password);
+    Task<AuthenticationData> SignInAsync(string username, string password);
 }
