@@ -37,7 +37,7 @@ public class SignInModel : PageModel
 
         try
         {
-            _logger.LogInformation("Attempting login attempt for user: {username}", Username);
+            _logger.LogInformation("Attempting sign in for user: {username}", Username);
             var authenticationResult = await _authenticationClient.SignInAsync(Username!, Password!);
             List<Claim> claims = new()
             {
@@ -46,16 +46,16 @@ public class SignInModel : PageModel
             claims.AddRange(authenticationResult.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            _logger.LogInformation("Succesfully logged in user: {username}", Username);
+            _logger.LogInformation("Succesfully signed in for user: {username}", Username);
         }
         catch (AuthenticationException authenticationException)
         {
-            _logger.LogWarning(authenticationException, "Invalid login attempt or invalid credentials for user: {username}", Username);
+            _logger.LogWarning(authenticationException, "Invalid sign in attempt or invalid credentials for user: {username}", Username);
             ModelState.AddModelError(string.Empty, "Invalid credentials or permissions");
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Failure logging in for user: {username}", Username);
+            _logger.LogError(exception, "Failure signin in for user: {username}", Username);
             ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
         }
 
