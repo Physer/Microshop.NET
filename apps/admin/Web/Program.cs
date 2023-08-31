@@ -10,11 +10,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 {
     var signInPath = "/SignIn";
     options.SlidingExpiration = true;
-    options.AccessDeniedPath = signInPath;
+    options.AccessDeniedPath = "/Forbidden";
     options.LoginPath = signInPath;
     options.LogoutPath = signInPath;
 });
-builder.Services.AddAuthorization(options => options.AddPolicy(AuthorizationDefaults.Administrator, policy => policy.RequireClaim("Role", AuthorizationDefaults.Administrator)));
+builder.Services.AddAuthorization(options => options.AddPolicy(AuthorizationDefaults.AdministratorPolicyName, policy => policy.RequireClaim("Role", AuthorizationDefaults.AdministratorRole)));
 
 var app = builder.Build();
 
