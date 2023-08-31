@@ -22,18 +22,17 @@ internal class AuthenticationClient : IAuthenticationClient
         var serializedRequestData = JsonSerializer.Serialize(requestData, _serializerOptions);
         var response = await _httpClient.PostAsync("/auth/signin", new StringContent(serializedRequestData));
         if (!response.IsSuccessStatusCode)
-            throw new AuthenticationException();
+            throw new AuthenticationException("Invalid response received from the authentication service");
 
         var parsedResponse = AuthenticationMapper.MapFromResponse(await response.Content.ReadAsStringAsync(), _serializerOptions);
         if (!Enum.TryParse<AuthenticationStatus>(parsedResponse.Status, out var parsedStatus) && parsedStatus != AuthenticationStatus.OK)
-            throw new AuthenticationException();
+            throw new AuthenticationException("Unable to determine the authentication service's status result");
 
-        if(!response.Headers.TryGetValues("st-access-token", out var accessTokenData) || accessTokenData?.Any() == false)
-            throw new AuthenticationException();
+        if (!response.Headers.TryGetValues("st-access-token", out var accessTokenData) || accessTokenData?.Any() == false)
+            throw new AuthenticationException("Unable to retrieve the access token");
 
-        if(!response.Headers.TryGetValues("st-refresh-token", out var refreshTokenData) || refreshTokenData?.Any() == false)
-            throw new AuthenticationException();
-
-        return new(accessTokenData!.First(), refreshTokenData!.First());
+        var accessToken = accessTokenData!.First();
+        var roles = TokenParser.GetRoles(accessToken);
+        return new(parsedResponse.User.Email, roles, accessToken);
     }
 }
