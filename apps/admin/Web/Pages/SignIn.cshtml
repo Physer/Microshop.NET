@@ -19,6 +19,10 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <input class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit" value="Sign in" />
+                    @if (ModelState.ErrorCount > 0)
+                    {
+                        <div class="alert alert-danger" role="alert">@ModelState?.Values.FirstOrDefault()?.Errors?.FirstOrDefault()?.ErrorMessage</div>
+                    }
                 </form>
             </div>
         </div>

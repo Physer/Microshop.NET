@@ -59,6 +59,9 @@ public class SignInModel : PageModel
             ModelState.AddModelError(string.Empty, "Something went wrong, please try again later");
         }
 
+        if (ModelState.ErrorCount > 0)
+            return Page();
+
         return Redirect(returnUrl);
     }
 }
