@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Microshop.NET - Admin portal</title>
+    <link rel="stylesheet" href="~/lib//bootstrap.min.css" />
+</head>
+<body>
+    @RenderBody()
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.UtcNow.Year - Microshop.NET
+        </div>
+    </footer>
+    <script type="text/javascript" src="~/lib//bootstrap.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
