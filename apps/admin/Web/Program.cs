@@ -1,4 +1,5 @@
 using Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Web.Services;
 using Web.Utilities;
@@ -16,11 +17,14 @@ builder.Services.RegisterAuthenticationDependencies(builder.Configuration);
 // Authentication and authorization
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
-    var signInPath = "/SignIn";
+    var signInPath = "SignIn";
     options.SlidingExpiration = true;
-    options.AccessDeniedPath = "/Forbidden";
-    options.LoginPath = signInPath;
-    options.LogoutPath = signInPath;
+    options.Events = new CookieAuthenticationEvents()
+    {
+        OnRedirectToLogin = RedirectToAbsoluteUri(signInPath),
+        OnRedirectToAccessDenied = RedirectToAbsoluteUri("Forbidden"),
+        OnRedirectToLogout = RedirectToAbsoluteUri(signInPath)
+    };
 });
 builder.Services.AddAuthorization(options => options.AddPolicy(AuthorizationDefaults.AdministratorPolicyName, policy => policy.RequireClaim("Role", AuthorizationDefaults.AdministratorRole)));
 
@@ -39,3 +43,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapRazorPages();
 app.Run();
+
+static Func<RedirectContext<CookieAuthenticationOptions>, Task> RedirectToAbsoluteUri(string internalPath)
+{
+    return (context) =>
+    {
+        var redirectToHost = context.HttpContext.Request.Headers.TryGetValue("X-Forwarded-Host", out var forwardedHostHeader) && !string.IsNullOrWhiteSpace((string?)forwardedHostHeader)
+            ? (string?)forwardedHostHeader
+            : context.HttpContext.Request.Host.Value;
+
+        context.HttpContext.Response.Redirect($"{context.HttpContext.Request.Scheme}://{redirectToHost}/{internalPath}");
+        return Task.CompletedTask;
+    };
+};
