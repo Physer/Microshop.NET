@@ -1,6 +1,7 @@
 using Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 using Web.Services;
 using Web.Utilities;
 
@@ -26,7 +27,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         OnRedirectToLogout = RedirectToAbsoluteUri(signInPath)
     };
 });
-builder.Services.AddAuthorization(options => options.AddPolicy(AuthorizationDefaults.AdministratorPolicyName, policy => policy.RequireClaim("Role", AuthorizationDefaults.AdministratorRole)));
+builder.Services.AddAuthorization(options => options.AddPolicy(AuthorizationDefaults.AdministratorPolicyName, policy => policy.RequireClaim(ClaimTypes.Role, AuthorizationDefaults.AdministratorRole)));
 
 var app = builder.Build();
 
