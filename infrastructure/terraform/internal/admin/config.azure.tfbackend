@@ -1,4 +1,0 @@
-resource_group_name  = "rg-tfstate"
-storage_account_name = "sttfstateschouls"
-container_name       = "internal-application-provisioning"
-key                  = "admin.tfstate"

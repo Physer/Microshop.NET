@@ -14,6 +14,7 @@ on:
       - "apps/api/**"
       - "apps/authentication/**"
       - "apps/gateway/**"
+      - "apps/admin/**"
 
 jobs:
   build-publish-api:
@@ -38,10 +39,25 @@ jobs:
       execute-tests: false
     secrets: inherit
 
+  build-publish-admin-portal:
+    name: Build and publish the Admin portal
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
+    with:
+      service-name: admin
+      service-path: apps/admin
+      project-name: Web
+      execute-tests: false
+    secrets: inherit
+
   provision-incoming-traffic-services:
     name: Deploy the services serving traffic
     needs:
-      [build-publish-api, build-publish-authentication, build-publish-gateway]
+      [
+        build-publish-api,
+        build-publish-authentication,
+        build-publish-gateway,
+        build-publish-admin-portal,
+      ]
     uses: ./.github/workflows/reusable-provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}
