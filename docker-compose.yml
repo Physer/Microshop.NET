@@ -147,6 +147,8 @@ services:
       args:
         - SERVICE_NAME=admin
         - PROJECT_NAME=Web
+    environment:
+      - Authentication__BaseUrl=http://authentication_service
     restart: always
     ports:
       - 5007:80
