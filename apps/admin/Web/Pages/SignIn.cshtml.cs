@@ -31,10 +31,6 @@ public class SignInModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        var returnUrl = "/";
-        if (RouteData.Values.TryGetValue("ReturnUrl", out var existingReturnUrlValue) && existingReturnUrlValue is string existingReturnUrl && !string.IsNullOrWhiteSpace(existingReturnUrl))
-            returnUrl = existingReturnUrl;
-
         try
         {
             _logger.LogInformation("Attempting sign in for user: {username}", Username);
@@ -62,6 +58,6 @@ public class SignInModel : PageModel
         if (ModelState.ErrorCount > 0)
             return Page();
 
-        return Redirect(returnUrl);
+        return Redirect("/");
     }
 }
