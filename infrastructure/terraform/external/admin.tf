@@ -1,5 +1,4 @@
 locals {
-  resource_group_name = "rg-microshop-${var.environment}"
   admin_appsettings = [
     { name = "Authentication__BaseUrl", value = "https://${module.authentication_service.fqdn}" },
   ]
