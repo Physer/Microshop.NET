@@ -2,15 +2,6 @@ locals {
   resource_group_name = "rg-microshop-${var.environment}"
 }
 
-data "azurerm_resource_group" "rg_microshop" {
-  name = local.resource_group_name
-}
-
-data "azurerm_container_app_environment" "cae_microshop" {
-  name                = "cae-${var.environment}"
-  resource_group_name = local.resource_group_name
-}
-
 module "admin_app" {
   source                       = "../../modules/container-app"
   application_name             = "admin"
