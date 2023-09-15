@@ -20,7 +20,7 @@ data "terraform_remote_state" "generic_state" {
   backend = "azurerm"
   config = {
     resource_group_name  = "rg-tfstate"
-    storage_account_name = "sttfstateschouls"
+    storage_account_name = "stmicroshopstate"
     container_name       = "generic-provisioning"
     key                  = "terraform.tfstate"
   }

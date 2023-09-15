@@ -1,4 +1,4 @@
 resource_group_name  = "rg-tfstate"
-storage_account_name = "sttfstateschouls"
+storage_account_name = "stmicroshopstate"
 container_name       = "internal-application-provisioning"
 key                  = "products.tfstate"
