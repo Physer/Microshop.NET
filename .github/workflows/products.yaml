@@ -3,14 +3,14 @@ concurrency: products
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - ".github/workflows/**"
-  #     - "infrastructure/terraform/internal/products/**"
-  #     - "infrastructure/terraform/modules/**"
-  #     - "apps/products/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "infrastructure/terraform/internal/products/**"
+      - "infrastructure/terraform/modules/**"
+      - "apps/products/**"
 
 jobs:
   build-publish-products:

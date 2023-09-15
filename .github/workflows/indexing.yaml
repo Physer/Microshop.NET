@@ -3,14 +3,14 @@ concurrency: indexing
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - ".github/workflows/**"
-  #     - "infrastructure/terraform/internal/indexing/**"
-  #     - "infrastructure/terraform/modules/**"
-  #     - "apps/indexing/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "infrastructure/terraform/internal/indexing/**"
+      - "infrastructure/terraform/modules/**"
+      - "apps/indexing/**"
 
 jobs:
   build-publish-indexing:
