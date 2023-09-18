@@ -21,12 +21,15 @@ internal class UserClient : IUserClient
         yield break;
     }
 
-    public async IAsyncEnumerable<UsersResponse> GetUserData()
+    private async IAsyncEnumerable<UsersResponse> GetUserData()
     {
-        yield break;
+        var response = await _httpClient.GetAsync("/users");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var usersResponse = JsonSerializer.Deserialize<UsersResponse>(responseContent, _serializerOptions);
+        yield return usersResponse;
     }
 
-    public async IAsyncEnumerable<UserRolesResponse> GetUsersInAdminRole()
+    private async IAsyncEnumerable<UserRolesResponse> GetUsersInAdminRole()
     {
         yield break;
     }

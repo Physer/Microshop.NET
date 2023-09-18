@@ -2,6 +2,7 @@ using Authentication;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using UserManagement;
 using Web.Services;
 using Web.Utilities;
 
@@ -14,6 +15,7 @@ builder.Services.AddRazorPages();
 // Custom services
 builder.Services.AddScoped<CookieService>();
 builder.Services.RegisterAuthenticationDependencies(builder.Configuration);
+builder.Services.RegisterUserManagementDependencies(builder.Configuration);
 
 // Authentication and authorization
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

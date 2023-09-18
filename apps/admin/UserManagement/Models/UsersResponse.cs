@@ -1,3 +1,3 @@
 ﻿namespace UserManagement.Models;
 
-internal record struct UsersResponse(string RecipeId, UserResponse User, string NextPaginationToken);
+internal record struct UsersResponse(string RecipeId, UserResponse User);
