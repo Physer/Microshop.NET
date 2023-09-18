@@ -18,19 +18,24 @@ internal class UserClient : IUserClient
 
     public async IAsyncEnumerable<User> GetUsers()
     {
-        yield break;
+        var userManagementResponse = await GetUserData();
+        var userRoles = await GetUsersInAdminRole();
+        var adminUsers = userRoles.Users.ToList();
+        foreach(var userData in userManagementResponse.Users)
+            yield return new(userData.User.Email, adminUsers.Contains(userData.User.Id), DateTimeOffset.FromUnixTimeMilliseconds(userData.User.TimeJoined).UtcDateTime);
     }
 
-    private async IAsyncEnumerable<UsersResponse> GetUserData()
+    private async Task<GetUsersResponse> GetUserData()
     {
         var response = await _httpClient.GetAsync("/users");
         var responseContent = await response.Content.ReadAsStringAsync();
-        var usersResponse = JsonSerializer.Deserialize<UsersResponse>(responseContent, _serializerOptions);
-        yield return usersResponse;
+        return JsonSerializer.Deserialize<GetUsersResponse>(responseContent, _serializerOptions);
     }
 
-    private async IAsyncEnumerable<UserRolesResponse> GetUsersInAdminRole()
+    private async Task<UserRolesResponse> GetUsersInAdminRole()
     {
-        yield break;
+        var response = await _httpClient.GetAsync("/recipe/role/users?role=admin");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<UserRolesResponse>(responseContent, _serializerOptions);
     }
 }
