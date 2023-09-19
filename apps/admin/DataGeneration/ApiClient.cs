@@ -21,7 +21,7 @@ internal class ApiClient : IApiClient
     public async Task GenerateProducts()
     {
         var accessToken = _tokenRetriever.GetAccessTokenFromCookie();
-        var request = new HttpRequestMessage(HttpMethod.Post, "/products");
+        var request = new HttpRequestMessage(HttpMethod.Post, "/data");
         request.Headers.Authorization = new AuthenticationHeaderValue(Globals.Http.BearerAuthenticationScheme, accessToken);
         var response = await _httpClient.SendAsync(request);
         if (!response.IsSuccessStatusCode)
