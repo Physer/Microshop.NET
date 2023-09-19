@@ -1,3 +1,4 @@
+using Application;
 using Authentication;
 using DataGeneration;
 using Microsoft.AspNetCore.Authentication;
@@ -5,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using UserManagement;
 using Web.Services;
-using Web.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 

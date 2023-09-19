@@ -1,8 +1,8 @@
+using Application;
 using Application.UserManagement;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Web.Utilities;
 
 namespace Web.Pages;
 

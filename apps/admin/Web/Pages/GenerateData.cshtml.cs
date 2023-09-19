@@ -1,7 +1,7 @@
+using Application;
 using Application.DataGeneration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Web.Utilities;
 
 namespace Web.Pages;
 

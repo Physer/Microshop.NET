@@ -1,4 +1,6 @@
-﻿namespace Web.Utilities;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Application;
 
 public static class Globals
 {
@@ -6,11 +8,11 @@ public static class Globals
     {
         public const string AdministratorPolicyName = "RequiresAdmin";
         public const string AdministratorRole = "admin";
-        public const string AuthorizationTokenCookieName = "msJwt";
     }
 
     public static class Cookies
     {
+        public const string AuthorizationTokenCookieName = "msJwt";
         public static readonly CookieOptions DefaultOptions = new()
         {
             SameSite = SameSiteMode.Strict,
