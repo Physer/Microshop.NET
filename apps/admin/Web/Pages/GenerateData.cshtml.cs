@@ -30,6 +30,7 @@ public class GenerateDataModel : PageModel
         catch (Exception exception)
         {
             _logger.LogError(exception, "Unable to generate data");
+            Success = false;
         }
     }
 }

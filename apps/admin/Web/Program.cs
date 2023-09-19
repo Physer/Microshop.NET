@@ -15,6 +15,7 @@ builder.Services.AddRazorPages();
 
 // Custom services
 builder.Services.AddScoped<CookieService>();
+builder.Services.RegisterApplicationDependencies();
 builder.Services.RegisterAuthenticationDependencies(builder.Configuration);
 builder.Services.RegisterUserManagementDependencies(builder.Configuration);
 builder.Services.RegisterDataGenerationDependencies(builder.Configuration);

@@ -19,4 +19,9 @@ public static class Globals
             HttpOnly = true
         };
     }
+
+    public static class Http
+    {
+        public const string BearerAuthenticationScheme = "Bearer";
+    }
 }
