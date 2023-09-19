@@ -12,7 +12,7 @@ public static class DependencyRegistrator
         var userManagementOptionsSection = configuration.GetSection(UserManagementOptions.ConfigurationEntry);
         var userManagementOptions = userManagementOptionsSection.Get<UserManagementOptions>();
         if (userManagementOptions is null)
-            throw new ArgumentNullException(nameof(userManagementOptions), "Invalid authentication options");
+            throw new ArgumentNullException(nameof(userManagementOptions), "Invalid user management options");
 
         services.AddHttpClient<IUserClient, UserClient>(configuration => configuration.BaseAddress = new Uri(userManagementOptions.BaseUrl));
     }
