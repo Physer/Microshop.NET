@@ -18,6 +18,7 @@ public static class DependencyRegistrator
         busConfigurator.SetEndpointNameFormatter(new SnakeCaseEndpointNameFormatter("indexing", false));
         busConfigurator.AddConsumer<ProductsGeneratedConsumer>();
         busConfigurator.AddConsumer<PricesGeneratedConsumer>();
+        busConfigurator.AddConsumer<ClearDataConsumer>();
         busConfigurator.UsingRabbitMq((context, factoryConfigurator) =>
         {
             factoryConfigurator.Host(servicebusOptions.BaseUrl, (ushort)servicebusOptions.Port, "/", hostConfigurator =>
