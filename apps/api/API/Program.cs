@@ -24,6 +24,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapPost("/products", Endpoints.GenerateProducts);
+app.MapPost("/data", Endpoints.GenerateProducts);
 
 app.Run();
 
