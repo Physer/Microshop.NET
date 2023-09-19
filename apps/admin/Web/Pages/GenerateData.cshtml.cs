@@ -1,3 +1,4 @@
+using Application.DataGeneration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Utilities;
@@ -7,12 +8,28 @@ namespace Web.Pages;
 [Authorize(Policy = AuthorizationDefaults.AdministratorPolicyName)]
 public class GenerateDataModel : PageModel
 {
-    public bool GeneratedData { get; set; }
-    public bool Success { get; set; }
+    public bool? Success { get; set; } = null;
+
+    private readonly IApiClient _apiClient;
+    private readonly ILogger<GenerateDataModel> _logger;
+
+    public GenerateDataModel(IApiClient apiClient,
+        ILogger<GenerateDataModel> logger)
+    {
+        _apiClient = apiClient;
+        _logger = logger;
+    }
 
     public async Task OnPostAsync()
     {
-        GeneratedData = true;
-        Success = true;
+        try
+        {
+            await _apiClient.GenerateProducts();
+            Success = true;
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Unable to generate data");
+        }
     }
 }

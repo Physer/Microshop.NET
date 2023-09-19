@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication", "Authentic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement", "UserManagement\UserManagement.csproj", "{FE187538-6A10-4325-A140-8E2C995B3BE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGeneration", "DataGeneration\DataGeneration.csproj", "{890D457F-1323-41D7-873D-F8D3138025C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{FE187538-6A10-4325-A140-8E2C995B3BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE187538-6A10-4325-A140-8E2C995B3BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE187538-6A10-4325-A140-8E2C995B3BE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{890D457F-1323-41D7-873D-F8D3138025C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890D457F-1323-41D7-873D-F8D3138025C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890D457F-1323-41D7-873D-F8D3138025C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890D457F-1323-41D7-873D-F8D3138025C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{59F2ED70-C97D-4902-BF1D-709F0CF828F8} = {2D692F0A-83AE-48FB-A1B1-221AF6A3A033}
 		{B5D6D361-08EE-4438-AF99-742EC5727091} = {C1FB7888-45E4-44F7-B880-F22A6C5E5092}
 		{FE187538-6A10-4325-A140-8E2C995B3BE6} = {C1FB7888-45E4-44F7-B880-F22A6C5E5092}
+		{890D457F-1323-41D7-873D-F8D3138025C9} = {C1FB7888-45E4-44F7-B880-F22A6C5E5092}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F36A4AC9-1F0D-4A18-9D62-826FBC8C2802}
