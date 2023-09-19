@@ -21,7 +21,7 @@ public class ApiTests : IClassFixture<ApiTestsFixture>
         var testHarness = applicationFactory.Services.GetTestHarness();
 
         // Act
-        var response = await client.PostAsync("/products", default);
+        var response = await client.PostAsync("/data", default);
 
         // Assert
         response.Should().NotBeNull();
