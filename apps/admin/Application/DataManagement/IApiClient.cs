@@ -1,4 +1,4 @@
-﻿namespace Application.DataGeneration;
+﻿namespace Application.DataManagement;
 
 public interface IApiClient
 {

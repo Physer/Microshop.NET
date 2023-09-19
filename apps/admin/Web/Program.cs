@@ -1,6 +1,6 @@
 using Application;
 using Authentication;
-using DataGeneration;
+using DataManagement;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
@@ -18,7 +18,7 @@ builder.Services.AddScoped<CookieService>();
 builder.Services.RegisterApplicationDependencies();
 builder.Services.RegisterAuthenticationDependencies(builder.Configuration);
 builder.Services.RegisterUserManagementDependencies(builder.Configuration);
-builder.Services.RegisterDataGenerationDependencies(builder.Configuration);
+builder.Services.RegisterDataManagementDependencies(builder.Configuration);
 
 // Authentication and authorization
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>

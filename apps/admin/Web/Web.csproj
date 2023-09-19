@@ -17,7 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Authentication\Authentication.csproj" />
-    <ProjectReference Include="..\DataGeneration\DataGeneration.csproj" />
+    <ProjectReference Include="..\DataManagement\DataManagement.csproj" />
     <ProjectReference Include="..\UserManagement\UserManagement.csproj" />
   </ItemGroup>
 

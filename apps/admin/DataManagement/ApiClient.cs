@@ -1,17 +1,17 @@
 ﻿using Application;
 using Application.Authentication;
-using Application.DataGeneration;
+using Application.DataManagement;
 using Application.Exceptions;
 using System.Net.Http.Headers;
 
-namespace DataGeneration;
+namespace DataManagement;
 
 internal class ApiClient : IApiClient
 {
     private readonly HttpClient _httpClient;
     private readonly ITokenRetriever _tokenRetriever;
 
-    public ApiClient(HttpClient httpClient, 
+    public ApiClient(HttpClient httpClient,
         ITokenRetriever tokenRetriever)
     {
         _httpClient = httpClient;

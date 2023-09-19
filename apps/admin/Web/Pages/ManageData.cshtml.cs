@@ -1,5 +1,5 @@
 using Application;
-using Application.DataGeneration;
+using Application.DataManagement;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
