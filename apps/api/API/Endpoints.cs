@@ -14,4 +14,11 @@ public static class Endpoints
         await publisher.PublishMessage();
         return Results.Accepted();
     }
+
+    [Authorize]
+    public static async Task<IResult> ClearData([FromServices] IClearDataPublisher publisher)
+    {
+        await publisher.PublishMessage();
+        return Results.Accepted();
+    }
 }

@@ -12,6 +12,7 @@ public static class DependencyRegistrator
     public static void RegisterMessagingDependencies(this IServiceCollection services, ServicebusOptions? servicebusOptions)
     {
         services.AddScoped<IGenerateProductsPublisher, GenerateProductsPublisher>();
+        services.AddScoped<IClearDataPublisher, ClearDataPublisher>();
         services.AddMassTransit(busConfigurator => busConfigurator.ConfigureBusRegistration(servicebusOptions));
     }
 

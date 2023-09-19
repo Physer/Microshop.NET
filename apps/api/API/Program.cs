@@ -25,6 +25,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapPost("/products", Endpoints.GenerateProducts);
 app.MapPost("/data", Endpoints.GenerateProducts);
+app.MapDelete("/data", Endpoints.ClearData);
 
 app.Run();
 
