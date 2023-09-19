@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
+using Web.Utilities;
 
 namespace Web.Pages;
 
@@ -41,6 +42,8 @@ public class SignInModel : PageModel
             };
             claims.AddRange(authenticationResult.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            _logger.LogInformation("Setting authorization token in cookie");
+            HttpContext.Response.Cookies.Append(Globals.Authorization.AuthorizationTokenCookieName, authenticationResult.AccessToken, Globals.Cookies.DefaultOptions);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
             _logger.LogInformation("Succesfully signed in for user: {username}", Username);
         }

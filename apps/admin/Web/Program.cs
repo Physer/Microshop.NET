@@ -31,7 +31,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         OnRedirectToLogout = RedirectToAbsoluteUri(signInPath)
     };
 });
-builder.Services.AddAuthorization(options => options.AddPolicy(AuthorizationDefaults.AdministratorPolicyName, policy => policy.RequireClaim(ClaimTypes.Role, AuthorizationDefaults.AdministratorRole)));
+builder.Services.AddAuthorization(options => options.AddPolicy(Globals.Authorization.AdministratorPolicyName, policy => policy.RequireClaim(ClaimTypes.Role, Globals.Authorization.AdministratorRole)));
 
 var app = builder.Build();
 

@@ -4,7 +4,7 @@ using Web.Utilities;
 
 namespace Web.Pages;
 
-[Authorize(Policy = AuthorizationDefaults.AdministratorPolicyName)]
+[Authorize(Policy = Globals.Authorization.AdministratorPolicyName)]
 public class IndexModel : PageModel
 {
     public void OnGet() { }
