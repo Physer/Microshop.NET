@@ -1,4 +1,4 @@
-using Application.Authentication;
+using Application.UserManagement;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;

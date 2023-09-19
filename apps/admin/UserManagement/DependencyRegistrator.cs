@@ -1,4 +1,4 @@
-﻿using Application.Authentication;
+﻿using Application.UserManagement;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UserManagement.Options;

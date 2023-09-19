@@ -1,4 +1,4 @@
-﻿using Application.Authentication;
+﻿using Application.UserManagement;
 using Domain;
 using System.Text.Json;
 using UserManagement.Models;

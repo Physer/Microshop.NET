@@ -1,6 +1,6 @@
 ﻿using Domain;
 
-namespace Application.Authentication;
+namespace Application.UserManagement;
 
 public interface IUserClient
 {
