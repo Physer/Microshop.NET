@@ -138,7 +138,7 @@ services:
       - Authentication__Issuer=http://localhost:5000/auth
     restart: always
     ports:
-      - 5006:80
+      - 5005:80
   admin:
     container_name: admin
     build:
@@ -151,4 +151,4 @@ services:
       - Authentication__BaseUrl=http://authentication_service
     restart: always
     ports:
-      - 5007:80
+      - 5006:80
