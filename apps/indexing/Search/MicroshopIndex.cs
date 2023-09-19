@@ -11,4 +11,5 @@ internal class MicroshopIndex : IIndex
     public MicroshopIndex(MeilisearchClient meilisearchClient) => _index = meilisearchClient.Index("products");
 
     public async Task AddOrUpdateDocumentsAsync<T>(IEnumerable<T> documentsToIndex) => await _index.UpdateDocumentsAsync(documentsToIndex);
+    public async Task ClearIndex() => await _index.DeleteAllDocumentsAsync();
 }

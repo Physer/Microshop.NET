@@ -23,4 +23,6 @@ internal class IndexingService : IIndexingService
         var indexableData = _mapper.Map<IEnumerable<TIndexableModel>>(dataToIndex);
         await _index.AddOrUpdateDocumentsAsync(indexableData);
     }
+
+    public async Task ClearIndex() => await _index.ClearIndex();
 }
