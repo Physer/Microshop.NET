@@ -6,21 +6,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Web.Pages;
 
 [Authorize(Policy = Globals.Authorization.AdministratorPolicyName)]
-public class GenerateDataModel : PageModel
+public class ManageDataModel : PageModel
 {
     public bool? Success { get; set; } = null;
 
     private readonly IApiClient _apiClient;
-    private readonly ILogger<GenerateDataModel> _logger;
+    private readonly ILogger<ManageDataModel> _logger;
 
-    public GenerateDataModel(IApiClient apiClient,
-        ILogger<GenerateDataModel> logger)
+    public ManageDataModel(IApiClient apiClient,
+        ILogger<ManageDataModel> logger)
     {
         _apiClient = apiClient;
         _logger = logger;
     }
 
-    public async Task OnPostAsync()
+    public async Task OnPostGenerateAsync()
     {
         try
         {
@@ -30,6 +30,20 @@ public class GenerateDataModel : PageModel
         catch (Exception exception)
         {
             _logger.LogError(exception, "Unable to generate data");
+            Success = false;
+        }
+    }
+
+    public async Task OnPostClearAsync()
+    {
+        try
+        {
+            await _apiClient.ClearData();
+            Success = true;
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Unable to clear data");
             Success = false;
         }
     }

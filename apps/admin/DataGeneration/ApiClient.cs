@@ -18,10 +18,14 @@ internal class ApiClient : IApiClient
         _tokenRetriever = tokenRetriever;
     }
 
-    public async Task GenerateProducts()
+    public async Task GenerateProducts() => await MakeRequest(HttpMethod.Post, "/data");
+
+    public async Task ClearData() => await MakeRequest(HttpMethod.Delete, "/data");
+
+    private async Task MakeRequest(HttpMethod method, string requestUrl)
     {
         var accessToken = _tokenRetriever.GetAccessTokenFromCookie();
-        var request = new HttpRequestMessage(HttpMethod.Post, "/data");
+        var request = new HttpRequestMessage(method, requestUrl);
         request.Headers.Authorization = new AuthenticationHeaderValue(Globals.Http.BearerAuthenticationScheme, accessToken);
         var response = await _httpClient.SendAsync(request);
         if (!response.IsSuccessStatusCode)
