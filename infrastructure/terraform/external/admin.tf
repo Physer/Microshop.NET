@@ -1,6 +1,8 @@
 locals {
   admin_appsettings = [
     { name = "Authentication__BaseUrl", value = "https://${module.authentication_service.fqdn}" },
+    { name = "UserManagement__BaseUrl", value = "https://${module.authentication_core.fqdn}" },
+    { name = "DataManagement__BaseUrl", value = "https://${module.api_app.fqdn}" },
   ]
 }
 
