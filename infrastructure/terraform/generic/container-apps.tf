@@ -44,7 +44,6 @@ module "rabbitmq_app" {
   appsettings                  = local.rabbitmq_appsettings
   ingress_enabled              = true
   location                     = azurerm_resource_group.rg_microshop.location
-  scale_min                    = 1
 }
 
 module "meilisearch_app" {
