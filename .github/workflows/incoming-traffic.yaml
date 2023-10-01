@@ -3,18 +3,18 @@ concurrency: traffic
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/**"
-      - "infrastructure/terraform/external/**"
-      - "infrastructure/terraform/dns-proxy/**"
-      - "infrastructure/terraform/modules/**"
-      - "apps/api/**"
-      - "apps/authentication/**"
-      - "apps/gateway/**"
-      - "apps/admin/**"
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - ".github/workflows/**"
+  #     - "infrastructure/terraform/external/**"
+  #     - "infrastructure/terraform/dns-proxy/**"
+  #     - "infrastructure/terraform/modules/**"
+  #     - "apps/api/**"
+  #     - "apps/authentication/**"
+  #     - "apps/gateway/**"
+  #     - "apps/admin/**"
 
 jobs:
   build-publish-api:
