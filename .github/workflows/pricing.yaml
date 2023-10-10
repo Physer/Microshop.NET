@@ -3,14 +3,14 @@ concurrency: pricing
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - ".github/workflows/**"
-  #     - "infrastructure/terraform/internal/pricing/**"
-  #     - "infrastructure/terraform/modules/**"
-  #     - "apps/pricing/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "infrastructure/terraform/internal/pricing/**"
+      - "infrastructure/terraform/modules/**"
+      - "apps/pricing/**"
 
 jobs:
   build-publish-pricing:
