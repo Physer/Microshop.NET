@@ -18,7 +18,7 @@ public class AuthenticationClientTests
     {
         // Arrange
         var authenticationClient = new AuthenticationClientBuilder()
-            .WithRequestsReturningStatusCode(statusCode)
+            .WithResponseHavingStatusCode(statusCode)
             .Build();
 
         // Act
