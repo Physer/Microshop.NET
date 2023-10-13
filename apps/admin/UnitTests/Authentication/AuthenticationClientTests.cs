@@ -7,6 +7,15 @@ namespace UnitTests.Authentication;
 
 public class AuthenticationClientTests
 {
+    private readonly string _defaultUsername;
+    private readonly string _defaultPassword;
+
+    public AuthenticationClientTests()
+    {
+        _defaultUsername = "microshop_user";
+        _defaultPassword = "secure_password";
+    }
+
     [Theory]
     [InlineData(HttpStatusCode.BadGateway)]
     [InlineData(HttpStatusCode.BadRequest)]
@@ -22,10 +31,24 @@ public class AuthenticationClientTests
             .Build();
 
         // Act
-        var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync("username", "password"));
+        var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
-        exception.Should().NotBeNull();
+        exception.Should().BeOfType<AuthenticationException>();
+    }
+
+    [Fact]
+    public async Task SignInAsync_WithValidReponse_UnableToParse_ThrowsAuthenticationException()
+    {
+        // Arrange
+        var authenticationClient = new AuthenticationClientBuilder()
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
+            .Build();
+
+        // Act
+        var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
+
+        // Assert
         exception.Should().BeOfType<AuthenticationException>();
     }
 }
