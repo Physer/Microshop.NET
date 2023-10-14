@@ -7,7 +7,7 @@ namespace UnitTests.Authentication;
 internal class AuthenticationClientBuilder
 {
     private HttpStatusCode _statusCode;
-    private string? _responseContent;
+    private object? _responseContent;
 
     public AuthenticationClientBuilder WithResponseHavingStatusCode(HttpStatusCode statusCode)
     {
@@ -16,16 +16,16 @@ internal class AuthenticationClientBuilder
         return this;
     }
 
-    public AuthenticationClientBuilder WithResponseHavingContent(string serializedContent)
+    public AuthenticationClientBuilder WithResponseHavingContent(object content)
     {
-        _responseContent = serializedContent;
+        _responseContent = content;
 
         return this;
     }
 
     public AuthenticationClient Build()
     {
-        FakeHttpMessageHandler fakeHttpMessageHandler = string.IsNullOrWhiteSpace(_responseContent) ? new(_statusCode) : new(_statusCode, _responseContent);
+        FakeHttpMessageHandler fakeHttpMessageHandler = _responseContent is not null ? new(_statusCode, _responseContent) : new(_statusCode);
         var httpClient = new HttpClient(fakeHttpMessageHandler) { BaseAddress = new Uri("http://microshop.local") };
         return new(httpClient);
     }
