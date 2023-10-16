@@ -17,5 +17,6 @@ public static class DependencyRegistrator
             throw new ArgumentNullException(nameof(authenticationOptions), "Invalid authentication options");
 
         services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(configuration => configuration.BaseAddress = new Uri(authenticationOptions.BaseUrl));
+        services.AddScoped<ITokenParser, TokenParser>();
     }
 }

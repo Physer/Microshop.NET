@@ -8,11 +8,16 @@ namespace Authentication;
 internal class AuthenticationClient : IAuthenticationClient
 {
     private readonly HttpClient _httpClient;
+    private readonly ITokenParser _tokenParser;
+
     private readonly JsonSerializerOptions _serializerOptions;
 
-    public AuthenticationClient(HttpClient httpClient)
+    public AuthenticationClient(HttpClient httpClient,
+        ITokenParser tokenParser)
     {
         _httpClient = httpClient;
+        _tokenParser = tokenParser;
+
         _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
     }
 
@@ -32,7 +37,7 @@ internal class AuthenticationClient : IAuthenticationClient
             throw new AuthenticationException("Unable to retrieve the access token");
 
         var accessToken = accessTokenData!.First();
-        var roles = TokenParser.GetRoles(accessToken);
+        var roles = _tokenParser.GetRoles(accessToken);
         return new(parsedResponse.User.Email, roles, accessToken);
     }
 }

@@ -1,8 +1,8 @@
-﻿using Application.Exceptions;
+﻿using Application.Authentication;
+using Application.Exceptions;
 using Authentication.Models;
 using FluentAssertions;
 using System.Net;
-using System.Text.Json;
 using Xunit;
 
 namespace UnitTests.Authentication;
@@ -11,13 +11,15 @@ public class AuthenticationClientTests
 {
     private readonly string _defaultUsername;
     private readonly string _defaultPassword;
-    private readonly JsonSerializerOptions _defaultJsonSerializerOptions;
+    private readonly string _accessTokenHeaderKey;
+    private readonly string _roleClaimKey;
 
     public AuthenticationClientTests()
     {
         _defaultUsername = "microshop_user";
         _defaultPassword = "secure_password";
-        _defaultJsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        _accessTokenHeaderKey = "st-access-token";
+        _roleClaimKey = "st-role";
     }
 
     [Theory]
@@ -77,5 +79,69 @@ public class AuthenticationClientTests
         // Assert
         exception.Should().BeOfType<AuthenticationException>();
         exception.Message.Should().BeEquivalentTo(expectedErrorMesssage);
+    }
+
+    [Fact]
+    public async Task SignInAsync_WithValidData_ReturnsAuthenticationData()
+    {
+        // Arrange
+        var id = "1234";
+        var emailAddress = "unittest@microshop.rocks";
+        var role = "User";
+        var accessToken = "first_token";
+
+        AuthenticationData expectedAuthenticationData = new(emailAddress, new[] { role }, accessToken);
+
+        AuthenticationResponse validResponseBody = new("OK", new(id, emailAddress, DateTime.UtcNow.Ticks));
+        HashSet<KeyValuePair<string, string>> headers = new()
+        {
+            new(_accessTokenHeaderKey, accessToken),
+        };
+
+        var authenticationClient = new AuthenticationClientBuilder()
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
+            .WithResponseHavingContent(validResponseBody)
+            .WithResponseHavingHeaders(headers)
+            .WithGetRolesReturning(new[] { role })
+            .Build();
+
+        // Act
+        var authenticationData = await authenticationClient.SignInAsync(_defaultUsername, _defaultPassword);
+
+        // Assert
+        authenticationData.Should().BeEquivalentTo(expectedAuthenticationData);
+    }
+
+    [Fact]
+    public async Task SignInAsync_WithMultipleAccessTokens_TakesFirstOne()
+    {
+        // Arrange
+        var id = "1234";
+        var emailAddress = "unittest@microshop.rocks";
+        var role = "User";
+        var firstAccessToken = "first_token";
+        var secondAccessToken = "second_token";
+
+        AuthenticationData expectedAuthenticationData = new(emailAddress, new[] { role }, firstAccessToken);
+
+        AuthenticationResponse validResponseBody = new("OK", new(id, emailAddress, DateTime.UtcNow.Ticks));
+        HashSet<KeyValuePair<string, string>> headers = new()
+        {
+            new(_accessTokenHeaderKey, firstAccessToken),
+            new(_accessTokenHeaderKey, secondAccessToken)
+        };
+
+        var authenticationClient = new AuthenticationClientBuilder()
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
+            .WithResponseHavingContent(validResponseBody)
+            .WithResponseHavingHeaders(headers)
+            .WithGetRolesReturning(new[] { role })
+            .Build();
+
+        // Act
+        var authenticationData = await authenticationClient.SignInAsync(_defaultUsername, _defaultPassword);
+
+        // Assert
+        authenticationData.Should().BeEquivalentTo(expectedAuthenticationData);
     }
 }

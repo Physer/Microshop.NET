@@ -8,29 +8,54 @@ namespace UnitTests.Utilities;
 /// </summary>
 internal class FakeHttpMessageHandler : HttpMessageHandler
 {
-    private readonly HttpStatusCode _httpStatusCode;
-    private readonly object _responseObject;
+    private readonly HttpStatusCode _statusCode;
+    private readonly object _content;
+    private readonly IEnumerable<KeyValuePair<string, string>> _headers;
+    private readonly JsonSerializerOptions _serializerOptions;
 
     /// <summary>
-    /// The default Fake HTTP Message Handler will return a status code of OK and a response body
+    /// A simple fake HTTP response message returning an HTTP 200OK status
     /// </summary>
-    public FakeHttpMessageHandler() : this(HttpStatusCode.OK) { }
-    /// <summary>
-    /// A Fake HTTP Message Handler with a custom status code in your HTTP response with an included response body
-    /// </summary>
-    /// <param name="statusCode">The HTTP status code to return in the HTTP response</param>
-    public FakeHttpMessageHandler(HttpStatusCode statusCode) : this(statusCode, new { Message = "Microshop.NET " }) { }
+    public FakeHttpMessageHandler() : this(HttpStatusCode.OK, new(), Array.Empty<KeyValuePair<string, string>>()) { }
 
     /// <summary>
-    /// A Fake HTTP Message Handler with a custom status code and a custom response object
+    /// A customized fake HTTP response message with an HTTP status code
     /// </summary>
-    /// <param name="statusCode">The HTTP status code to return in the HTTP response</param>
-    /// <param name="responseObject">The message content (serailizable as a string) to return in the HTTP response</param>
-    public FakeHttpMessageHandler(HttpStatusCode statusCode, object responseObject)
+    /// <param name="statusCode">Custom HTTP status code</param>
+    public FakeHttpMessageHandler(HttpStatusCode statusCode) : this(statusCode, new(), Array.Empty<KeyValuePair<string, string>>()) { }
+
+    /// <summary>
+    /// A customized fake HTTP response message with an HTTP status code and custom response body
+    /// </summary>
+    /// <param name="statusCode">Custom HTTP status code</param>
+    /// <param name="content">Custom response message</param>
+    public FakeHttpMessageHandler(HttpStatusCode statusCode, object content) : this(statusCode, content, Array.Empty<KeyValuePair<string, string>>()) { }
+
+    /// <summary>
+    /// A customized fake HTTP response message with an HTTP status code, custom response body and custom headers
+    /// </summary>
+    /// <param name="statusCode">Custom HTTP status code</param>
+    /// <param name="content">Custom response message</param>
+    /// <param name="headers">Custom response header</param>
+    public FakeHttpMessageHandler(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, string>> headers)
     {
-        _httpStatusCode = statusCode;
-        _responseObject = responseObject;
+        _statusCode = statusCode;
+        _content = content;
+        _headers = headers;
+        _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
     }
 
-    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) => Task.FromResult(new HttpResponseMessage(_httpStatusCode) { Content = new StringContent(JsonSerializer.Serialize(_responseObject, new JsonSerializerOptions(JsonSerializerDefaults.Web))) });
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        var serializedContent = JsonSerializer.Serialize(_content, _serializerOptions);
+        HttpResponseMessage message = new(_statusCode)
+        {
+            Content = new StringContent(serializedContent)
+        };
+
+        foreach (var header in _headers)
+            message.Headers.Add(header.Key, header.Value);
+
+        return Task.FromResult(message);
+    }
 }
