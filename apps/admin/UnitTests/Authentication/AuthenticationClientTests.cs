@@ -29,7 +29,7 @@ public class AuthenticationClientTests
     [InlineData(HttpStatusCode.Unauthorized)]
     [InlineData(HttpStatusCode.InternalServerError)]
     [InlineData(HttpStatusCode.NotFound)]
-    public async Task SignInAsync_WithInvalidResponse_ThrowAuthenticationException(HttpStatusCode statusCode)
+    public async Task SignInAsync_WithInvalidResponse_ShouldThrowAuthenticationException(HttpStatusCode statusCode)
     {
         // Arrange
         var expectedErrorMesssage = "Invalid response received from the authentication service";
@@ -46,7 +46,7 @@ public class AuthenticationClientTests
     }
 
     [Fact]
-    public async Task SignInAsync_WithValidReponse_UnableToParse_ThrowsAuthenticationException()
+    public async Task SignInAsync_WithValidReponse_UnableToParse_ShouldThrowAuthenticationException()
     {
         // Arrange
         var expectedErrorMesssage = "Unable to determine the authentication service's status result";
@@ -63,7 +63,7 @@ public class AuthenticationClientTests
     }
 
     [Fact]
-    public async Task SignInAsync_WithoutAccessTokenHeader_ThrowsAuthenticationException()
+    public async Task SignInAsync_WithoutAccessTokenHeader_ShouldThrowAuthenticationException()
     {
         // Arrange
         var expectedErrorMesssage = "Unable to retrieve the access token";
@@ -82,13 +82,13 @@ public class AuthenticationClientTests
     }
 
     [Fact]
-    public async Task SignInAsync_WithValidData_ReturnsAuthenticationData()
+    public async Task SignInAsync_WithValidData_ShouldReturnAuthenticationData()
     {
         // Arrange
         var id = "1234";
         var emailAddress = "unittest@microshop.rocks";
         var role = "User";
-        var accessToken = "first_token";
+        var accessToken = "access_token";
 
         AuthenticationData expectedAuthenticationData = new(emailAddress, new[] { role }, accessToken);
 
@@ -113,7 +113,7 @@ public class AuthenticationClientTests
     }
 
     [Fact]
-    public async Task SignInAsync_WithMultipleAccessTokens_TakesFirstOne()
+    public async Task SignInAsync_WithMultipleAccessTokens_ShouldTakeFirstAccessToken()
     {
         // Arrange
         var id = "1234";

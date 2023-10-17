@@ -13,7 +13,7 @@ public class TokenRetrieverTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void GetAccessTokenFromCookie_WithWrongCookieName_ThrowsException(string cookiename)
+    public void GetAccessTokenFromCookie_WithWrongCookieName_ShouldThrowException(string cookiename)
     {
         // Arrange
         var tokenRetriever = new TokenRetrieverBuilder()
@@ -29,7 +29,7 @@ public class TokenRetrieverTests
     }
 
     [Fact]
-    public void GetAccessTokenFromCookie_WithAuthorizationCookie_ReturnAccessToken()
+    public void GetAccessTokenFromCookie_WithAuthorizationCookie_ShouldReturnAccessToken()
     {
         // Arrange
         var cookieName = Globals.Cookies.AuthorizationTokenCookieName;
