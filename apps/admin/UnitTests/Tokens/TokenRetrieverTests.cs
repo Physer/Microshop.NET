@@ -1,4 +1,5 @@
 ﻿using Application;
+using AutoFixture.Xunit2;
 using FluentAssertions;
 using Xunit;
 
@@ -7,13 +8,10 @@ namespace UnitTests.Tokens;
 public class TokenRetrieverTests
 {
     [Theory]
-    [InlineData("Auth")]
-    [InlineData("invalid")]
-    [InlineData("1")]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void GetAccessTokenFromCookie_WithWrongCookieName_ShouldThrowException(string cookiename)
+    public void GetAccessTokenFromCookie_WithInvalidCookieName_ShouldThrowException(string cookiename)
     {
         // Arrange
         var tokenRetriever = new TokenRetrieverBuilder()
@@ -21,19 +19,36 @@ public class TokenRetrieverTests
             .Build();
 
         // Act
-        var exception = Record.Exception(() => tokenRetriever.GetAccessTokenFromCookie());
+        var exception = Record.Exception(tokenRetriever.GetAccessTokenFromCookie);
 
         // Assert
         exception.Should().NotBeNull();
         exception.Should().BeOfType<UnauthorizedAccessException>();
     }
 
-    [Fact]
-    public void GetAccessTokenFromCookie_WithAuthorizationCookie_ShouldReturnAccessToken()
+    [Theory]
+    [AutoData]
+    public void GetAccessTokenFromCookie_WithUnknownCookieName_ShouldThrowException(string cookiename)
+    {
+        // Arrange
+        var tokenRetriever = new TokenRetrieverBuilder()
+            .WithAuthorizationCookieData(cookiename, string.Empty)
+            .Build();
+
+        // Act
+        var exception = Record.Exception(tokenRetriever.GetAccessTokenFromCookie);
+
+        // Assert
+        exception.Should().NotBeNull();
+        exception.Should().BeOfType<UnauthorizedAccessException>();
+    }
+
+    [Theory]
+    [AutoData]
+    public void GetAccessTokenFromCookie_WithAuthorizationCookie_ShouldReturnAccessToken(string accessToken)
     {
         // Arrange
         var cookieName = Globals.Cookies.AuthorizationTokenCookieName;
-        var accessToken = "access_token";
         var tokenRetriever = new TokenRetrieverBuilder()
             .WithAuthorizationCookieData(cookieName, accessToken)
             .Build();
