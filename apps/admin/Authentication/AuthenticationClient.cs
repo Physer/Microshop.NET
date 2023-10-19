@@ -29,7 +29,7 @@ internal class AuthenticationClient : IAuthenticationClient
         if (!response.IsSuccessStatusCode)
             throw new AuthenticationException("Invalid response received from the authentication service");
 
-        var parsedResponse = AuthenticationMapper.MapFromResponse(await response.Content.ReadAsStringAsync(), _serializerOptions);
+        var parsedResponse = AuthenticationMapper.MapFromResponse(await response.Content.ReadAsStringAsync());
         if (!Enum.TryParse<AuthenticationStatus>(parsedResponse.Status, out var parsedStatus) && parsedStatus != AuthenticationStatus.OK)
             throw new AuthenticationException("Unable to determine the authentication service's status result");
 

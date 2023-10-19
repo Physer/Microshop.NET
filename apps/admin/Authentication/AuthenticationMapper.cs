@@ -29,12 +29,5 @@ internal static class AuthenticationMapper
         };
     }
 
-    public static AuthenticationResponse MapFromResponse(string serializedResponse, JsonSerializerOptions? serializerOptions = null)
-    {
-        if (string.IsNullOrWhiteSpace(serializedResponse))
-            throw new ArgumentNullException(nameof(serializedResponse), "Invalid response data from Authentication service");
-
-        serializerOptions ??= new JsonSerializerOptions(JsonSerializerDefaults.Web);
-        return JsonSerializer.Deserialize<AuthenticationResponse>(serializedResponse, serializerOptions);
-    }
+    public static AuthenticationResponse MapFromResponse(string serializedResponse) => JsonSerializer.Deserialize<AuthenticationResponse>(serializedResponse, new JsonSerializerOptions(JsonSerializerDefaults.Web));
 }
