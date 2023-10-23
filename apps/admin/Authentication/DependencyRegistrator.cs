@@ -18,5 +18,6 @@ public static class DependencyRegistrator
 
         services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(configuration => configuration.BaseAddress = new Uri(authenticationOptions.BaseUrl));
         services.AddScoped<ITokenParser, TokenParser>();
+        services.AddScoped<ITokenHandler, TokenHandler>();
     }
 }
