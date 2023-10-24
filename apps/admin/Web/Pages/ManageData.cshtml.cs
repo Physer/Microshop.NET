@@ -24,7 +24,7 @@ public class ManageDataModel : PageModel
     {
         try
         {
-            await _apiClient.GenerateProducts();
+            await _apiClient.GenerateProductsAsync();
             Success = true;
         }
         catch (Exception exception)
@@ -38,7 +38,7 @@ public class ManageDataModel : PageModel
     {
         try
         {
-            await _apiClient.ClearData();
+            await _apiClient.ClearDataAsync();
             Success = true;
         }
         catch (Exception exception)

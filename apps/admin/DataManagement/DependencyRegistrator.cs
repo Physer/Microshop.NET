@@ -2,7 +2,9 @@
 using DataManagement.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("UnitTests")]
 namespace DataManagement;
 
 public static class DependencyRegistrator

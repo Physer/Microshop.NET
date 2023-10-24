@@ -29,7 +29,7 @@ internal class FakeHttpMessageHandler : HttpMessageHandler
     /// </summary>
     /// <param name="statusCode">Custom HTTP status code</param>
     /// <param name="content">Custom response message</param>
-    public FakeHttpMessageHandler(HttpStatusCode statusCode, object content) : this(statusCode, content, Array.Empty<KeyValuePair<string, string>>()) { }
+    public FakeHttpMessageHandler(HttpStatusCode statusCode, object? content) : this(statusCode, content, Array.Empty<KeyValuePair<string, string>>()) { }
 
     /// <summary>
     /// A customized fake HTTP response message with an HTTP status code, custom response body and custom headers
@@ -37,11 +37,11 @@ internal class FakeHttpMessageHandler : HttpMessageHandler
     /// <param name="statusCode">Custom HTTP status code</param>
     /// <param name="content">Custom response message</param>
     /// <param name="headers">Custom response header</param>
-    public FakeHttpMessageHandler(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, string>> headers)
+    public FakeHttpMessageHandler(HttpStatusCode statusCode, object? content, IEnumerable<KeyValuePair<string, string>>? headers)
     {
         _statusCode = statusCode;
-        _content = content;
-        _headers = headers;
+        _content = content ?? new();
+        _headers = headers ?? Array.Empty<KeyValuePair<string, string>>();
         _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
     }
 

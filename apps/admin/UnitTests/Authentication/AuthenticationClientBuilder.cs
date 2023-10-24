@@ -6,12 +6,8 @@ using UnitTests.Utilities;
 
 namespace UnitTests.Authentication;
 
-internal class AuthenticationClientBuilder
+internal class AuthenticationClientBuilder : HttpClientBuilder<AuthenticationClientBuilder>
 {
-    private HttpStatusCode _statusCode;
-    private object _responseContent;
-    private IEnumerable<KeyValuePair<string, string>> _headers;
-
     private readonly ITokenParser _tokenParser;
 
     public AuthenticationClientBuilder()
@@ -21,27 +17,6 @@ internal class AuthenticationClientBuilder
         _headers = Array.Empty<KeyValuePair<string, string>>();
 
         _tokenParser = Substitute.For<ITokenParser>();
-    }
-
-    public AuthenticationClientBuilder WithResponseHavingStatusCode(HttpStatusCode statusCode)
-    {
-        _statusCode = statusCode;
-
-        return this;
-    }
-
-    public AuthenticationClientBuilder WithResponseHavingContent(object content)
-    {
-        _responseContent = content;
-
-        return this;
-    }
-
-    public AuthenticationClientBuilder WithResponseHavingHeaders(IEnumerable<KeyValuePair<string, string>> headers)
-    {
-        _headers = headers;
-
-        return this;
     }
 
     public AuthenticationClientBuilder WithGetRolesReturning(IEnumerable<string> roles)
