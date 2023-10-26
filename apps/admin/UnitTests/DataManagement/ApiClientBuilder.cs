@@ -18,10 +18,5 @@ internal class ApiClientBuilder : HttpClientBuilder<ApiClientBuilder>
         return this;
     }
 
-    public ApiClient Build()
-    {
-        FakeHttpMessageHandler fakeHttpMessageHandler = new(_statusCode, _responseContent, _headers);
-        HttpClient httpClient = new(fakeHttpMessageHandler) { BaseAddress = new Uri("http://microshop.local") };
-        return new(httpClient, _tokenRetriever);
-    }
+    public ApiClient Build() => new(BuildHttpClient(), _tokenRetriever);
 }

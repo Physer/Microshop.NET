@@ -15,5 +15,5 @@ public class ManageUsersModel : PageModel
 
     public ManageUsersModel(IUserClient userClient) => _userClient = userClient;
 
-    public void OnGet() => Users = _userClient.GetUsers();
+    public void OnGet() => Users = _userClient.GetUsersAsync();
 }

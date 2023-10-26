@@ -28,4 +28,10 @@ internal abstract class HttpClientBuilder<T> where T : class, new()
 
         return this as T ?? new();
     }
+
+    protected HttpClient BuildHttpClient()
+    {
+        FakeHttpMessageHandler fakeHttpMessageHandler = new(_statusCode, _responseContent, _headers);
+        return new(fakeHttpMessageHandler) { BaseAddress = new Uri("http://microshop.local") };
+    }
 }

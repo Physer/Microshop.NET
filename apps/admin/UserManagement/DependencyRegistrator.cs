@@ -1,8 +1,10 @@
 ﻿using Application.UserManagement;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
 using UserManagement.Options;
 
+[assembly: InternalsVisibleTo("UnitTests")]
 namespace UserManagement;
 
 public static class DependencyRegistrator

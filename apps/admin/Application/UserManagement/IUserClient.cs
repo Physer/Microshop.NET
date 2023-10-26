@@ -4,5 +4,5 @@ namespace Application.UserManagement;
 
 public interface IUserClient
 {
-    IAsyncEnumerable<User> GetUsers();
+    IAsyncEnumerable<User> GetUsersAsync();
 }

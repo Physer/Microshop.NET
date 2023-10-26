@@ -26,10 +26,5 @@ internal class AuthenticationClientBuilder : HttpClientBuilder<AuthenticationCli
         return this;
     }
 
-    public AuthenticationClient Build()
-    {
-        FakeHttpMessageHandler fakeHttpMessageHandler = new(_statusCode, _responseContent, _headers);
-        var httpClient = new HttpClient(fakeHttpMessageHandler) { BaseAddress = new Uri("http://microshop.local") };
-        return new(httpClient, _tokenParser);
-    }
+    public AuthenticationClient Build() => new(BuildHttpClient(), _tokenParser);
 }
