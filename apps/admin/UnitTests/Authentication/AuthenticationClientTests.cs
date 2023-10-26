@@ -29,12 +29,12 @@ public class AuthenticationClientTests
     {
         // Arrange
         var expectedErrorMesssage = "Invalid response received from the authentication service";
-        var authenticationClient = new AuthenticationClientBuilder()?
-            .WithResponseHavingStatusCode(statusCode)?
+        var authenticationClient = new AuthenticationClientBuilder()
+            .WithResponseHavingStatusCode(statusCode)
             .Build();
 
         // Act
-        var exception = await Record.ExceptionAsync(() => authenticationClient?.SignInAsync(_defaultUsername, _defaultPassword));
+        var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
         exception.Should().BeOfType<AuthenticationException>();
@@ -46,12 +46,12 @@ public class AuthenticationClientTests
     {
         // Arrange
         var expectedErrorMesssage = "Unable to determine the authentication service's status result";
-        var authenticationClient = new AuthenticationClientBuilder()?
-            .WithResponseHavingStatusCode(HttpStatusCode.OK)?
+        var authenticationClient = new AuthenticationClientBuilder()
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
             .Build();
 
         // Act
-        var exception = await Record.ExceptionAsync(() => authenticationClient?.SignInAsync(_defaultUsername, _defaultPassword));
+        var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
         exception.Should().BeOfType<AuthenticationException>();
@@ -65,12 +65,12 @@ public class AuthenticationClientTests
         var expectedErrorMesssage = "Unable to retrieve the access token";
         AuthenticationResponse responseBody = new("OK", new());
         var authenticationClient = new AuthenticationClientBuilder()
-            .WithResponseHavingStatusCode(HttpStatusCode.OK)?
-            .WithResponseHavingContent(responseBody)?
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
+            .WithResponseHavingContent(responseBody)
             .Build();
 
         // Act
-        var exception = await Record.ExceptionAsync(() => authenticationClient?.SignInAsync(_defaultUsername, _defaultPassword));
+        var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
         exception.Should().BeOfType<AuthenticationException>();
@@ -105,12 +105,12 @@ public class AuthenticationClientTests
     {
         // Arrange
         var authenticationClient = new AuthenticationClientBuilder()
-            .WithResponseHavingStatusCode(HttpStatusCode.OK)?
-            .WithResponseHavingContent(content)?
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
+            .WithResponseHavingContent(content)
             .Build();
 
         // Act
-        var exception = await Record.ExceptionAsync(() => authenticationClient?.SignInAsync(_defaultUsername, _defaultPassword));
+        var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
         exception.Should().BeOfType<JsonException>();
@@ -129,14 +129,14 @@ public class AuthenticationClientTests
         };
 
         var authenticationClient = new AuthenticationClientBuilder()
-            .WithResponseHavingStatusCode(HttpStatusCode.OK)?
-            .WithResponseHavingContent(validResponseBody)?
-            .WithResponseHavingHeaders(headers)?
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
+            .WithResponseHavingContent(validResponseBody)
+            .WithResponseHavingHeaders(headers)
             .WithGetRolesReturning(new[] { role })
             .Build();
 
         // Act
-        var authenticationData = await authenticationClient?.SignInAsync(_defaultUsername, _defaultPassword);
+        var authenticationData = await authenticationClient.SignInAsync(_defaultUsername, _defaultPassword);
 
         // Assert
         authenticationData.Should().BeEquivalentTo(expectedAuthenticationData);
@@ -156,14 +156,14 @@ public class AuthenticationClientTests
         };
 
         var authenticationClient = new AuthenticationClientBuilder()
-            .WithResponseHavingStatusCode(HttpStatusCode.OK)?
-            .WithResponseHavingContent(validResponseBody)?
-            .WithResponseHavingHeaders(headers)?
+            .WithResponseHavingStatusCode(HttpStatusCode.OK)
+            .WithResponseHavingContent(validResponseBody)
+            .WithResponseHavingHeaders(headers)
             .WithGetRolesReturning(new[] { role })
             .Build();
 
         // Act
-        var authenticationData = await authenticationClient!.SignInAsync(_defaultUsername, _defaultPassword);
+        var authenticationData = await authenticationClient.SignInAsync(_defaultUsername, _defaultPassword);
 
         // Assert
         authenticationData.Should().BeEquivalentTo(expectedAuthenticationData);

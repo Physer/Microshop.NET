@@ -1,7 +1,7 @@
 ﻿using Application.Exceptions;
-using Authentication.Models;
 using FluentAssertions;
 using System.Net;
+using System.Net.Http.Json;
 using UnitTests.Utilities;
 using Xunit;
 
@@ -40,9 +40,9 @@ public class ApiClientTests
     public async Task MakeRequestAsync_WithoutSuccessStatusCode_ThrowsMicroshopApiException(HttpStatusCode statusCode)
     {
         // Arrange
-        var apiClient = new ApiClientBuilder()?
+        var apiClient = new ApiClientBuilder()
             .WithTokenRetrieverReturningToken(_defaultAccessToken)
-            .WithResponseHavingStatusCode(statusCode)?
+            .WithResponseHavingStatusCode(statusCode)
             .Build();
 
         // Act
@@ -50,5 +50,26 @@ public class ApiClientTests
 
         // Assert
         exception.Should().BeOfType<MicroshopApiException>();
+    }
+
+    [Fact]
+    public async Task MakeRequestAsync_WithValidData_ReturnsResponse()
+    {
+        // Arrange
+        MockHttpResponse expectedResponse = new("success");
+        var statusCode = HttpStatusCode.OK;
+        var apiClient = new ApiClientBuilder()
+            .WithTokenRetrieverReturningToken(_defaultAccessToken)
+            .WithResponseHavingStatusCode(statusCode)
+            .WithResponseHavingContent(expectedResponse)
+            .Build();
+
+        // Act
+        var response = await apiClient.MakeRequestAsync(_defaultHttpMethod, _defaultRequestUrl);
+
+        // Assert
+        response.Should().NotBeNull();
+        response.StatusCode.Should().Be(statusCode);
+        (await response.Content.ReadFromJsonAsync<MockHttpResponse>()).Should().BeEquivalentTo(expectedResponse);
     }
 }
