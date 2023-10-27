@@ -1,8 +1,10 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
 namespace UnitTests.Utilities;
 
+/// <summary>
+/// A fake HTTP message, to be used in conjuction with the fake HTTP message handler to mock custom HTTP responses in unit tests
+/// </summary>
 internal class FakeHttpMessage
 {
     public string? RequestUrl { get; init; }

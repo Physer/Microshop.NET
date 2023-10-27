@@ -2,6 +2,9 @@
 
 namespace UnitTests.Utilities;
 
+/// <summary>
+/// An exception to indicate it's impossible to mock the specified HTTP call with the fake HTTP message handler
+/// </summary>
 internal class FakeHttpMessageException : Exception
 {
     public FakeHttpMessageException() { }

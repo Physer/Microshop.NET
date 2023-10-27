@@ -3,13 +3,17 @@
 namespace UnitTests.Utilities;
 
 /// <summary>
-/// A fake HTTP message handler for injecting your own HTTP status code as a response when mocking the .NET HTTP Client
+/// A fake HTTP message handler for injecting your own HTTP messages as a response when mocking the .NET HTTP Client
 /// </summary>
 internal class FakeHttpMessageHandler : HttpMessageHandler
 {
     private readonly IEnumerable<FakeHttpMessage?> _httpMessages;
     private readonly JsonSerializerOptions _serializerOptions;
 
+    /// <summary>
+    /// Create a fake HTTP message handler with one or more fake HTTP messages
+    /// </summary>
+    /// <param name="httpMessages">A collection of fake HTTP messages to return a response for</param>
     public FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages)
     {
         _httpMessages = httpMessages;
@@ -19,14 +23,10 @@ internal class FakeHttpMessageHandler : HttpMessageHandler
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var httpMessages = _httpMessages.ToList();
-        FakeHttpMessage? currentHttpMessage;
-        if (httpMessages.Count > 1)
-            currentHttpMessage = httpMessages.FirstOrDefault(message => message?.RequestUrl?.Equals(request?.RequestUri?.PathAndQuery) == true);
-        else
-            currentHttpMessage = httpMessages.First();
-
-        if (currentHttpMessage is null)
-            throw new FakeHttpMessageException($"Unable to locate a HTTP message for the URI: {request.RequestUri}");
+        FakeHttpMessage? currentHttpMessage = (httpMessages.Count > 1
+            ? httpMessages.FirstOrDefault(message => message?.RequestUrl?.Equals(request?.RequestUri?.PathAndQuery) == true)
+            : httpMessages.FirstOrDefault())
+            ?? throw new FakeHttpMessageException($"Unable to locate a HTTP message for the URI: {request.RequestUri}");
 
         var serializedContent = JsonSerializer.Serialize(currentHttpMessage.Content, _serializerOptions);
         HttpResponseMessage message = new(currentHttpMessage.StatusCode)
@@ -34,11 +34,8 @@ internal class FakeHttpMessageHandler : HttpMessageHandler
             Content = new StringContent(serializedContent)
         };
 
-        if (currentHttpMessage?.Headers?.Any() == true)
-        {
-            foreach (var header in currentHttpMessage.Headers)
-                message.Headers.Add(header.Key, header.Value);
-        }
+        foreach (var header in currentHttpMessage.Headers ?? Array.Empty<KeyValuePair<string, string>>())
+            message.Headers.Add(header.Key, header.Value);
 
         return Task.FromResult(message);
     }

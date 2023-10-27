@@ -1,7 +1,6 @@
 ﻿using Application.Exceptions;
 using AutoFixture;
 using AutoFixture.Xunit2;
-using Domain;
 using FluentAssertions;
 using UserManagement.Models;
 using Xunit;
