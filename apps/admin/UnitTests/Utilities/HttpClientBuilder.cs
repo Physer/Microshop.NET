@@ -29,9 +29,16 @@ internal abstract class HttpClientBuilder<T> where T : class, new()
         return this as T ?? new();
     }
 
-    protected HttpClient BuildHttpClient()
+    protected HttpClient BuildHttpClient(IEnumerable<FakeHttpMessage?>? httpMessages = null)
     {
-        FakeHttpMessageHandler fakeHttpMessageHandler = new(_statusCode, _responseContent, _headers);
+        if (httpMessages is null || httpMessages?.Any() == false)
+        {
+            httpMessages = new List<FakeHttpMessage?>
+            {
+                new(_statusCode, _responseContent, _headers)
+            };
+        }
+        FakeHttpMessageHandler fakeHttpMessageHandler = new(httpMessages!);
         return new(fakeHttpMessageHandler) { BaseAddress = new Uri("http://microshop.local") };
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace UnitTests.Utilities;
 
@@ -8,53 +7,38 @@ namespace UnitTests.Utilities;
 /// </summary>
 internal class FakeHttpMessageHandler : HttpMessageHandler
 {
-    private readonly HttpStatusCode _statusCode;
-    private readonly object _content;
-    private readonly IEnumerable<KeyValuePair<string, string>> _headers;
+    private readonly IEnumerable<FakeHttpMessage?> _httpMessages;
     private readonly JsonSerializerOptions _serializerOptions;
 
-    /// <summary>
-    /// A simple fake HTTP response message returning an HTTP 200OK status
-    /// </summary>
-    public FakeHttpMessageHandler() : this(HttpStatusCode.OK, new(), Array.Empty<KeyValuePair<string, string>>()) { }
-
-    /// <summary>
-    /// A customized fake HTTP response message with an HTTP status code
-    /// </summary>
-    /// <param name="statusCode">Custom HTTP status code</param>
-    public FakeHttpMessageHandler(HttpStatusCode statusCode) : this(statusCode, new(), Array.Empty<KeyValuePair<string, string>>()) { }
-
-    /// <summary>
-    /// A customized fake HTTP response message with an HTTP status code and custom response body
-    /// </summary>
-    /// <param name="statusCode">Custom HTTP status code</param>
-    /// <param name="content">Custom response message</param>
-    public FakeHttpMessageHandler(HttpStatusCode statusCode, object? content) : this(statusCode, content, Array.Empty<KeyValuePair<string, string>>()) { }
-
-    /// <summary>
-    /// A customized fake HTTP response message with an HTTP status code, custom response body and custom headers
-    /// </summary>
-    /// <param name="statusCode">Custom HTTP status code</param>
-    /// <param name="content">Custom response message</param>
-    /// <param name="headers">Custom response header</param>
-    public FakeHttpMessageHandler(HttpStatusCode statusCode, object? content, IEnumerable<KeyValuePair<string, string>>? headers)
+    public FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages)
     {
-        _statusCode = statusCode;
-        _content = content ?? new();
-        _headers = headers ?? Array.Empty<KeyValuePair<string, string>>();
+        _httpMessages = httpMessages;
         _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
     }
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var serializedContent = JsonSerializer.Serialize(_content, _serializerOptions);
-        HttpResponseMessage message = new(_statusCode)
+        var httpMessages = _httpMessages.ToList();
+        FakeHttpMessage? currentHttpMessage;
+        if (httpMessages.Count > 1)
+            currentHttpMessage = httpMessages.FirstOrDefault(message => message?.RequestUrl?.Equals(request?.RequestUri?.PathAndQuery) == true);
+        else
+            currentHttpMessage = httpMessages.First();
+
+        if (currentHttpMessage is null)
+            throw new FakeHttpMessageException($"Unable to locate a HTTP message for the URI: {request.RequestUri}");
+
+        var serializedContent = JsonSerializer.Serialize(currentHttpMessage.Content, _serializerOptions);
+        HttpResponseMessage message = new(currentHttpMessage.StatusCode)
         {
             Content = new StringContent(serializedContent)
         };
 
-        foreach (var header in _headers)
-            message.Headers.Add(header.Key, header.Value);
+        if (currentHttpMessage?.Headers?.Any() == true)
+        {
+            foreach (var header in currentHttpMessage.Headers)
+                message.Headers.Add(header.Key, header.Value);
+        }
 
         return Task.FromResult(message);
     }
