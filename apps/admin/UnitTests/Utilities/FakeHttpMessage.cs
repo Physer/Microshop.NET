@@ -28,7 +28,7 @@ internal class FakeHttpMessage
     /// </summary>
     /// <param name="statusCode">Custom HTTP status code</param>
     /// <param name="content">Custom response message</param>
-    public FakeHttpMessage(HttpStatusCode statusCode, object? content) : this(statusCode, content, Array.Empty<KeyValuePair<string, string>>()) { }
+    public FakeHttpMessage(HttpStatusCode statusCode, object content) : this(statusCode, content, Array.Empty<KeyValuePair<string, string>>()) { }
 
     /// <summary>
     /// A customized fake HTTP response message with an HTTP status code, custom response body and custom headers
@@ -36,7 +36,7 @@ internal class FakeHttpMessage
     /// <param name="statusCode">Custom HTTP status code</param>
     /// <param name="content">Custom response message</param>
     /// <param name="headers">Custom response header</param>
-    public FakeHttpMessage(HttpStatusCode statusCode, object? content, IEnumerable<KeyValuePair<string, string>>? headers) : this(statusCode, content, headers, string.Empty) { }
+    public FakeHttpMessage(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, string>> headers) : this(statusCode, content, headers, string.Empty) { }
 
     /// <summary>
     /// A customized fake HTTP response message for a specific request URL with an HTTP status code, custom response body and custom headers

@@ -5,8 +5,15 @@ namespace UnitTests.Utilities;
 internal abstract class HttpClientBuilder<T> where T : class, new()
 {
     protected HttpStatusCode _statusCode;
-    protected object? _responseContent;
-    protected IEnumerable<KeyValuePair<string, string>>? _headers;
+    protected object _responseContent;
+    protected IEnumerable<KeyValuePair<string, string>> _headers;
+
+    public HttpClientBuilder()
+    {
+        _statusCode = HttpStatusCode.OK;
+        _responseContent = new { };
+        _headers = Array.Empty<KeyValuePair<string, string>>();
+    }
 
     public T WithResponseHavingStatusCode(HttpStatusCode statusCode)
     {
