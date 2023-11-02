@@ -7,5 +7,9 @@ namespace Application;
 
 public static class DependencyRegistrator
 {
-    public static void RegisterApplicationDependencies(this IServiceCollection services) => services.AddScoped<ITokenRetriever, TokenRetriever>();
+    public static void RegisterApplicationDependencies(this IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+        services.AddScoped<ITokenRetriever, TokenRetriever>();
+    }
 }

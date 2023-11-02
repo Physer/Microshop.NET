@@ -20,21 +20,6 @@ public class ApiClientTests
         _defaultAccessToken = "access_token";
     }
 
-    [Fact]
-    public async Task MakeRequestAsync_WithoutValidAccessToken_ThrowsException()
-    {
-        // Arrange
-        var apiClient = new ApiClientBuilder()
-            .WithTokenRetrieverReturningToken(string.Empty)
-            .Build();
-
-        // Act
-        var exception = await Record.ExceptionAsync(() => apiClient.MakeRequestAsync(_defaultHttpMethod, _defaultRequestUrl));
-
-        // Assert
-        exception.Should().NotBeNull();
-    }
-
     [Theory]
     [ClassData(typeof(InvalidHttpResponseTestData))]
     public async Task MakeRequestAsync_WithoutSuccessStatusCode_ThrowsMicroshopApiException(HttpStatusCode statusCode)

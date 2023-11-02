@@ -10,7 +10,8 @@ internal class TokenRetriever : ITokenRetriever
 
     public string GetAccessTokenFromCookie()
     {
-        if (!_httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(Globals.Cookies.AuthorizationTokenCookieName, out var accessToken) || string.IsNullOrWhiteSpace(accessToken))
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext is null || !httpContext.Request.Cookies.TryGetValue(Globals.Cookies.AuthorizationTokenCookieName, out var accessToken) || string.IsNullOrWhiteSpace(accessToken))
             throw new UnauthorizedAccessException("No JWT present in cookie");
 
         return accessToken;
