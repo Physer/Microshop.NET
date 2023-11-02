@@ -2,6 +2,6 @@
 
 public interface IApiClient
 {
-    Task ClearDataAsync();
-    Task GenerateProductsAsync();
+    Task<HttpResponseMessage> ClearDataAsync();
+    Task<HttpResponseMessage> GenerateProductsAsync();
 }

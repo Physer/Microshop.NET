@@ -57,4 +57,43 @@ public class ApiClientTests
         response.StatusCode.Should().Be(statusCode);
         (await response.Content.ReadFromJsonAsync<MockHttpResponse>()).Should().BeEquivalentTo(expectedResponse);
     }
+
+    [Fact]
+    public async Task GenerateProductsAsync_CallsDataEndpoint_WithHttpPost()
+    {
+        // Arrange
+        var expectedHttpMethod = HttpMethod.Post;
+        var expectedRequestUrl = "/data";
+        var apiClient = new ApiClientBuilder()
+            .WithMakeRequestAsyncUsing(expectedHttpMethod, expectedRequestUrl)
+            .Build();
+
+        // Act
+        var response = await apiClient.GenerateProductsAsync();
+
+        // Assert
+        response.Should().NotBeNull();
+        response.RequestMessage?.Method.Should().BeEquivalentTo(expectedHttpMethod);
+        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(expectedRequestUrl);
+    }
+
+    [Fact]
+    public async Task ClearDataAsync_CallsDataEndpoint_WithHttpDelete()
+    {
+        // Arrange
+        var expectedHttpMethod = HttpMethod.Delete;
+        var expectedRequestUrl = "/data";
+        var apiClient = new ApiClientBuilder()
+            .WithMakeRequestAsyncUsing(expectedHttpMethod, expectedRequestUrl)
+            .Build();
+
+        // Act
+        var response = await apiClient.ClearDataAsync();
+
+        // Assert
+        response.Should().NotBeNull();
+        response.RequestMessage?.Method.Should().BeEquivalentTo(expectedHttpMethod);
+        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(expectedRequestUrl);
+
+    }
 }

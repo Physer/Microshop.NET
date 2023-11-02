@@ -18,9 +18,9 @@ internal class ApiClient : IApiClient
         _tokenRetriever = tokenRetriever;
     }
 
-    public async Task GenerateProductsAsync() => _ = await MakeRequestAsync(HttpMethod.Post, "/data");
+    public async Task<HttpResponseMessage> GenerateProductsAsync() => _ = await MakeRequestAsync(HttpMethod.Post, "/data");
 
-    public async Task ClearDataAsync() => _ = await MakeRequestAsync(HttpMethod.Delete, "/data");
+    public async Task<HttpResponseMessage> ClearDataAsync() => _ = await MakeRequestAsync(HttpMethod.Delete, "/data");
 
     internal async Task<HttpResponseMessage> MakeRequestAsync(HttpMethod method, string requestUrl)
     {
@@ -30,6 +30,7 @@ internal class ApiClient : IApiClient
         var response = await _httpClient.SendAsync(request);
         if (!response.IsSuccessStatusCode)
             throw new MicroshopApiException(response.ReasonPhrase);
+
         return response;
     }
 }

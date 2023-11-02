@@ -12,7 +12,7 @@ internal class UserClientBuilder : HttpClientBuilder<UserClientBuilder>
 
     public UserClientBuilder WithGetUserDataAsyncReturning(object getUsersResponse)
     {
-        FakeHttpMessage httpMessage = new(HttpStatusCode.OK, getUsersResponse, Array.Empty<KeyValuePair<string, string>>(), "/users");
+        FakeHttpMessage httpMessage = new(HttpStatusCode.OK, getUsersResponse) { RequestUrl = "/users" };
         _fakeHttpMessages.Add(httpMessage);
 
         return this;
@@ -20,7 +20,7 @@ internal class UserClientBuilder : HttpClientBuilder<UserClientBuilder>
 
     public UserClientBuilder WithGetUsersInAdminRoleAsyncReturning(object userRolesResponse)
     {
-        FakeHttpMessage httpMessage = new(HttpStatusCode.OK, userRolesResponse, Array.Empty<KeyValuePair<string, string>>(), "/recipe/role/users?role=admin");
+        FakeHttpMessage httpMessage = new(HttpStatusCode.OK, userRolesResponse) { RequestUrl = "/recipe/role/users?role=admin" };
         _fakeHttpMessages.Add(httpMessage);
 
         return this;

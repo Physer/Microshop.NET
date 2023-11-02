@@ -7,10 +7,12 @@ namespace UnitTests.Utilities;
 /// </summary>
 internal class FakeHttpMessage
 {
-    public string? RequestUrl { get; init; }
     public HttpStatusCode StatusCode { get; init; }
     public object Content { get; init; }
     public IEnumerable<KeyValuePair<string, string>> Headers { get; init; }
+
+    public string? RequestUrl { get; init; }
+    public HttpMethod? HttpMethod { get; init; }
 
     /// <summary>
     /// A simple fake HTTP response message returning an HTTP 200OK status
@@ -36,18 +38,8 @@ internal class FakeHttpMessage
     /// <param name="statusCode">Custom HTTP status code</param>
     /// <param name="content">Custom response message</param>
     /// <param name="headers">Custom response header</param>
-    public FakeHttpMessage(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, string>> headers) : this(statusCode, content, headers, string.Empty) { }
-
-    /// <summary>
-    /// A customized fake HTTP response message for a specific request URL with an HTTP status code, custom response body and custom headers
-    /// </summary>
-    /// <param name="statusCode">Custom HTTP status code</param>
-    /// <param name="content">Custom response message</param>
-    /// <param name="headers">Custom response header</param>
-    /// <param name="requestUrl">The request URL for which this message applies</param>
-    public FakeHttpMessage(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, string>> headers, string requestUrl)
+    public FakeHttpMessage(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, string>> headers)
     {
-        RequestUrl = requestUrl;
         StatusCode = statusCode;
         Content = content;
         Headers = headers;

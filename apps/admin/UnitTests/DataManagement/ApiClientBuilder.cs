@@ -1,6 +1,7 @@
 ﻿using Application.Authentication;
 using DataManagement;
 using NSubstitute;
+using System.Net;
 using UnitTests.Utilities;
 
 namespace UnitTests.DataManagement;
@@ -8,8 +9,13 @@ namespace UnitTests.DataManagement;
 internal class ApiClientBuilder : HttpClientBuilder<ApiClientBuilder>
 {
     private readonly ITokenRetriever _tokenRetriever;
+    private readonly List<FakeHttpMessage> _fakeHttpMessages;
 
-    public ApiClientBuilder() => _tokenRetriever = Substitute.For<ITokenRetriever>();
+    public ApiClientBuilder()
+    {
+        _tokenRetriever = Substitute.For<ITokenRetriever>();
+        _fakeHttpMessages = new();
+    }
 
     public ApiClientBuilder WithTokenRetrieverReturningToken(string accessToken)
     {
@@ -18,5 +24,17 @@ internal class ApiClientBuilder : HttpClientBuilder<ApiClientBuilder>
         return this;
     }
 
-    public ApiClient Build() => new(BuildHttpClient(), _tokenRetriever);
+    public ApiClientBuilder WithMakeRequestAsyncUsing(HttpMethod httpMethod, string requestUrl)
+    {
+        FakeHttpMessage fakeHttpMessage = new(HttpStatusCode.OK)
+        {
+            RequestUrl = requestUrl,
+            HttpMethod = httpMethod
+        };
+        _fakeHttpMessages.Add(fakeHttpMessage);
+
+        return this;
+    }
+
+    public ApiClient Build() => new(BuildHttpClient(_fakeHttpMessages), _tokenRetriever);
 }

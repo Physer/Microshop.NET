@@ -31,7 +31,8 @@ internal class FakeHttpMessageHandler : HttpMessageHandler
         var serializedContent = JsonSerializer.Serialize(currentHttpMessage.Content, _serializerOptions);
         HttpResponseMessage message = new(currentHttpMessage.StatusCode)
         {
-            Content = new StringContent(serializedContent)
+            Content = new StringContent(serializedContent),
+            RequestMessage = request
         };
 
         foreach (var header in currentHttpMessage.Headers ?? Array.Empty<KeyValuePair<string, string>>())
