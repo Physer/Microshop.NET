@@ -62,3 +62,5 @@ static Func<RedirectContext<CookieAuthenticationOptions>, Task> RedirectToAbsolu
         return Task.CompletedTask;
     };
 };
+
+public partial class Program { }
