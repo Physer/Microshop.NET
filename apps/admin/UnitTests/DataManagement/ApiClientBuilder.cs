@@ -1,6 +1,6 @@
 ﻿using Application.Authentication;
 using DataManagement;
-using MockHttpClient;
+using Microshop.MockHttpClient;
 using NSubstitute;
 using System.Net;
 

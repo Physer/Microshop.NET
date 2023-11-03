@@ -1,4 +1,4 @@
-﻿using MockHttpClient;
+﻿using Microshop.MockHttpClient;
 using System.Net;
 using UserManagement;
 

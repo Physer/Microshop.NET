@@ -3,7 +3,7 @@ using Application.Exceptions;
 using Authentication.Models;
 using AutoFixture.Xunit2;
 using FluentAssertions;
-using MockHttpClient;
+using Microshop.MockHttpClient;
 using System.Net;
 using System.Text.Json;
 using Xunit;

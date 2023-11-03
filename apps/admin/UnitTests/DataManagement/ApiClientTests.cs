@@ -1,6 +1,6 @@
 ﻿using Application.Exceptions;
 using FluentAssertions;
-using MockHttpClient;
+using Microshop.MockHttpClient;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
