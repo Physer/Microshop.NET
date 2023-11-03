@@ -1,0 +1,19 @@
+name: Build libraries
+concurrency: libraries
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "libs/**"
+
+jobs:
+  build-mockhttpclient-library:
+    name: Build the MockHttpClient library
+    uses: ./.github/workflows/reusable-dotnet-library.yaml
+    with:
+      service-path: libs/mockhttpclient
+    secrets: inherit
