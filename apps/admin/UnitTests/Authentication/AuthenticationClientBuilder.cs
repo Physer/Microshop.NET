@@ -1,8 +1,8 @@
 ﻿using Application.Authentication;
 using Authentication;
+using MockHttpClient;
 using NSubstitute;
 using System.Net;
-using UnitTests.Utilities;
 
 namespace UnitTests.Authentication;
 

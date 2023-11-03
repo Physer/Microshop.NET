@@ -3,9 +3,9 @@ using Application.Exceptions;
 using Authentication.Models;
 using AutoFixture.Xunit2;
 using FluentAssertions;
+using MockHttpClient;
 using System.Net;
 using System.Text.Json;
-using UnitTests.Utilities;
 using Xunit;
 
 namespace UnitTests.Authentication;
@@ -24,7 +24,7 @@ public class AuthenticationClientTests
     }
 
     [Theory]
-    [ClassData(typeof(InvalidHttpResponseTestData))]
+    [ClassData(typeof(InvalidHttpResponseClassData))]
     public async Task SignInAsync_WithInvalidResponse_ShouldThrowAuthenticationException(HttpStatusCode statusCode)
     {
         // Arrange

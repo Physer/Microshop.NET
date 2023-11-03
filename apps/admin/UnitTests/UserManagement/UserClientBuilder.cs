@@ -1,5 +1,5 @@
-﻿using System.Net;
-using UnitTests.Utilities;
+﻿using MockHttpClient;
+using System.Net;
 using UserManagement;
 
 namespace UnitTests.UserManagement;

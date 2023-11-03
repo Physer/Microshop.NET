@@ -1,8 +1,8 @@
 ﻿using Application.Exceptions;
 using FluentAssertions;
+using MockHttpClient;
 using System.Net;
 using System.Net.Http.Json;
-using UnitTests.Utilities;
 using Xunit;
 
 namespace UnitTests.DataManagement;
@@ -21,7 +21,7 @@ public class ApiClientTests
     }
 
     [Theory]
-    [ClassData(typeof(InvalidHttpResponseTestData))]
+    [ClassData(typeof(InvalidHttpResponseClassData))]
     public async Task MakeRequestAsync_WithoutSuccessStatusCode_ThrowsMicroshopApiException(HttpStatusCode statusCode)
     {
         // Arrange
