@@ -17,3 +17,10 @@ jobs:
     with:
       service-path: libs/mockhttpclient
     secrets: inherit
+
+  build-inlinewebapplicationfactory-library:
+    name: Build the InlineWebApplicationFactory library
+    uses: ./.github/workflows/reusable-dotnet-library.yaml
+    with:
+      service-path: libs/inlinewebapplicationfactory
+    secrets: inherit
