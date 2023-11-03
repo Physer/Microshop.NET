@@ -1,4 +1,4 @@
-﻿namespace MockHttpClient;
+﻿namespace Microshop.MockHttpClient;
 
 /// <summary>
 /// A fake HTTP response object that can be used as a return type for your HTTP requests

@@ -1,16 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <AssemblyName>Microshop.Library.MockHttpClient</AssemblyName>
-    <Title>Microshop.NET HttpClient mocking library</Title>
-    <Authors>Alex Schouls</Authors>
-    <Description>A collection of files useful for mocking HTTP calls</Description>
-    <Copyright>© Alex Schouls</Copyright>
-    <PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AssemblyName>Microshop.Library.MockHttpClient</AssemblyName>
+		<Title>Microshop.NET HttpClient mocking library</Title>
+		<Authors>Alex Schouls</Authors>
+		<Description>A collection of files useful for mocking HTTP calls</Description>
+		<Copyright>© Alex Schouls</Copyright>
+		<PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
+		<RootNamespace>Microshop.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<VersionPrefix>1.1.0</VersionPrefix>
+	</PropertyGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace MockHttpClient;
+namespace Microshop.MockHttpClient;
 
 /// <summary>
 /// An exception to indicate it's impossible to mock the specified HTTP call with the fake HTTP message handler
@@ -13,5 +13,5 @@ internal sealed class FakeHttpMessageException : Exception
 
     public FakeHttpMessageException(string? message, Exception? innerException) : base(message, innerException) { }
 
-    protected FakeHttpMessageException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+    public FakeHttpMessageException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 }

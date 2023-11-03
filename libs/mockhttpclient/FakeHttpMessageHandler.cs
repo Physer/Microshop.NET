@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace MockHttpClient;
+namespace Microshop.MockHttpClient;
 
 /// <summary>
 /// A fake HTTP message handler for injecting your own HTTP messages as a response when mocking the .NET HTTP Client
