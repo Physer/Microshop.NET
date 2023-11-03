@@ -24,3 +24,10 @@ jobs:
     with:
       service-path: libs/inlinewebapplicationfactory
     secrets: inherit
+
+  build-containerconfiguration-library:
+    name: Build the ContainerConfiguration library
+    uses: ./.github/workflows/reusable-dotnet-library.yaml
+    with:
+      service-path: libs/containerconfiguration
+    secrets: inherit
