@@ -5,6 +5,7 @@
   <ItemGroup>
     <PackageVersion Include="AutoFixture.Xunit2" Version="4.18.0" />
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
+    <PackageVersion Include="Microshop.ContainerConfiguration" Version="1.0.0" />
     <PackageVersion Include="Microshop.Library.MockHttpClient" Version="1.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
