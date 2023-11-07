@@ -79,4 +79,34 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         // Assert
         errorAlert?.InnerHtml.Should().Be(expectedErrorMessage);
     }
+
+    [Fact]
+    public async Task SignInPage_WithValidCredentialsAndInvalidPermissions_RedirectsToForbidden()
+    {
+        // Arrange
+        var expectedResponseUrl = "http://localhost/Forbidden";
+        var signInUrl = "/signin";
+        var applicationFactory = _fixture.ApplicationFactory!;
+        var client = applicationFactory.CreateClient();
+        var signInPage = await client.GetAsync(signInUrl);
+        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
+        var form = content.QuerySelector<IHtmlFormElement>("form");
+        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
+        var username = Constants.DefaultEmailValue;
+        var password = Constants.DefaultPasswordValue;
+        await _fixture.CreateIntegrationTestsUser(username, password, false);
+
+        List<KeyValuePair<string, string>> formValues = new()
+        {
+            { new(nameof(SignInModel.Username), username) },
+            { new(nameof(SignInModel.Password), password) }
+        };
+
+        // Act
+        var response = await client.SendAsync(form, submitButton, formValues);
+        var responseContent = await HtmlHelpers.GetDocumentAsync(response);
+
+        // Assert
+        responseContent?.Url.Should().Be(expectedResponseUrl);
+    }
 }
