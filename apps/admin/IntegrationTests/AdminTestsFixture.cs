@@ -23,21 +23,21 @@ public class AdminTestsFixture : IAsyncLifetime
         };
         var authenticationCoreContainer = await ContainerFactory.InitializeCustomContainer(authenticationCoreConfiguration);
         var authenticationCoreIpAddress = authenticationCoreContainer.IpAddress;
-        var authenticationCorePort = authenticationCoreConfiguration.Port!.Value;
+        var authenticationCoreInternalPort = authenticationCoreConfiguration.Port!.Value;
+        var authenticationCoreExternalPort = authenticationCoreContainer.GetMappedPublicPort(authenticationCoreInternalPort);
 
-        AuthenticationServiceConfiguration authenticationServiceConfiguration = new() 
+        AuthenticationServiceConfiguration authenticationServiceConfiguration = new()
         {
             AuthenticationCoreIpAddress = authenticationCoreIpAddress,
-            AuthenticationCorePort = authenticationCorePort
+            AuthenticationCorePort = authenticationCoreInternalPort
         };
         var authenticationServiceContainer = await ContainerFactory.InitializeCustomContainer(authenticationServiceConfiguration);
-        var authenticationServiceIpAddress = authenticationServiceContainer.IpAddress;
-        var authenticationServicePort = authenticationServiceConfiguration.Port!.Value;
+        var authenticationServiceExternalPort = authenticationServiceContainer.GetMappedPublicPort(authenticationServiceConfiguration.Port!.Value);
 
         Dictionary<string, string?> configuration = new()
         {
-            { "Authentication:BaseUrl", $"http://{authenticationServiceIpAddress}:{authenticationServicePort}" },
-            { "UserManagement:BaseUrl", $"http://{authenticationCoreIpAddress}:{authenticationCorePort}" },
+            { "Authentication:BaseUrl", $"http://localhost:{authenticationServiceExternalPort}" },
+            { "UserManagement:BaseUrl", $"http://localhost:{authenticationCoreExternalPort}" },
             { "DataManagement:BaseUrl", $"http://localhost" }
         };
         ApplicationFactory = new InlineWebApplicationFactory<Program>(configuration);
