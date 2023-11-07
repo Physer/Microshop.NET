@@ -106,7 +106,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        responseContent?.Url.Should().Be(expectedResponseUrl);
+        responseContent.Url.Should().Be(expectedResponseUrl);
     }
 
     [Fact]
