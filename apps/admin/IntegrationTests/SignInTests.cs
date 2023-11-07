@@ -11,8 +11,13 @@ namespace IntegrationTests;
 public class SignInTests : IClassFixture<AdminTestsFixture>
 {
     private readonly AdminTestsFixture _fixture;
+    private readonly string _signInUrl;
 
-    public SignInTests(AdminTestsFixture fixture) => _fixture = fixture;
+    public SignInTests(AdminTestsFixture fixture)
+    {
+        _fixture = fixture;
+        _signInUrl = "/signin";
+    }
 
     [Fact]
     public async Task SignInPage_ForAnonymousUser_ReturnsOk()
@@ -39,7 +44,6 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     public async Task ProtectedPages_ForAnonymousUser_RedirectsToSignin(string url)
     {
         // Arrange
-        var expectedUrl = "/signin";
         var applicationFactory = _fixture.ApplicationFactory!;
         var client = applicationFactory.CreateClient();
 
@@ -48,7 +52,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
 
         // Assert
         response.Should().NotBeNull();
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(expectedUrl);
+        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(_signInUrl);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
@@ -57,10 +61,9 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     {
         // Arrange
         var expectedErrorMessage = "Invalid credentials or permissions";
-        var signInUrl = "/signin";
         var applicationFactory = _fixture.ApplicationFactory!;
         var client = applicationFactory.CreateClient();
-        var signInPage = await client.GetAsync(signInUrl);
+        var signInPage = await client.GetAsync(_signInUrl);
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
         var form = content.QuerySelector<IHtmlFormElement>("form");
         var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
@@ -85,16 +88,44 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     {
         // Arrange
         var expectedResponseUrl = "http://localhost/Forbidden";
-        var signInUrl = "/signin";
         var applicationFactory = _fixture.ApplicationFactory!;
         var client = applicationFactory.CreateClient();
-        var signInPage = await client.GetAsync(signInUrl);
+        var signInPage = await client.GetAsync(_signInUrl);
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
         var form = content.QuerySelector<IHtmlFormElement>("form");
         var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
         var username = Constants.DefaultEmailValue;
         var password = Constants.DefaultPasswordValue;
         await _fixture.CreateIntegrationTestsUser(username, password, false);
+
+        List<KeyValuePair<string, string>> formValues = new()
+        {
+            { new(nameof(SignInModel.Username), username) },
+            { new(nameof(SignInModel.Password), password) }
+        };
+
+        // Act
+        var response = await client.SendAsync(form, submitButton, formValues);
+        var responseContent = await HtmlHelpers.GetDocumentAsync(response);
+
+        // Assert
+        responseContent?.Url.Should().Be(expectedResponseUrl);
+    }
+
+    [Fact]
+    public async Task SignInPage_WithValidCredentialsAndValidPermissions_RedirectsToIndex()
+    {
+        // Arrange
+        var expectedResponseUrl = "http://localhost/";
+        var applicationFactory = _fixture.ApplicationFactory!;
+        var client = applicationFactory.CreateClient();
+        var signInPage = await client.GetAsync(_signInUrl);
+        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
+        var form = content.QuerySelector<IHtmlFormElement>("form");
+        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
+        var username = Constants.DefaultEmailValue;
+        var password = Constants.DefaultPasswordValue;
+        await _fixture.CreateIntegrationTestsUser(username, password, true);
 
         List<KeyValuePair<string, string>> formValues = new()
         {
