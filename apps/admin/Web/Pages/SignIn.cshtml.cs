@@ -14,8 +14,8 @@ namespace Web.Pages;
 [BindProperties]
 public class SignInModel : PageModel
 {
-    public string? Username { get; set; }
-    public string? Password { get; set; }
+    public required string Username { get; set; }
+    public required string Password { get; set; }
 
     private readonly IAuthenticationClient _authenticationClient;
     private readonly ILogger<SignInModel> _logger;
@@ -35,7 +35,7 @@ public class SignInModel : PageModel
         try
         {
             _logger.LogInformation("Attempting sign in for user: {username}", Username);
-            var authenticationResult = await _authenticationClient.SignInAsync(Username!, Password!);
+            var authenticationResult = await _authenticationClient.SignInAsync(Username, Password);
             List<Claim> claims = new()
             {
                 new(ClaimTypes.Name, Username!)

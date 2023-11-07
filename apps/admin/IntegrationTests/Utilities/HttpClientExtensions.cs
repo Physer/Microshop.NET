@@ -17,13 +17,13 @@ internal static class HttpClientExtensions
         if (form is null) throw new ArgumentNullException(nameof(form));
         if (submitButton is null) throw new ArgumentNullException(nameof(submitButton));
 
-        return client.SendAsync(form, submitButton, new Dictionary<string, string>());
+        return client.SendAsync(form, submitButton, new Dictionary<string, string?>());
     }
 
     public static Task<HttpResponseMessage> SendAsync(
         this HttpClient client,
         IHtmlFormElement? form,
-        IEnumerable<KeyValuePair<string, string>> formValues)
+        IEnumerable<KeyValuePair<string, string?>> formValues)
     {
         if (form is null) throw new ArgumentNullException(nameof(form));
 
@@ -37,7 +37,7 @@ internal static class HttpClientExtensions
         this HttpClient client,
         IHtmlFormElement? form,
         IHtmlElement? submitButton,
-        IEnumerable<KeyValuePair<string, string>> formValues)
+        IEnumerable<KeyValuePair<string, string?>> formValues)
     {
         if (form is null) throw new ArgumentNullException(nameof(form));
         if (submitButton is null) throw new ArgumentNullException(nameof(submitButton));
@@ -45,7 +45,7 @@ internal static class HttpClientExtensions
         foreach (var kvp in formValues)
         {
             var element = Assert.IsAssignableFrom<IHtmlInputElement>(form[kvp.Key]);
-            element.Value = kvp.Value;
+            element.Value = kvp.Value ?? string.Empty;
         }
 
         var submit = (form?.GetSubmission()) ?? throw new Exception("Unable to retrieve the form's submission element");
