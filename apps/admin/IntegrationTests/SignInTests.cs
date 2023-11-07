@@ -133,7 +133,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        responseContent?.Url.Should().Be(expectedResponseUrl);
+        responseContent.Url.Should().Be(expectedResponseUrl);
     }
 
     [Theory]
@@ -149,6 +149,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     public async Task SignInPage_WithInvalidFormData_ReturnsToSignInPage(string? username, string? password)
     {
         // Arrange
+        var expectedUrl = $"http://localhost{_signInUrl}";
         var applicationFactory = _fixture.ApplicationFactory!;
         var client = applicationFactory.CreateClient();
         var signInPage = await client.GetAsync(_signInUrl);
@@ -166,7 +167,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-
+        responseContent.Url.Should().Be(expectedUrl);
     }
 
     private static (string username, string password) GenerateUsernameAndPassword()
