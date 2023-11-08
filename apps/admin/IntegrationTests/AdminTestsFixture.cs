@@ -1,5 +1,7 @@
-﻿using InlineWebApplicationFactory;
+﻿using DotNet.Testcontainers.Containers;
+using InlineWebApplicationFactory;
 using IntegrationTests.Configuration;
+using IntegrationTests.Utilities;
 using Microshop.ContainerConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
@@ -10,6 +12,7 @@ namespace IntegrationTests;
 public class AdminTestsFixture : IAsyncLifetime
 {
     private string? _externalAuthenticationServiceUrl;
+    private IContainer? _authenticationServiceContainer;
 
     public InlineWebApplicationFactory<Program>? ApplicationFactory { get; set; }
 
@@ -35,8 +38,8 @@ public class AdminTestsFixture : IAsyncLifetime
             AuthenticationCoreIpAddress = authenticationCoreIpAddress,
             AuthenticationCorePort = authenticationCoreInternalPort
         };
-        var authenticationServiceContainer = await ContainerFactory.InitializeCustomContainer(authenticationServiceConfiguration);
-        var authenticationServiceExternalPort = authenticationServiceContainer.GetMappedPublicPort(authenticationServiceConfiguration.Port!.Value);
+        _authenticationServiceContainer = await ContainerFactory.InitializeCustomContainer(authenticationServiceConfiguration);
+        var authenticationServiceExternalPort = _authenticationServiceContainer.GetMappedPublicPort(authenticationServiceConfiguration.Port!.Value);
         _externalAuthenticationServiceUrl = $"http://localhost:{authenticationServiceExternalPort}";
 
         Dictionary<string, string?> configuration = new()
@@ -51,7 +54,7 @@ public class AdminTestsFixture : IAsyncLifetime
     public async Task CreateIntegrationTestsUser(string username, string password, bool hasAdminRights)
     {
         if (string.IsNullOrWhiteSpace(_externalAuthenticationServiceUrl) || ApplicationFactory is null)
-            throw new Exception("Test suite has not been initialized");
+            throw new UninitializedTestFixtureException();
 
         var requestObject = new
         {
@@ -83,5 +86,13 @@ public class AdminTestsFixture : IAsyncLifetime
         var response = await httpClient.SendAsync(requestMessage);
         if (!response.IsSuccessStatusCode)
             throw new Exception("Unable to create a user for the Integration Tests");
+    }
+
+    public async Task StopAuthenticationService()
+    {
+        if (_authenticationServiceContainer is null)
+            throw new UninitializedTestFixtureException();
+
+        await _authenticationServiceContainer.StopAsync();
     }
 }

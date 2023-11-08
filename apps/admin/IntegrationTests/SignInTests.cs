@@ -170,6 +170,33 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         responseContent.Url.Should().Be(expectedUrl);
     }
 
+    [Fact]
+    public async Task SignInPage_WithAuthenticationServiceFailure_ShowsGenericError()
+    {
+        // Arrange
+        var expectedErrorMessage = "Something went wrong, please try again later";
+        var applicationFactory = _fixture.ApplicationFactory!;
+        await _fixture.StopAuthenticationService();
+        var client = applicationFactory.CreateClient();
+        var signInPage = await client.GetAsync(_signInUrl);
+        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
+        var form = content.QuerySelector<IHtmlFormElement>("form");
+        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
+        List<KeyValuePair<string, string?>> formValues = new()
+        {
+            { new(nameof(SignInModel.Username), Constants.DefaultTextValue) },
+            { new(nameof(SignInModel.Password), Constants.DefaultTextValue) }
+        };
+
+        // Act
+        var response = await client.SendAsync(form, submitButton, formValues);
+        var responseContent = await HtmlHelpers.GetDocumentAsync(response);
+        var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
+
+        // Assert
+        errorAlert?.InnerHtml.Should().Be(expectedErrorMessage);
+    }
+
     private static (string username, string password) GenerateUsernameAndPassword()
     {
         var usernameBytes = RandomNumberGenerator.GetBytes(8);
