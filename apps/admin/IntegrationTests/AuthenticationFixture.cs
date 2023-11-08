@@ -9,7 +9,7 @@ using Xunit;
 
 namespace IntegrationTests;
 
-public class AdminTestsFixture : IAsyncLifetime
+public class AuthenticationFixture : IAsyncLifetime
 {
     private string? _externalAuthenticationServiceUrl;
     private IContainer? _authenticationServiceContainer;
@@ -45,14 +45,18 @@ public class AdminTestsFixture : IAsyncLifetime
         var authenticationServiceExternalPort = _authenticationServiceContainer.GetMappedPublicPort(authenticationServiceConfiguration.Port!.Value);
         _externalAuthenticationServiceUrl = $"http://localhost:{authenticationServiceExternalPort}";
 
-        Dictionary<string, string?> configuration = new()
+        Dictionary<string, string?> validConfiguration = new()
         {
             { "Authentication:BaseUrl", _externalAuthenticationServiceUrl },
             { "UserManagement:BaseUrl", $"http://localhost:{authenticationCoreExternalPort}" },
             { "DataManagement:BaseUrl", $"http://localhost" }
         };
-        ValidApplicationFactory = new InlineWebApplicationFactory<Program>(configuration);
-        ApplicationFactoryWithInvalidAuthenticationService = new InlineWebApplicationFactory<Program>(new Dictionary<string, string?>());
+        ValidApplicationFactory = new InlineWebApplicationFactory<Program>(validConfiguration);
+        Dictionary<string, string?> invalidConfiguration = new()
+        {
+            { "Authentication:BaseUrl", "http://invalid-hostname:1337" }
+        };
+        ApplicationFactoryWithInvalidAuthenticationService = new InlineWebApplicationFactory<Program>(invalidConfiguration);
 
         AdminUser = new("admin_integration_tests@microshop.local", Constants.DefaultPasswordValue);
         ForbiddenUser = new("forbidden_integration_tests@microshop.local", Constants.DefaultPasswordValue);

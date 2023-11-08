@@ -3,18 +3,18 @@ using AngleSharp.Html.Dom;
 using FluentAssertions;
 using IntegrationTests.Utilities;
 using System.Net;
-using System.Security.Cryptography;
 using Web.Pages;
 using Xunit;
 
 namespace IntegrationTests;
 
-public class SignInTests : IClassFixture<AdminTestsFixture>
+[Collection(nameof(AuthenticationCollectionFixture))]
+public class SignInTests // : IClassFixture<AuthenticationFixture>
 {
-    private readonly AdminTestsFixture _fixture;
+    private readonly AuthenticationFixture _fixture;
     private readonly string _signInUrl;
 
-    public SignInTests(AdminTestsFixture fixture)
+    public SignInTests(AuthenticationFixture fixture)
     {
         _fixture = fixture;
         _signInUrl = "/signin";
@@ -63,18 +63,10 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var expectedErrorMessage = "Invalid credentials or permissions";
         var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
-        var signInPage = await client.GetAsync(_signInUrl);
-        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
-        var form = content.QuerySelector<IHtmlFormElement>("form");
-        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
-        List<KeyValuePair<string, string?>> formValues = new()
-        {
-            { new(nameof(SignInModel.Username), Constants.DefaultTextValue) },
-            { new(nameof(SignInModel.Password), Constants.DefaultTextValue) }
-        };
+        var signInForm = await GetSignInFormData(client, Constants.DefaultTextValue, Constants.DefaultTextValue);
 
         // Act
-        var response = await client.SendAsync(form, submitButton, formValues);
+        var response = await client.SendAsync(signInForm.FormElement, signInForm.SubmitButtonElement, signInForm.FormData);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 
@@ -89,18 +81,10 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var expectedResponseUrl = "http://localhost/Forbidden";
         var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
-        var signInPage = await client.GetAsync(_signInUrl);
-        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
-        var form = content.QuerySelector<IHtmlFormElement>("form");
-        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
-        List<KeyValuePair<string, string?>> formValues = new()
-        {
-            { new(nameof(SignInModel.Username), _fixture.ForbiddenUser.Username) },
-            { new(nameof(SignInModel.Password), _fixture.ForbiddenUser.Password) }
-        };
+        var signInForm = await GetSignInFormData(client, _fixture.ForbiddenUser.Username, _fixture.ForbiddenUser.Password);
 
         // Act
-        var response = await client.SendAsync(form, submitButton, formValues);
+        var response = await client.SendAsync(signInForm.FormElement, signInForm.SubmitButtonElement, signInForm.FormData);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
@@ -114,18 +98,10 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var expectedResponseUrl = "http://localhost/";
         var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
-        var signInPage = await client.GetAsync(_signInUrl);
-        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
-        var form = content.QuerySelector<IHtmlFormElement>("form");
-        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
-        List<KeyValuePair<string, string?>> formValues = new()
-        {
-            { new(nameof(SignInModel.Username), _fixture.AdminUser.Username) },
-            { new(nameof(SignInModel.Password), _fixture.AdminUser.Password) }
-        };
+        var signInForm = await GetSignInFormData(client, _fixture.AdminUser.Username, _fixture.AdminUser.Password);
 
         // Act
-        var response = await client.SendAsync(form, submitButton, formValues);
+        var response = await client.SendAsync(signInForm.FormElement, signInForm.SubmitButtonElement, signInForm.FormData);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
@@ -148,18 +124,10 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var expectedUrl = $"http://localhost{_signInUrl}";
         var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
-        var signInPage = await client.GetAsync(_signInUrl);
-        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
-        var form = content.QuerySelector<IHtmlFormElement>("form");
-        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
-        List<KeyValuePair<string, string?>> formValues = new()
-        {
-            { new(nameof(SignInModel.Username), username) },
-            { new(nameof(SignInModel.Password), password) }
-        };
+        var signInForm = await GetSignInFormData(client, username, password);
 
         // Act
-        var response = await client.SendAsync(form, submitButton, formValues);
+        var response = await client.SendAsync(signInForm.FormElement, signInForm.SubmitButtonElement, signInForm.FormData);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
@@ -173,22 +141,28 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
         var expectedErrorMessage = "Something went wrong, please try again later";
         var applicationFactory = _fixture.ApplicationFactoryWithInvalidAuthenticationService!;
         var client = applicationFactory.CreateClient();
-        var signInPage = await client.GetAsync(_signInUrl);
-        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
-        var form = content.QuerySelector<IHtmlFormElement>("form");
-        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
-        List<KeyValuePair<string, string?>> formValues = new()
-        {
-            { new(nameof(SignInModel.Username), Constants.DefaultTextValue) },
-            { new(nameof(SignInModel.Password), Constants.DefaultTextValue) }
-        };
+        var signInForm = await GetSignInFormData(client, Constants.DefaultTextValue, Constants.DefaultTextValue);
 
         // Act
-        var response = await client.SendAsync(form, submitButton, formValues);
+        var response = await client.SendAsync(signInForm.FormElement, signInForm.SubmitButtonElement, signInForm.FormData);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 
         // Assert
         errorAlert?.InnerHtml.Should().Be(expectedErrorMessage);
+    }
+
+    private async Task<SignInFormData> GetSignInFormData(HttpClient client, string? username, string? password)
+    {
+        var signInPage = await client.GetAsync(_signInUrl);
+        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
+        var form = content.QuerySelector<IHtmlFormElement>("form") ?? throw new Exception("Unable to find the sign in form");
+        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']") ?? throw new Exception("Unable to find the submit button on the sign in form");
+        List<KeyValuePair<string, string?>> formValues = new()
+        {
+            { new(nameof(SignInModel.Username), username) },
+            { new(nameof(SignInModel.Password), password) }
+        };
+        return new(form, submitButton, formValues);
     }
 }
