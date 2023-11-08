@@ -22,9 +22,12 @@
                         <label for="floatingPassword">Password</label>
                     </div>
                     <input id="signInButton" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit" value="Sign in" />
-                    @if (ModelState.ErrorCount > 0)
+                    @if (ModelState is not null && ModelState.ErrorCount > 0)
                     {
-                        <div id="errorAlert" class="alert alert-danger" role="alert">@ModelState?.Values.FirstOrDefault()?.Errors?.FirstOrDefault()?.ErrorMessage</div>
+                        foreach (var error in ModelState.Values.SelectMany(value => value.Errors))
+                        {
+                            <div id="errorAlert" class="alert alert-danger" role="alert">@error.ErrorMessage</div>
+                        }
                     }
                 </form>
             </div>
