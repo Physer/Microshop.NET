@@ -14,7 +14,10 @@ public class AdminTestsFixture : IAsyncLifetime
     private string? _externalAuthenticationServiceUrl;
     private IContainer? _authenticationServiceContainer;
 
-    public InlineWebApplicationFactory<Program>? ApplicationFactory { get; set; }
+    public InlineWebApplicationFactory<Program>? ValidApplicationFactory { get; set; }
+    public InlineWebApplicationFactory<Program>? ApplicationFactoryWithInvalidAuthenticationService { get; set; }
+    internal FakeUser AdminUser { get; set; }
+    internal FakeUser ForbiddenUser { get; set; }
 
     public Task DisposeAsync() => Task.CompletedTask;
 
@@ -48,12 +51,18 @@ public class AdminTestsFixture : IAsyncLifetime
             { "UserManagement:BaseUrl", $"http://localhost:{authenticationCoreExternalPort}" },
             { "DataManagement:BaseUrl", $"http://localhost" }
         };
-        ApplicationFactory = new InlineWebApplicationFactory<Program>(configuration);
+        ValidApplicationFactory = new InlineWebApplicationFactory<Program>(configuration);
+        ApplicationFactoryWithInvalidAuthenticationService = new InlineWebApplicationFactory<Program>(new Dictionary<string, string?>());
+
+        AdminUser = new("admin_integration_tests@microshop.local", Constants.DefaultPasswordValue);
+        ForbiddenUser = new("forbidden_integration_tests@microshop.local", Constants.DefaultPasswordValue);
+        await CreateIntegrationTestsUser(AdminUser, true);
+        await CreateIntegrationTestsUser(ForbiddenUser, false);
     }
 
-    public async Task CreateIntegrationTestsUser(string username, string password, bool hasAdminRights)
+    private async Task CreateIntegrationTestsUser(FakeUser userData, bool hasAdminRights)
     {
-        if (string.IsNullOrWhiteSpace(_externalAuthenticationServiceUrl) || ApplicationFactory is null)
+        if (string.IsNullOrWhiteSpace(_externalAuthenticationServiceUrl) || ValidApplicationFactory is null)
             throw new UninitializedTestFixtureException();
 
         var requestObject = new
@@ -63,12 +72,12 @@ public class AdminTestsFixture : IAsyncLifetime
                 new
                 {
                     Id = "email",
-                    Value = username
+                    Value = userData.Username
                 },
                 new
                 {
                     Id = "password",
-                    Value = password
+                    Value = userData.Password
                 }
             }
         };
@@ -81,18 +90,10 @@ public class AdminTestsFixture : IAsyncLifetime
         if (hasAdminRights)
             requestMessage.Headers.Add(Constants.AdminKeyHeader, Constants.DefaultTextValue);
 
-        var httpClientFactory = ApplicationFactory.Services.GetRequiredService<IHttpClientFactory>();
+        var httpClientFactory = ValidApplicationFactory.Services.GetRequiredService<IHttpClientFactory>();
         var httpClient = httpClientFactory.CreateClient();
         var response = await httpClient.SendAsync(requestMessage);
         if (!response.IsSuccessStatusCode)
             throw new Exception("Unable to create a user for the Integration Tests");
-    }
-
-    public async Task StopAuthenticationService()
-    {
-        if (_authenticationServiceContainer is null)
-            throw new UninitializedTestFixtureException();
-
-        await _authenticationServiceContainer.StopAsync();
     }
 }

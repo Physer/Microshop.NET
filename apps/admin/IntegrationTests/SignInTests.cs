@@ -24,7 +24,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     public async Task SignInPage_ForAnonymousUser_ReturnsOk()
     {
         // Arrange
-        var applicationFactory = _fixture.ApplicationFactory!;
+        var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
 
         // Act
@@ -44,7 +44,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     public async Task ProtectedPages_ForAnonymousUser_RedirectsToSignin(string url)
     {
         // Arrange
-        var applicationFactory = _fixture.ApplicationFactory!;
+        var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
 
         // Act
@@ -61,7 +61,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     {
         // Arrange
         var expectedErrorMessage = "Invalid credentials or permissions";
-        var applicationFactory = _fixture.ApplicationFactory!;
+        var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
         var signInPage = await client.GetAsync(_signInUrl);
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
@@ -87,18 +87,16 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     {
         // Arrange
         var expectedResponseUrl = "http://localhost/Forbidden";
-        var applicationFactory = _fixture.ApplicationFactory!;
+        var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
         var signInPage = await client.GetAsync(_signInUrl);
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
         var form = content.QuerySelector<IHtmlFormElement>("form");
         var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
-        var (username, password) = GenerateUsernameAndPassword();
-        await _fixture.CreateIntegrationTestsUser(username, password, false);
         List<KeyValuePair<string, string?>> formValues = new()
         {
-            { new(nameof(SignInModel.Username), username) },
-            { new(nameof(SignInModel.Password), password) }
+            { new(nameof(SignInModel.Username), _fixture.ForbiddenUser.Username) },
+            { new(nameof(SignInModel.Password), _fixture.ForbiddenUser.Password) }
         };
 
         // Act
@@ -114,18 +112,16 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     {
         // Arrange
         var expectedResponseUrl = "http://localhost/";
-        var applicationFactory = _fixture.ApplicationFactory!;
+        var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
         var signInPage = await client.GetAsync(_signInUrl);
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
         var form = content.QuerySelector<IHtmlFormElement>("form");
         var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']");
-        var (username, password) = GenerateUsernameAndPassword();
-        await _fixture.CreateIntegrationTestsUser(username, password, true);
         List<KeyValuePair<string, string?>> formValues = new()
         {
-            { new(nameof(SignInModel.Username), username) },
-            { new(nameof(SignInModel.Password), password) }
+            { new(nameof(SignInModel.Username), _fixture.AdminUser.Username) },
+            { new(nameof(SignInModel.Password), _fixture.AdminUser.Password) }
         };
 
         // Act
@@ -150,7 +146,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     {
         // Arrange
         var expectedUrl = $"http://localhost{_signInUrl}";
-        var applicationFactory = _fixture.ApplicationFactory!;
+        var applicationFactory = _fixture.ValidApplicationFactory!;
         var client = applicationFactory.CreateClient();
         var signInPage = await client.GetAsync(_signInUrl);
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
@@ -175,8 +171,7 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
     {
         // Arrange
         var expectedErrorMessage = "Something went wrong, please try again later";
-        var applicationFactory = _fixture.ApplicationFactory!;
-        await _fixture.StopAuthenticationService();
+        var applicationFactory = _fixture.ApplicationFactoryWithInvalidAuthenticationService!;
         var client = applicationFactory.CreateClient();
         var signInPage = await client.GetAsync(_signInUrl);
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
@@ -195,14 +190,5 @@ public class SignInTests : IClassFixture<AdminTestsFixture>
 
         // Assert
         errorAlert?.InnerHtml.Should().Be(expectedErrorMessage);
-    }
-
-    private static (string username, string password) GenerateUsernameAndPassword()
-    {
-        var usernameBytes = RandomNumberGenerator.GetBytes(8);
-        var passwordBytes = RandomNumberGenerator.GetBytes(32);
-        var compliantUsername = $"{Convert.ToBase64String(usernameBytes)}@microshop.local";
-        var compliantPasssword = $"{Convert.ToBase64String(passwordBytes)}!";
-        return (compliantUsername, compliantPasssword);
     }
 }
