@@ -9,7 +9,7 @@ using Xunit;
 namespace IntegrationTests;
 
 [Collection(nameof(AuthenticationCollectionFixture))]
-public class SignInTests // : IClassFixture<AuthenticationFixture>
+public class SignInTests
 {
     private readonly AuthenticationFixture _fixture;
     private readonly string _signInUrl;
