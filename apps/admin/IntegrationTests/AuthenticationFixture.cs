@@ -1,10 +1,13 @@
-﻿using DotNet.Testcontainers.Containers;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using DotNet.Testcontainers.Containers;
 using InlineWebApplicationFactory;
 using IntegrationTests.Configuration;
 using IntegrationTests.Utilities;
 using Microshop.ContainerConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
+using Web.Pages;
 using Xunit;
 
 namespace IntegrationTests;
@@ -62,6 +65,20 @@ public class AuthenticationFixture : IAsyncLifetime
         ForbiddenUser = new("forbidden_integration_tests@microshop.local", Constants.DefaultPasswordValue);
         await CreateIntegrationTestsUser(AdminUser, true);
         await CreateIntegrationTestsUser(ForbiddenUser, false);
+    }
+
+    public static async Task<HttpResponseMessage> SendSignInRequestAsync(HttpClient client, string? username, string? password)
+    {
+        var signInPage = await client.GetAsync("/signin");
+        var content = await HtmlHelpers.GetDocumentAsync(signInPage);
+        var form = content.QuerySelector<IHtmlFormElement>("form") ?? throw new Exception("Unable to find the sign in form");
+        var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']") ?? throw new Exception("Unable to find the submit button on the sign in form");
+        List<KeyValuePair<string, string?>> formValues = new()
+        {
+            { new(nameof(SignInModel.Username), username) },
+            { new(nameof(SignInModel.Password), password) }
+        };
+        return await client.SendAsync(form, submitButton, formValues);
     }
 
     private async Task CreateIntegrationTestsUser(FakeUser userData, bool hasAdminRights)
