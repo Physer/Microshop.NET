@@ -63,8 +63,8 @@ public class AuthenticationFixture : IAsyncLifetime
 
         AdminUser = new("admin_integration_tests@microshop.local", Constants.DefaultPasswordValue);
         ForbiddenUser = new("forbidden_integration_tests@microshop.local", Constants.DefaultPasswordValue);
-        await CreateIntegrationTestsUser(AdminUser, true);
-        await CreateIntegrationTestsUser(ForbiddenUser, false);
+        await CreateIntegrationTestsUserAsync(AdminUser, true);
+        await CreateIntegrationTestsUserAsync(ForbiddenUser, false);
     }
 
     public static async Task<HttpResponseMessage> SendSignInRequestAsync(HttpClient client, string? username, string? password)
@@ -81,7 +81,7 @@ public class AuthenticationFixture : IAsyncLifetime
         return await client.SendAsync(form, submitButton, formValues);
     }
 
-    private async Task CreateIntegrationTestsUser(FakeUser userData, bool hasAdminRights)
+    private async Task CreateIntegrationTestsUserAsync(FakeUser userData, bool hasAdminRights)
     {
         if (string.IsNullOrWhiteSpace(_externalAuthenticationServiceUrl) || ValidApplicationFactory is null)
             throw new UninitializedTestFixtureException();
