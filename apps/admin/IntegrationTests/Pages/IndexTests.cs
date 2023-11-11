@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
+using IntegrationTests.Data;
 using IntegrationTests.Utilities;
 using System.Net;
 using Xunit;
 
-namespace IntegrationTests;
+namespace IntegrationTests.Pages;
 
 [Collection(nameof(AuthenticationCollectionFixture))]
 public class IndexTests
@@ -14,9 +15,7 @@ public class IndexTests
     public IndexTests(AuthenticationFixture fixture) => _fixture = fixture;
 
     [Theory]
-    [InlineData("/")]
-    [InlineData("/index")]
-    [InlineData("/Index")]
+    [ClassData(typeof(IndexUrlsClassData))]
     public async Task IndexPage_ForAnonymousUser_RedirectsToSignIn(string url)
     {
         // Arrange
@@ -33,9 +32,7 @@ public class IndexTests
     }
 
     [Theory]
-    [InlineData("/")]
-    [InlineData("/index")]
-    [InlineData("/Index")]
+    [ClassData(typeof(IndexUrlsClassData))]
     public async Task IndexPage_ForNonAdminUser_RedirectsToForbidden(string url)
     {
         // Arrange
@@ -53,9 +50,7 @@ public class IndexTests
     }
 
     [Theory]
-    [InlineData("/")]
-    [InlineData("/index")]
-    [InlineData("/Index")]
+    [ClassData(typeof(IndexUrlsClassData))]
     public async Task IndexPage_ForAdminUser_ShowsIndex(string url)
     {
         // Arrange

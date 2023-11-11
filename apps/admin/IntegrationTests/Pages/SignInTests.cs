@@ -5,7 +5,7 @@ using IntegrationTests.Utilities;
 using System.Net;
 using Xunit;
 
-namespace IntegrationTests;
+namespace IntegrationTests.Pages;
 
 [Collection(nameof(AuthenticationCollectionFixture))]
 public class SignInTests

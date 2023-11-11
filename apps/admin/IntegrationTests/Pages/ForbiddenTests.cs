@@ -4,7 +4,7 @@ using FluentAssertions;
 using IntegrationTests.Utilities;
 using Xunit;
 
-namespace IntegrationTests;
+namespace IntegrationTests.Pages;
 
 [Collection(nameof(AuthenticationCollectionFixture))]
 public class ForbiddenTests
