@@ -19,8 +19,8 @@ public class AuthenticationFixture : IAsyncLifetime
 
     public InlineWebApplicationFactory<Program>? ValidApplicationFactory { get; set; }
     public InlineWebApplicationFactory<Program>? ApplicationFactoryWithInvalidAuthenticationService { get; set; }
-    internal FakeUser AdminUser { get; set; }
-    internal FakeUser ForbiddenUser { get; set; }
+    private FakeUser _adminUser;
+    private FakeUser _forbiddenUser;
 
     public Task DisposeAsync() => Task.CompletedTask;
 
@@ -61,13 +61,21 @@ public class AuthenticationFixture : IAsyncLifetime
         };
         ApplicationFactoryWithInvalidAuthenticationService = new InlineWebApplicationFactory<Program>(invalidConfiguration);
 
-        AdminUser = new("admin_integration_tests@microshop.local", Constants.DefaultPasswordValue);
-        ForbiddenUser = new("forbidden_integration_tests@microshop.local", Constants.DefaultPasswordValue);
-        await CreateIntegrationTestsUserAsync(AdminUser, true);
-        await CreateIntegrationTestsUserAsync(ForbiddenUser, false);
+        _adminUser = new("admin_integration_tests@microshop.local", Constants.DefaultPasswordValue);
+        _forbiddenUser = new("forbidden_integration_tests@microshop.local", Constants.DefaultPasswordValue);
+        await CreateIntegrationTestsUserAsync(_adminUser, true);
+        await CreateIntegrationTestsUserAsync(_forbiddenUser, false);
     }
 
-    public static async Task<HttpResponseMessage> SendSignInRequestAsync(HttpClient client, string? username, string? password)
+    public async Task<HttpResponseMessage> SendSignInRequestForAdminUserAsync(HttpClient client) => await SendSignInRequestAsync(client, _adminUser);
+    
+    public async Task<HttpResponseMessage> SendSignInRequestForForbiddenUserAsync(HttpClient client) => await SendSignInRequestAsync(client, _forbiddenUser);
+    
+    public static async Task<HttpResponseMessage> SendSignInRequestForInvalidUserAsync(HttpClient client) => await SendSignInRequestAsync(client, new(Constants.DefaultTextValue, Constants.DefaultTextValue));
+    
+    public static async Task<HttpResponseMessage> SendSignInRequestForCustomUserAsync(HttpClient client, string? username, string? password) => await SendSignInRequestAsync(client, new(username, password));
+
+    private static async Task<HttpResponseMessage> SendSignInRequestAsync(HttpClient client, FakeUser userData)
     {
         var signInPage = await client.GetAsync("/signin");
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
@@ -75,8 +83,8 @@ public class AuthenticationFixture : IAsyncLifetime
         var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']") ?? throw new Exception("Unable to find the submit button on the sign in form");
         List<KeyValuePair<string, string?>> formValues = new()
         {
-            { new(nameof(SignInModel.Username), username) },
-            { new(nameof(SignInModel.Password), password) }
+            { new(nameof(SignInModel.Username), userData.Username) },
+            { new(nameof(SignInModel.Password), userData.Password) }
         };
         return await client.SendAsync(form, submitButton, formValues);
     }

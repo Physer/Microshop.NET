@@ -35,26 +35,6 @@ public class SignInTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
-    [Theory]
-    [InlineData("/")]
-    [InlineData("/Index")]
-    [InlineData("/ManageData")]
-    [InlineData("/ManageUsers")]
-    public async Task ProtectedPages_ForAnonymousUser_RedirectsToSignin(string url)
-    {
-        // Arrange
-        var applicationFactory = _fixture.ValidApplicationFactory!;
-        var client = applicationFactory.CreateClient();
-
-        // Act
-        var response = await client.GetAsync(url);
-
-        // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(_signInUrl);
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-    }
-
     [Fact]
     public async Task SignInPage_WithWrongCredentials_ShowsError()
     {
@@ -64,7 +44,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestAsync(client, Constants.DefaultTextValue, Constants.DefaultTextValue);
+        var response = await AuthenticationFixture.SendSignInRequestForInvalidUserAsync(client);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 
@@ -81,7 +61,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestAsync(client, _fixture.ForbiddenUser.Username, _fixture.ForbiddenUser.Password);
+        var response = await _fixture.SendSignInRequestForForbiddenUserAsync(client);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
@@ -97,7 +77,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestAsync(client, _fixture.AdminUser.Username, _fixture.AdminUser.Password);
+        var response = await _fixture.SendSignInRequestForAdminUserAsync(client);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
@@ -122,7 +102,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestAsync(client, username, password);
+        var response = await AuthenticationFixture.SendSignInRequestForCustomUserAsync(client, username, password);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
@@ -138,7 +118,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestAsync(client, Constants.DefaultTextValue, Constants.DefaultTextValue);
+        var response = await AuthenticationFixture.SendSignInRequestForInvalidUserAsync(client);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 

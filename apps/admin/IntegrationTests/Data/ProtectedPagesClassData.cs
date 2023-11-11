@@ -2,13 +2,14 @@
 
 namespace IntegrationTests.Data;
 
-internal class IndexUrlsClassData : IEnumerable<object[]>
+internal class ProtectedPagesClassData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
         yield return new[] { "/" };
-        yield return new[] { "/index" };
         yield return new[] { "/Index" };
+        yield return new[] { "/ManageData" };
+        yield return new[] { "/ManageUsers" };
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
