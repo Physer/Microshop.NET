@@ -2,7 +2,6 @@
 using AngleSharp.Html.Dom;
 using FluentAssertions;
 using IntegrationTests.Utilities;
-using Web.Pages;
 using Xunit;
 
 namespace IntegrationTests;
