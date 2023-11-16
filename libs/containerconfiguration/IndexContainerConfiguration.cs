@@ -1,6 +1,6 @@
 ﻿namespace Microshop.ContainerConfiguration;
 
-internal sealed class MeilisearchContainerConfiguration : IContainerConfiguration
+internal sealed class IndexContainerConfiguration : IContainerConfiguration
 {
     public string ImageName => "getmeili/meilisearch";
     public int? Port => 7700;
