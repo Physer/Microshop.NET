@@ -27,14 +27,14 @@ public class AdminFixture : IAsyncLifetime
     public async Task InitializeAsync()
     {
         AuthenticationDatabaseConfiguration authenticationDatabaseConfiguration = new();
-        var authenticationDatabaseContainer = await ContainerFactory.InitializeCustomContainer(authenticationDatabaseConfiguration);
+        var authenticationDatabaseContainer = await ContainerFactory.InitializeCustomContainerAsync(authenticationDatabaseConfiguration);
 
         AuthenticationCoreConfiguration authenticationCoreConfiguration = new()
         {
             AuthenticationDatabaseIpAddress = authenticationDatabaseContainer.IpAddress,
             AuthenticationDatabasePort = authenticationDatabaseConfiguration.Port!.Value
         };
-        var authenticationCoreContainer = await ContainerFactory.InitializeCustomContainer(authenticationCoreConfiguration);
+        var authenticationCoreContainer = await ContainerFactory.InitializeCustomContainerAsync(authenticationCoreConfiguration);
         var authenticationCoreIpAddress = authenticationCoreContainer.IpAddress;
         var authenticationCoreInternalPort = authenticationCoreConfiguration.Port!.Value;
         var authenticationCoreExternalPort = authenticationCoreContainer.GetMappedPublicPort(authenticationCoreInternalPort);
@@ -44,7 +44,7 @@ public class AdminFixture : IAsyncLifetime
             AuthenticationCoreIpAddress = authenticationCoreIpAddress,
             AuthenticationCorePort = authenticationCoreInternalPort
         };
-        _authenticationServiceContainer = await ContainerFactory.InitializeCustomContainer(authenticationServiceConfiguration);
+        _authenticationServiceContainer = await ContainerFactory.InitializeCustomContainerAsync(authenticationServiceConfiguration);
         var authenticationServiceExternalPort = _authenticationServiceContainer.GetMappedPublicPort(authenticationServiceConfiguration.Port!.Value);
         _externalAuthenticationServiceUrl = $"http://localhost:{authenticationServiceExternalPort}";
 
