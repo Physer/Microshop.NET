@@ -29,7 +29,7 @@ public static class ContainerFactory
     /// Initialize authentication database container powered by Postgres
     /// </summary>
     /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitliazePostgresContainerAsync()
+    public static async Task<IContainer> InitializePostgresContainerAsync()
     {
         var postgresConfiguration = new PostgresContainerConfiguration();
         return await InitializePredefinedContainerAsync(postgresConfiguration);
