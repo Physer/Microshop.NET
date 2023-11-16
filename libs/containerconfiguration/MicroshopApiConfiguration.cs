@@ -1,6 +1,6 @@
 ﻿namespace Microshop.ContainerConfiguration
 {
-    internal sealed class MicroshopApiConfiguration : IContainerConfiguration
+    public sealed class MicroshopApiConfiguration : IContainerConfiguration
     {
         public string ImageName => "physer/microshop-api";
 

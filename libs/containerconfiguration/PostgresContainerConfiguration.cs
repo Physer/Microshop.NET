@@ -1,6 +1,6 @@
 ﻿namespace Microshop.ContainerConfiguration;
 
-internal sealed class PostgresContainerConfiguration : IContainerConfiguration
+public sealed class PostgresContainerConfiguration : IContainerConfiguration
 {
     public string ImageName => "postgres";
 

@@ -8,45 +8,45 @@ public static class ContainerFactory
     /// <summary>
     /// Initialize the servicebus container powered by MassTransit and RabbitMQ
     /// </summary>
-    /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitializeServicebusContainerAsync()
+    public static async Task<ContainerConfigurationResponse<ServicebusContainerConfiguration>> InitializeServicebusContainerAsync()
     {
-        var rabbitMqConfiguration = new ServicebusContainerConfiguration();
-        return await InitializePredefinedContainerAsync(rabbitMqConfiguration);
+        var servicebusConfiguration = new ServicebusContainerConfiguration();
+        var container = await InitializePredefinedContainerAsync(servicebusConfiguration);
+        return new(container, servicebusConfiguration);
     }
 
     /// <summary>
     /// Initialize the search index container powered by Meilisearch
     /// </summary>
-    /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitializeIndexContainerAsync()
+    public static async Task<ContainerConfigurationResponse<IndexContainerConfiguration>> InitializeIndexContainerAsync()
     {
-        var meilisearchConfiguration = new IndexContainerConfiguration();
-        return await InitializePredefinedContainerAsync(meilisearchConfiguration);
+        var indexConfiguration = new IndexContainerConfiguration();
+        var container = await InitializePredefinedContainerAsync(indexConfiguration);
+        return new(container, indexConfiguration);
     }
 
     /// <summary>
     /// Initialize authentication database container powered by Postgres
     /// </summary>
-    /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitializePostgresContainerAsync()
+    public static async Task<ContainerConfigurationResponse<PostgresContainerConfiguration>> InitializePostgresContainerAsync()
     {
         var postgresConfiguration = new PostgresContainerConfiguration();
-        return await InitializePredefinedContainerAsync(postgresConfiguration);
+        var container = await InitializePredefinedContainerAsync(postgresConfiguration);
+        return new(container, postgresConfiguration);
     }
 
     /// <summary>
     /// Initialize the authentication core container powered by Supertokens
     /// </summary>
     /// <param name="supertokensDatabaseConnectionString">The Postgres ConnectionString to use for the authentication database</param>
-    /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitializeSupertokensContainerAsync(string supertokensDatabaseConnectionString)
+    public static async Task<ContainerConfigurationResponse<SupertokensContainerConfiguration>> InitializeSupertokensContainerAsync(string supertokensDatabaseConnectionString)
     {
         var supertokensConfiguration = new SupertokensContainerConfiguration
         {
             AuthenticationDatabaseConnectionString = supertokensDatabaseConnectionString
         };
-        return await InitializePredefinedContainerAsync(supertokensConfiguration);
+        var container = await InitializePredefinedContainerAsync(supertokensConfiguration);
+        return new(container, supertokensConfiguration);
     }
 
     /// <summary>
@@ -54,15 +54,15 @@ public static class ContainerFactory
     /// </summary>
     /// <param name="supertokensContainerIpAddress">The IP address of the container serving the authentication core</param>
     /// <param name="supertokensContainerPort">The port of the container serving the authentication core</param>
-    /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitializeAuthenticationServiceContainerAsync(string supertokensContainerIpAddress, int supertokensContainerPort)
+    public static async Task<ContainerConfigurationResponse<AuthenticationServiceConfiguration>> InitializeAuthenticationServiceContainerAsync(string supertokensContainerIpAddress, int supertokensContainerPort)
     {
         var authenticationServiceContainer = new AuthenticationServiceConfiguration
         {
             SupertokensContainerIpAddress = supertokensContainerIpAddress,
             SupertokensContainerPort = supertokensContainerPort
         };
-        return await InitializePredefinedContainerAsync(authenticationServiceContainer);
+        var container = await InitializePredefinedContainerAsync(authenticationServiceContainer);
+        return new(container, authenticationServiceContainer);
     }
 
     /// <summary>
@@ -72,8 +72,7 @@ public static class ContainerFactory
     /// <param name="servicebusContainerIp">The IP address of the container serving the servicebus</param>
     /// <param name="servicebusUsername">The management username of the servicebus</param>
     /// <param name="servicebusPassword">The management passowrd of the servicebus</param>
-    /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitializeMicroshopApiContainerAsync(string authenticationServiceContainerIp, string servicebusContainerIp, string servicebusUsername, string servicebusPassword)
+    public static async Task<ContainerConfigurationResponse<MicroshopApiConfiguration>> InitializeMicroshopApiContainerAsync(string authenticationServiceContainerIp, string servicebusContainerIp, string servicebusUsername, string servicebusPassword)
     {
         var microshopApiContainer = new MicroshopApiConfiguration
         {
@@ -82,15 +81,15 @@ public static class ContainerFactory
             RabbitMqPassword = servicebusUsername,
             RabbitMqUsername = servicebusPassword
         };
-        return await InitializePredefinedContainerAsync(microshopApiContainer);
+        var container = await InitializePredefinedContainerAsync(microshopApiContainer);
+        return new(container, microshopApiContainer);
     }
 
     /// <summary>
     /// Initialize a custom container based on an implementation of the IContainerConfiguration interface
     /// </summary>
     /// <param name="customContainerConfiguration">The configuration of the custom container</param>
-    /// <returns>The container instance</returns>
-    public static async Task<IContainer> InitializeCustomContainerAsync(IContainerConfiguration customContainerConfiguration)
+    public static async Task<ContainerConfigurationResponse<IContainerConfiguration>> InitializeCustomContainerAsync(IContainerConfiguration customContainerConfiguration)
     {
         var containerBuilder = new ContainerBuilder()
             .WithImage(customContainerConfiguration.ImageName)
@@ -106,7 +105,7 @@ public static class ContainerFactory
 
         var container = containerBuilder.Build();
         await container.StartAsync().ConfigureAwait(false);
-        return container;
+        return new(container, customContainerConfiguration);
     }
 
     private static async Task<IContainer> InitializePredefinedContainerAsync(IContainerConfiguration containerConfiguration)

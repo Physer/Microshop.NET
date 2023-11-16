@@ -1,7 +1,7 @@
 ﻿
 namespace Microshop.ContainerConfiguration;
 
-internal sealed class SupertokensContainerConfiguration : IContainerConfiguration
+public sealed class SupertokensContainerConfiguration : IContainerConfiguration
 {
     public string ImageName => "registry.supertokens.io/supertokens/supertokens-postgresql";
 

@@ -2,7 +2,7 @@
 
 namespace Microshop.ContainerConfiguration;
 
-internal sealed class ServicebusContainerConfiguration : IContainerConfiguration
+public sealed class ServicebusContainerConfiguration : IContainerConfiguration
 {
     public static string Hostname => "localhost";
     public static string Username => "guest";
