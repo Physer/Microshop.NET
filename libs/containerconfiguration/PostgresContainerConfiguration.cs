@@ -6,10 +6,10 @@ public sealed class PostgresContainerConfiguration : IContainerConfiguration
 
     public int? Port => 5432;
 
-    public static string Username => "username";
-    public static string Password => "password";
-    public static string Database => "database";
-    public static string ConnectionString => $"postgresql://{Username}:{Password}@localhost:5432/{Database}";
+    public string Username => "username";
+    public string Password => "password";
+    public string Database => "database";
+    public string ConnectionString => $"postgresql://{Username}:{Password}@localhost:5432/{Database}";
 
     public IReadOnlyDictionary<string, string>? EnvironmentVariables => new Dictionary<string, string>
     {
