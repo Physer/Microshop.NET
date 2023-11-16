@@ -1,8 +1,6 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using DotNet.Testcontainers.Containers;
 using InlineWebApplicationFactory;
-using IntegrationTests.Configuration;
 using IntegrationTests.Utilities;
 using Microshop.ContainerConfiguration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,44 +13,33 @@ namespace IntegrationTests;
 public class AdminFixture : IAsyncLifetime
 {
     private string? _externalAuthenticationServiceUrl;
-    private IContainer? _authenticationServiceContainer;
 
     public InlineWebApplicationFactory<Program>? ValidApplicationFactory { get; set; }
     public InlineWebApplicationFactory<Program>? ApplicationFactoryWithInvalidAuthenticationService { get; set; }
     private FakeUser _adminUser;
     private FakeUser _forbiddenUser;
+    private string? _adminKey;
 
     public Task DisposeAsync() => Task.CompletedTask;
 
     public async Task InitializeAsync()
     {
-        AuthenticationDatabaseConfiguration authenticationDatabaseConfiguration = new();
-        var authenticationDatabaseContainer = await ContainerFactory.InitializeCustomContainerAsync(authenticationDatabaseConfiguration);
-
-        AuthenticationCoreConfiguration authenticationCoreConfiguration = new()
-        {
-            AuthenticationDatabaseIpAddress = authenticationDatabaseContainer.IpAddress,
-            AuthenticationDatabasePort = authenticationDatabaseConfiguration.Port!.Value
-        };
-        var authenticationCoreContainer = await ContainerFactory.InitializeCustomContainerAsync(authenticationCoreConfiguration);
-        var authenticationCoreIpAddress = authenticationCoreContainer.IpAddress;
-        var authenticationCoreInternalPort = authenticationCoreConfiguration.Port!.Value;
-        var authenticationCoreExternalPort = authenticationCoreContainer.GetMappedPublicPort(authenticationCoreInternalPort);
-
-        AuthenticationServiceConfiguration authenticationServiceConfiguration = new()
-        {
-            AuthenticationCoreIpAddress = authenticationCoreIpAddress,
-            AuthenticationCorePort = authenticationCoreInternalPort
-        };
-        _authenticationServiceContainer = await ContainerFactory.InitializeCustomContainerAsync(authenticationServiceConfiguration);
-        var authenticationServiceExternalPort = _authenticationServiceContainer.GetMappedPublicPort(authenticationServiceConfiguration.Port!.Value);
+        var servicebusData = await ContainerFactory.InitializeServicebusContainerAsync();
+        _ = await ContainerFactory.InitializeIndexContainerAsync();
+        var databaseData = await ContainerFactory.InitializePostgresContainerAsync();
+        var supertokensData = await ContainerFactory.InitializeSupertokensContainerAsync(databaseData.Configuration.InternalConnectionString);
+        var supertokensExternalPort = supertokensData.Container.GetMappedPublicPort(supertokensData.Configuration.Port!.Value);
+        var authenticationServiceData = await ContainerFactory.InitializeAuthenticationServiceContainerAsync(supertokensData.Container.IpAddress, supertokensData.Configuration.Port!.Value);
+        var microshopApiData = await ContainerFactory.InitializeMicroshopApiContainerAsync(authenticationServiceData.Container.IpAddress, servicebusData.Container.IpAddress, servicebusData.Configuration.Username, servicebusData.Configuration.Password);
+        var microshopApiPort = microshopApiData.Container.GetMappedPublicPort(microshopApiData.Configuration.Port!.Value);
+        var authenticationServiceExternalPort = authenticationServiceData.Container.GetMappedPublicPort(authenticationServiceData.Configuration.Port!.Value);
         _externalAuthenticationServiceUrl = $"http://localhost:{authenticationServiceExternalPort}";
 
         Dictionary<string, string?> validConfiguration = new()
         {
             { "Authentication:BaseUrl", _externalAuthenticationServiceUrl },
-            { "UserManagement:BaseUrl", $"http://localhost:{authenticationCoreExternalPort}" },
-            { "DataManagement:BaseUrl", $"http://localhost" }
+            { "UserManagement:BaseUrl", $"http://localhost:{supertokensExternalPort}" },
+            { "DataManagement:BaseUrl", $"http://localhost/{microshopApiPort}" }
         };
         ValidApplicationFactory = new InlineWebApplicationFactory<Program>(validConfiguration);
         Dictionary<string, string?> invalidConfiguration = new()
@@ -61,6 +48,7 @@ public class AdminFixture : IAsyncLifetime
         };
         ApplicationFactoryWithInvalidAuthenticationService = new InlineWebApplicationFactory<Program>(invalidConfiguration);
 
+        _adminKey = authenticationServiceData.Configuration.AdminKey;
         _adminUser = new("admin_integration_tests@microshop.local", Constants.DefaultPasswordValue);
         _forbiddenUser = new("forbidden_integration_tests@microshop.local", Constants.DefaultPasswordValue);
         await CreateIntegrationTestsUserAsync(_adminUser, true);
@@ -68,11 +56,11 @@ public class AdminFixture : IAsyncLifetime
     }
 
     public async Task<HttpResponseMessage> SendSignInRequestForAdminUserAsync(HttpClient client) => await SendSignInRequestAsync(client, _adminUser);
-    
+
     public async Task<HttpResponseMessage> SendSignInRequestForForbiddenUserAsync(HttpClient client) => await SendSignInRequestAsync(client, _forbiddenUser);
-    
+
     public static async Task<HttpResponseMessage> SendSignInRequestForInvalidUserAsync(HttpClient client) => await SendSignInRequestAsync(client, new(Constants.DefaultTextValue, Constants.DefaultTextValue));
-    
+
     public static async Task<HttpResponseMessage> SendSignInRequestForCustomUserAsync(HttpClient client, string? username, string? password) => await SendSignInRequestAsync(client, new(username, password));
 
     private static async Task<HttpResponseMessage> SendSignInRequestAsync(HttpClient client, FakeUser userData)
@@ -117,7 +105,7 @@ public class AdminFixture : IAsyncLifetime
             Content = stringContent
         };
         if (hasAdminRights)
-            requestMessage.Headers.Add(Constants.AdminKeyHeader, Constants.DefaultTextValue);
+            requestMessage.Headers.Add(Constants.AdminKeyHeader, _adminKey);
 
         var httpClientFactory = ValidApplicationFactory.Services.GetRequiredService<IHttpClientFactory>();
         var httpClient = httpClientFactory.CreateClient();
