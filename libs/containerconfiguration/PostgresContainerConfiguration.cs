@@ -9,7 +9,10 @@ public sealed class PostgresContainerConfiguration : IContainerConfiguration
     public string Username => "username";
     public string Password => "password";
     public string Database => "database";
-    public string ConnectionString => $"postgresql://{Username}:{Password}@localhost:5432/{Database}";
+    public string? ContainerIpAddress {  get; set; }
+    public int? PublicPort { get; set; }
+    public string InternalConnectionString => $"postgresql://{Username}:{Password}@{ContainerIpAddress}:{Port}/{Database}";
+    public string ExternalConnectionString => $"postgresql://{Username}:{Password}@localhost:{PublicPort}/{Database}";
 
     public IReadOnlyDictionary<string, string>? EnvironmentVariables => new Dictionary<string, string>
     {

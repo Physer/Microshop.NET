@@ -32,6 +32,8 @@ public static class ContainerFactory
     {
         var postgresConfiguration = new PostgresContainerConfiguration();
         var container = await InitializePredefinedContainerAsync(postgresConfiguration);
+        postgresConfiguration.ContainerIpAddress = container.IpAddress;
+        postgresConfiguration.PublicPort = container.GetMappedPublicPort(postgresConfiguration.Port!.Value);
         return new(container, postgresConfiguration);
     }
 
