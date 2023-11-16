@@ -12,7 +12,7 @@ using Xunit;
 
 namespace IntegrationTests;
 
-public class AuthenticationFixture : IAsyncLifetime
+public class AdminFixture : IAsyncLifetime
 {
     private string? _externalAuthenticationServiceUrl;
     private IContainer? _authenticationServiceContainer;

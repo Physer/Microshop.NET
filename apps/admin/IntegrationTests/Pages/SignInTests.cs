@@ -7,13 +7,13 @@ using Xunit;
 
 namespace IntegrationTests.Pages;
 
-[Collection(nameof(AuthenticationCollectionFixture))]
+[Collection(nameof(AdminCollectionFixture))]
 public class SignInTests
 {
-    private readonly AuthenticationFixture _fixture;
+    private readonly AdminFixture _fixture;
     private readonly string _signInUrl;
 
-    public SignInTests(AuthenticationFixture fixture)
+    public SignInTests(AdminFixture fixture)
     {
         _fixture = fixture;
         _signInUrl = "/signin";
@@ -44,7 +44,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestForInvalidUserAsync(client);
+        var response = await AdminFixture.SendSignInRequestForInvalidUserAsync(client);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 
@@ -102,7 +102,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestForCustomUserAsync(client, username, password);
+        var response = await AdminFixture.SendSignInRequestForCustomUserAsync(client, username, password);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
@@ -118,7 +118,7 @@ public class SignInTests
         var client = applicationFactory.CreateClient();
 
         // Act
-        var response = await AuthenticationFixture.SendSignInRequestForInvalidUserAsync(client);
+        var response = await AdminFixture.SendSignInRequestForInvalidUserAsync(client);
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 

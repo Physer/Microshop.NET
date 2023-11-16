@@ -5,12 +5,12 @@ using Xunit;
 
 namespace IntegrationTests.Pages;
 
-[Collection(nameof(AuthenticationCollectionFixture))]
+[Collection(nameof(AdminCollectionFixture))]
 public class AuthenticationTests
 {
-    private readonly AuthenticationFixture _fixture;
+    private readonly AdminFixture _fixture;
 
-    public AuthenticationTests(AuthenticationFixture fixture) => _fixture = fixture;
+    public AuthenticationTests(AdminFixture fixture) => _fixture = fixture;
 
     [Theory]
     [ClassData(typeof(ProtectedPagesClassData))]

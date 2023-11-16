@@ -7,12 +7,12 @@ using Xunit;
 
 namespace IntegrationTests.Pages;
 
-[Collection(nameof(AuthenticationCollectionFixture))]
+[Collection(nameof(AdminCollectionFixture))]
 public class ManageDataTests
 {
-    private readonly AuthenticationFixture _fixture;
+    private readonly AdminFixture _fixture;
 
-    public ManageDataTests(AuthenticationFixture fixture) => _fixture = fixture;
+    public ManageDataTests(AdminFixture fixture) => _fixture = fixture;
 
     [Fact]
     public async Task ManageDataPage_WithAdminUser_ShowsContent()

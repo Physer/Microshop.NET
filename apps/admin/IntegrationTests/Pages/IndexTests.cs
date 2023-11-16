@@ -5,13 +5,13 @@ using Xunit;
 
 namespace IntegrationTests.Pages;
 
-[Collection(nameof(AuthenticationCollectionFixture))]
+[Collection(nameof(AdminCollectionFixture))]
 public class IndexTests
 {
-    private readonly AuthenticationFixture _fixture;
+    private readonly AdminFixture _fixture;
     private const string _signInUrl = "/signin";
 
-    public IndexTests(AuthenticationFixture fixture) => _fixture = fixture;
+    public IndexTests(AdminFixture fixture) => _fixture = fixture;
 
     [Theory]
     [InlineData("/")]
