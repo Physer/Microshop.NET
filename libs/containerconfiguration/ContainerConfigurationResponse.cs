@@ -4,13 +4,13 @@ namespace Microshop.ContainerConfiguration;
 
 public class ContainerConfigurationResponse<T> where T : IContainerConfiguration
 {
-    public ContainerConfigurationResponse(IContainer container, 
+    public ContainerConfigurationResponse(IContainer container,
         T configuration)
     {
         Container = container;
         Configuration = configuration;
     }
 
-    protected IContainer Container { get; init; }
-    protected T Configuration { get; init; }
+    public IContainer Container { get; init; }
+    public T Configuration { get; init; }
 }
