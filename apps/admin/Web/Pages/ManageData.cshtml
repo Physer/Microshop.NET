@@ -8,10 +8,10 @@
     <p>Use this page to perform actions on the data of Microshop.NET:</p>
 </div>
 <form method="post">
-    <button type="submit" class="btn btn-primary" asp-page-handler="Generate">Generate data</button>
+    <button id="generateDataButton" type="submit" class="btn btn-primary" asp-page-handler="Generate">Generate data</button>
     <br />
     <br />
-    <button type="submit" class="btn btn-primary" asp-page-handler="Clear">Clear data</button>
+    <button id="clearDataButton" type="submit" class="btn btn-primary" asp-page-handler="Clear">Clear data</button>
 
     <div class="mt-3">
         @if (Model?.Success == true)
