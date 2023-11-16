@@ -11,7 +11,7 @@
 		<Copyright>© Alex Schouls</Copyright>
 		<PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
-		<VersionPrefix>1.2.3</VersionPrefix>
+		<VersionPrefix>1.2.4</VersionPrefix>
 		<Description>A set of utility methods to quickly set up predefined and custom containers based on TestContainers.NET</Description>
 	</PropertyGroup>
 

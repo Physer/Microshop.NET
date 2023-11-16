@@ -2,7 +2,7 @@
 
 public sealed class AuthenticationServiceConfiguration : IContainerConfiguration
 {
-    public string ImageName => "physer/microshop-authentication";
+    public string ImageName => "physer/microshop-authentication:main";
 
     public int? Port => 80;
 

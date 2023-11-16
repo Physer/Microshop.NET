@@ -2,7 +2,7 @@
 {
     public sealed class MicroshopApiConfiguration : IContainerConfiguration
     {
-        public string ImageName => "physer/microshop-api";
+        public string ImageName => "physer/microshop-api:main";
 
         public int? Port => 80;
 
