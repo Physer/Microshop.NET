@@ -1,4 +1,4 @@
-﻿namespace Microshop.ContainerConfiguration;
+﻿namespace Microshop.ContainerConfiguration.ContainerConfigurations;
 
 public sealed class IndexContainerConfiguration : IContainerConfiguration
 {

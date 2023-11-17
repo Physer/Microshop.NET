@@ -1,4 +1,5 @@
 ﻿using DotNet.Testcontainers.Containers;
+using Microshop.ContainerConfiguration.ContainerConfigurations;
 
 namespace Microshop.ContainerConfiguration;
 

@@ -1,5 +1,4 @@
-﻿
-namespace Microshop.ContainerConfiguration;
+﻿namespace Microshop.ContainerConfiguration.ContainerConfigurations;
 
 public sealed class SupertokensContainerConfiguration : IContainerConfiguration
 {

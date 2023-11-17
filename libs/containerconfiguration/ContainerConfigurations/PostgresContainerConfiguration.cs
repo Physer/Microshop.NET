@@ -1,4 +1,4 @@
-﻿namespace Microshop.ContainerConfiguration;
+﻿namespace Microshop.ContainerConfiguration.ContainerConfigurations;
 
 public sealed class PostgresContainerConfiguration : IContainerConfiguration
 {
@@ -9,7 +9,7 @@ public sealed class PostgresContainerConfiguration : IContainerConfiguration
     public string Username => "username";
     public string Password => "password";
     public string Database => "database";
-    public string? ContainerIpAddress {  get; set; }
+    public string? ContainerIpAddress { get; set; }
     public int? PublicPort { get; set; }
     public string InternalConnectionString => $"postgresql://{Username}:{Password}@{ContainerIpAddress}:{Port}/{Database}";
     public string ExternalConnectionString => $"postgresql://{Username}:{Password}@localhost:{PublicPort}/{Database}";

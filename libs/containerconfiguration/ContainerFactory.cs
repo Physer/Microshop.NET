@@ -1,90 +1,50 @@
 ﻿using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
+using Microshop.ContainerConfiguration.ContainerConfigurations;
+using Microshop.ContainerConfiguration.Exceptions;
 
 namespace Microshop.ContainerConfiguration;
 
 public static class ContainerFactory
 {
-    /// <summary>
-    /// Initialize the servicebus container powered by MassTransit and RabbitMQ
-    /// </summary>
-    public static async Task<ContainerConfigurationResponse<ServicebusContainerConfiguration>> InitializeServicebusContainerAsync()
-    {
-        var servicebusConfiguration = new ServicebusContainerConfiguration();
-        var container = await InitializePredefinedContainerAsync(servicebusConfiguration);
-        return new(container, servicebusConfiguration);
-    }
+    public static ContainerConfigurationResponse<ServicebusContainerConfiguration>? ServicebusContainerConfiguration { get; private set; }
+    public static ContainerConfigurationResponse<IndexContainerConfiguration>? IndexContainerConfiguration { get; private set; }
+    public static ContainerConfigurationResponse<PostgresContainerConfiguration>? PostgresContainerConfiguration { get; private set; }
+    public static ContainerConfigurationResponse<SupertokensContainerConfiguration>? SupertokensContainerConfiguration { get; private set; }
+    public static ContainerConfigurationResponse<AuthenticationServiceConfiguration>? AuthenticationServiceContainerConfiguration { get; private set; }
+    public static ContainerConfigurationResponse<MicroshopApiConfiguration>? MicroshopApiContainerConfiguration { get; private set; }
+
 
     /// <summary>
-    /// Initialize the search index container powered by Meilisearch
+    /// Initialize all the predefined containers.
+    /// Note that this method is required in order to access the container properties.
     /// </summary>
-    public static async Task<ContainerConfigurationResponse<IndexContainerConfiguration>> InitializeIndexContainerAsync()
+    /// <exception cref="ContainerNotInitializedException">If the properties of a container is null after initialization, this is thrown</exception>
+    public static async Task InitializeAllPredefinedContainers()
     {
-        var indexConfiguration = new IndexContainerConfiguration();
-        var container = await InitializePredefinedContainerAsync(indexConfiguration);
-        return new(container, indexConfiguration);
-    }
+        await InitializeServicebusContainerAsync();
+        if (ServicebusContainerConfiguration is null)
+            throw new ContainerNotInitializedException(nameof(ServicebusContainerConfiguration));
 
-    /// <summary>
-    /// Initialize authentication database container powered by Postgres
-    /// </summary>
-    public static async Task<ContainerConfigurationResponse<PostgresContainerConfiguration>> InitializePostgresContainerAsync()
-    {
-        var postgresConfiguration = new PostgresContainerConfiguration();
-        var container = await InitializePredefinedContainerAsync(postgresConfiguration);
-        postgresConfiguration.ContainerIpAddress = container.IpAddress;
-        postgresConfiguration.PublicPort = container.GetMappedPublicPort(postgresConfiguration.Port!.Value);
-        return new(container, postgresConfiguration);
-    }
+        await InitializeIndexContainerAsync();
+        if (IndexContainerConfiguration is null)
+            throw new ContainerNotInitializedException(nameof(IndexContainerConfiguration));
 
-    /// <summary>
-    /// Initialize the authentication core container powered by Supertokens
-    /// </summary>
-    /// <param name="supertokensDatabaseConnectionString">The Postgres ConnectionString to use for the authentication database</param>
-    public static async Task<ContainerConfigurationResponse<SupertokensContainerConfiguration>> InitializeSupertokensContainerAsync(string supertokensDatabaseConnectionString)
-    {
-        var supertokensConfiguration = new SupertokensContainerConfiguration
-        {
-            AuthenticationDatabaseConnectionString = supertokensDatabaseConnectionString
-        };
-        var container = await InitializePredefinedContainerAsync(supertokensConfiguration);
-        return new(container, supertokensConfiguration);
-    }
+        await InitializePostgresContainerAsync();
+        if (PostgresContainerConfiguration is null)
+            throw new ContainerNotInitializedException(nameof(PostgresContainerConfiguration));
 
-    /// <summary>
-    /// Initialize the authentication backend container powered by Microshop
-    /// </summary>
-    /// <param name="supertokensContainerIpAddress">The IP address of the container serving the authentication core</param>
-    /// <param name="supertokensContainerPort">The port of the container serving the authentication core</param>
-    public static async Task<ContainerConfigurationResponse<AuthenticationServiceConfiguration>> InitializeAuthenticationServiceContainerAsync(string supertokensContainerIpAddress, int supertokensContainerPort)
-    {
-        var authenticationServiceContainer = new AuthenticationServiceConfiguration
-        {
-            SupertokensContainerIpAddress = supertokensContainerIpAddress,
-            SupertokensContainerPort = supertokensContainerPort
-        };
-        var container = await InitializePredefinedContainerAsync(authenticationServiceContainer);
-        return new(container, authenticationServiceContainer);
-    }
+        await InitializeSupertokensContainerAsync(PostgresContainerConfiguration.Configuration.InternalConnectionString);
+        if (SupertokensContainerConfiguration is null)
+            throw new ContainerNotInitializedException(nameof(SupertokensContainerConfiguration));
 
-    /// <summary>
-    /// Initialize the API container powered by Microshop
-    /// </summary>
-    /// <param name="authenticationServiceContainerIp">The IP address of the container serving the authentication service</param>
-    /// <param name="servicebusContainerIp">The IP address of the container serving the servicebus</param>
-    /// <param name="servicebusUsername">The management username of the servicebus</param>
-    /// <param name="servicebusPassword">The management passowrd of the servicebus</param>
-    public static async Task<ContainerConfigurationResponse<MicroshopApiConfiguration>> InitializeMicroshopApiContainerAsync(string authenticationServiceContainerIp, string servicebusContainerIp, string servicebusUsername, string servicebusPassword)
-    {
-        var microshopApiContainer = new MicroshopApiConfiguration
-        {
-            AuthenticationServiceContainerIp = authenticationServiceContainerIp,
-            RabbitMqContainerIp = servicebusContainerIp,
-            RabbitMqPassword = servicebusUsername,
-            RabbitMqUsername = servicebusPassword
-        };
-        var container = await InitializePredefinedContainerAsync(microshopApiContainer);
-        return new(container, microshopApiContainer);
+        await InitializeAuthenticationServiceContainerAsync(SupertokensContainerConfiguration.Container.IpAddress, SupertokensContainerConfiguration.Configuration.Port!.Value);
+        if (AuthenticationServiceContainerConfiguration is null)
+            throw new ContainerNotInitializedException(nameof(AuthenticationServiceContainerConfiguration));
+
+        await InitializeMicroshopApiContainerAsync(AuthenticationServiceContainerConfiguration.Container.IpAddress, ServicebusContainerConfiguration.Container.IpAddress, ServicebusContainerConfiguration.Configuration.Username, ServicebusContainerConfiguration.Configuration.Password);
+        if (MicroshopApiContainerConfiguration is null)
+            throw new ContainerNotInitializedException(nameof(MicroshopApiContainerConfiguration));
     }
 
     /// <summary>
@@ -108,6 +68,62 @@ public static class ContainerFactory
         var container = containerBuilder.Build();
         await container.StartAsync().ConfigureAwait(false);
         return new(container, customContainerConfiguration);
+    }
+
+    private static async Task InitializeServicebusContainerAsync()
+    {
+        var servicebusConfiguration = new ServicebusContainerConfiguration();
+        var container = await InitializePredefinedContainerAsync(servicebusConfiguration);
+        ServicebusContainerConfiguration = new(container, servicebusConfiguration);
+    }
+
+    private static async Task InitializeIndexContainerAsync()
+    {
+        var indexConfiguration = new IndexContainerConfiguration();
+        var container = await InitializePredefinedContainerAsync(indexConfiguration);
+        IndexContainerConfiguration = new(container, indexConfiguration);
+    }
+
+    private static async Task InitializePostgresContainerAsync()
+    {
+        var postgresConfiguration = new PostgresContainerConfiguration();
+        var container = await InitializePredefinedContainerAsync(postgresConfiguration);
+        postgresConfiguration.ContainerIpAddress = container.IpAddress;
+        postgresConfiguration.PublicPort = container.GetMappedPublicPort(postgresConfiguration.Port!.Value);
+        PostgresContainerConfiguration = new(container, postgresConfiguration);
+    }
+
+    private static async Task InitializeSupertokensContainerAsync(string supertokensDatabaseConnectionString)
+    {
+        var supertokensConfiguration = new SupertokensContainerConfiguration
+        {
+            AuthenticationDatabaseConnectionString = supertokensDatabaseConnectionString
+        };
+        var container = await InitializePredefinedContainerAsync(supertokensConfiguration);
+    }
+
+    private static async Task InitializeAuthenticationServiceContainerAsync(string supertokensContainerIpAddress, int supertokensContainerPort)
+    {
+        var authenticationServiceContainer = new AuthenticationServiceConfiguration
+        {
+            SupertokensContainerIpAddress = supertokensContainerIpAddress,
+            SupertokensContainerPort = supertokensContainerPort
+        };
+        var container = await InitializePredefinedContainerAsync(authenticationServiceContainer);
+        AuthenticationServiceContainerConfiguration = new(container, authenticationServiceContainer);
+    }
+
+    private static async Task InitializeMicroshopApiContainerAsync(string authenticationServiceContainerIp, string servicebusContainerIp, string servicebusUsername, string servicebusPassword)
+    {
+        var microshopApiContainer = new MicroshopApiConfiguration
+        {
+            AuthenticationServiceContainerIp = authenticationServiceContainerIp,
+            RabbitMqContainerIp = servicebusContainerIp,
+            RabbitMqPassword = servicebusUsername,
+            RabbitMqUsername = servicebusPassword
+        };
+        var container = await InitializePredefinedContainerAsync(microshopApiContainer);
+        MicroshopApiContainerConfiguration = new(container, microshopApiContainer);
     }
 
     private static async Task<IContainer> InitializePredefinedContainerAsync(IContainerConfiguration containerConfiguration)

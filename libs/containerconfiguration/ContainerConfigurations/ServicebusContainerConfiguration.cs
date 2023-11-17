@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace Microshop.ContainerConfiguration;
+namespace Microshop.ContainerConfiguration.ContainerConfigurations;
 
 public sealed class ServicebusContainerConfiguration : IContainerConfiguration
 {
