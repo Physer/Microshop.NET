@@ -100,6 +100,7 @@ public static class ContainerFactory
             AuthenticationDatabaseConnectionString = supertokensDatabaseConnectionString
         };
         var container = await InitializePredefinedContainerAsync(supertokensConfiguration);
+        SupertokensContainerConfiguration = new(container, supertokensConfiguration);
     }
 
     private static async Task InitializeAuthenticationServiceContainerAsync(string supertokensContainerIpAddress, int supertokensContainerPort)
