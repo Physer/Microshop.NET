@@ -24,21 +24,21 @@ public class AdminFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        var servicebusData = await ContainerFactory.InitializeServicebusContainerAsync();
-        _ = await ContainerFactory.InitializeIndexContainerAsync();
-        var databaseData = await ContainerFactory.InitializePostgresContainerAsync();
-        var supertokensData = await ContainerFactory.InitializeSupertokensContainerAsync(databaseData.Configuration.InternalConnectionString);
-        var supertokensExternalPort = supertokensData.Container.GetMappedPublicPort(supertokensData.Configuration.Port!.Value);
-        var authenticationServiceData = await ContainerFactory.InitializeAuthenticationServiceContainerAsync(supertokensData.Container.IpAddress, supertokensData.Configuration.Port!.Value);
-        var microshopApiData = await ContainerFactory.InitializeMicroshopApiContainerAsync(authenticationServiceData.Container.IpAddress, servicebusData.Container.IpAddress, servicebusData.Configuration.Username, servicebusData.Configuration.Password);
+        await ContainerFactory.InitializeAllPredefinedContainers();
+        var supertokensData = ContainerFactory.SupertokensContainerConfiguration!;
+        var supertokensPort = supertokensData.Container.GetMappedPublicPort(supertokensData.Configuration.Port!.Value);
+
+        var microshopApiData = ContainerFactory.MicroshopApiContainerConfiguration!;
         var microshopApiPort = microshopApiData.Container.GetMappedPublicPort(microshopApiData.Configuration.Port!.Value);
-        var authenticationServiceExternalPort = authenticationServiceData.Container.GetMappedPublicPort(authenticationServiceData.Configuration.Port!.Value);
-        _externalAuthenticationServiceUrl = $"http://localhost:{authenticationServiceExternalPort}";
+
+        var authenticationServiceData = ContainerFactory.AuthenticationServiceContainerConfiguration!;
+        var authenticationServicePort = authenticationServiceData.Container.GetMappedPublicPort(authenticationServiceData.Configuration.Port!.Value);
+        _externalAuthenticationServiceUrl = $"http://localhost:{authenticationServicePort}";
 
         Dictionary<string, string?> validConfiguration = new()
         {
             { "Authentication:BaseUrl", _externalAuthenticationServiceUrl },
-            { "UserManagement:BaseUrl", $"http://localhost:{supertokensExternalPort}" },
+            { "UserManagement:BaseUrl", $"http://localhost:{supertokensPort}" },
             { "DataManagement:BaseUrl", $"http://localhost/{microshopApiPort}" }
         };
         ValidApplicationFactory = new InlineWebApplicationFactory<Program>(validConfiguration);
