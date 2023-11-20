@@ -39,7 +39,7 @@ public class AdminFixture : IAsyncLifetime
         {
             { "Authentication:BaseUrl", _externalAuthenticationServiceUrl },
             { "UserManagement:BaseUrl", $"http://localhost:{supertokensPort}" },
-            { "DataManagement:BaseUrl", $"http://localhost/{microshopApiPort}" }
+            { "DataManagement:BaseUrl", $"http://localhost:{microshopApiPort}" }
         };
         ValidApplicationFactory = new InlineWebApplicationFactory<Program>(validConfiguration);
         Dictionary<string, string?> invalidConfiguration = new()

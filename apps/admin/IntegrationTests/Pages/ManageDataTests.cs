@@ -72,7 +72,7 @@ public class ManageDataTests
         response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo("/forbidden");
     }
 
-    // [Fact]
+    [Fact]
     public async Task GenerateHandler_WithAdminUser_SuccesfullyGeneratesProducts()
     {
         // Arrange
