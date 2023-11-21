@@ -95,4 +95,28 @@ public class ManageDataTests
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         document?.Body?.InnerHtml.Should().Contain(expectedMessage);
     }
+
+    [Fact]
+    public async Task ClearDataHandler_WithAdminUser_SuccesfullyClearsData()
+    {
+        // Arrange
+        var manageDataUrl = "/ManageData";
+        var expectedMessage = "Succesfully executed at";
+        var applicationFactory = _fixture.ValidApplicationFactory!;
+        var client = applicationFactory.CreateClient();
+        _ = await _fixture.SendSignInRequestForAdminUserAsync(client);
+        var manageDataPage = await client.GetAsync(manageDataUrl);
+        var manageDataPageContent = await HtmlHelpers.GetDocumentAsync(manageDataPage);
+        var manageDataForm = manageDataPageContent.QuerySelector<IHtmlFormElement>("form") ?? throw new Exception("Unable to find the manage data form");
+        var clearDataButton = manageDataPageContent.QuerySelector<IHtmlButtonElement>("button[id='clearDataButton']") ?? throw new Exception("Unable to find the clear data button on the manage data form");
+
+        // Act
+        var response = await client.SendAsync(manageDataForm, clearDataButton);
+        var document = await HtmlHelpers.GetDocumentAsync(response);
+
+        // Assert
+        response.Should().NotBeNull();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        document?.Body?.InnerHtml.Should().Contain(expectedMessage);
+    }
 }
