@@ -53,7 +53,7 @@ variable "transport" {
 
 variable "scale_max" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "scale_min" {
