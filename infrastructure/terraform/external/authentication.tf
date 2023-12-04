@@ -9,7 +9,7 @@ resource "random_password" "authentication_database_password" {
 }
 
 resource "random_password" "authentication_dashboard_password" {
-  length = 16
+  length = 24
 }
 
 resource "random_password" "authentication_admin_key" {
