@@ -58,7 +58,7 @@ variable "scale_max" {
 
 variable "scale_min" {
   type    = number
-  default = 1
+  default = 0
 }
 
 variable "allow_external_traffic" {
