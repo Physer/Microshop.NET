@@ -16,9 +16,8 @@ internal class MicroshopAuthenticationHandler : JwtBearerHandler
     public MicroshopAuthenticationHandler(IOptionsMonitor<JwtBearerOptions> options,
         ILoggerFactory logger,
         UrlEncoder encoder,
-        ISystemClock clock,
         IHttpClientFactory httpClientFactory,
-        IOptions<AuthenticationOptions> authenticationOptions) : base(options, logger, encoder, clock)
+        IOptions<AuthenticationOptions> authenticationOptions) : base(options, logger, encoder)
     {
         _httpClient = httpClientFactory.CreateClient();
         _httpClient.BaseAddress = new Uri(authenticationOptions.Value.BaseUrl);

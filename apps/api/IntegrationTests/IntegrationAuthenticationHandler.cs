@@ -12,8 +12,7 @@ internal class IntegrationAuthenticationHandler : AuthenticationHandler<Integrat
 
     public IntegrationAuthenticationHandler(IOptionsMonitor<IntegrationAuthenticationOptions> options,
         ILoggerFactory logger,
-        UrlEncoder encoder,
-        ISystemClock clock) : base(options, logger, encoder, clock) { }
+        UrlEncoder encoder) : base(options, logger, encoder) { }
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {

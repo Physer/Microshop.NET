@@ -15,7 +15,6 @@ internal class MicroshopAuthenticationHandlerBuilder
     private readonly IOptionsMonitor<JwtBearerOptions> _options;
     private readonly ILoggerFactory _logger;
     private readonly UrlEncoder _encoder;
-    private readonly ISystemClock _clock;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IOptions<AuthenticationOptions> _authenticationOptions;
     
@@ -26,7 +25,6 @@ internal class MicroshopAuthenticationHandlerBuilder
 
         _logger = Substitute.For<ILoggerFactory>();
         _encoder = Substitute.For<UrlEncoder>();
-        _clock = Substitute.For<ISystemClock>();
         _httpClientFactory = Substitute.For<IHttpClientFactory>();
         _authenticationOptions = Substitute.For<IOptions<AuthenticationOptions>>();
     }
@@ -45,5 +43,5 @@ internal class MicroshopAuthenticationHandlerBuilder
         return this;
     }
 
-    public MicroshopAuthenticationHandler Build() => new(_options, _logger, _encoder, _clock, _httpClientFactory, _authenticationOptions);
+    public MicroshopAuthenticationHandler Build() => new(_options, _logger, _encoder, _httpClientFactory, _authenticationOptions);
 }
