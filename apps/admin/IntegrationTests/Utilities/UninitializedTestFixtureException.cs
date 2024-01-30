@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace IntegrationTests.Utilities;
+﻿namespace IntegrationTests.Utilities;
 
 /// <summary>
 /// An exception to be thrown by integration tests when the Fixture has not been initialized
@@ -15,6 +13,4 @@ internal class UninitializedTestFixtureException : Exception
     public UninitializedTestFixtureException(string? message) : base(message) { }
 
     public UninitializedTestFixtureException(string? message, Exception? innerException) : base(message, innerException) { }
-
-    protected UninitializedTestFixtureException(SerializationInfo info, StreamingContext context) : base(info, context) { }
 }
