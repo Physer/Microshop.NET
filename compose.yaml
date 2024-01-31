@@ -22,8 +22,8 @@ services:
       - 7700:7700
 
   # Authentication services
-  authentication_database:
-    container_name: authentication_database
+  authentication-database:
+    container_name: authentication-database
     hostname: authdb
     image: "postgres:${DOCKER_POSTGRES_VERSION}"
     environment:
@@ -34,8 +34,8 @@ services:
       - 5432:5432
     restart: always
 
-  authentication_core:
-    container_name: authentication_core
+  authentication-core:
+    container_name: authentication-core
     hostname: authcore
     image: registry.supertokens.io/supertokens/supertokens-postgresql:${DOCKER_SUPERTOKENS_CORE_VERSION}
     ports:
@@ -113,15 +113,15 @@ services:
     restart: always
     ports:
       - 5002:80
-  authentication_service:
-    container_name: authentication_service
+  authentication-service:
+    container_name: authentication-service
     hostname: authsvc
     build:
       context: .
       dockerfile: infrastructure/Dockerfile.authentication
     environment:
       - AUTHENTICATION_CORE_URL=http://authcore:3567
-      - AUTHENTICATION_BACKEND_HOST=authentication_service
+      - AUTHENTICATION_BACKEND_HOST=authentication-service
       - AUTHENTICATION_BACKEND_PORT=80
       - GATEWAY_URL=http://localhost:5000
       - WEBSITE_URL=http://localhost:3000
