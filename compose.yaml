@@ -163,4 +163,4 @@ services:
       - DataManagement__BaseUrl=http://api
     restart: always
     ports:
-      - 5006:80
+      - 5006:8080
