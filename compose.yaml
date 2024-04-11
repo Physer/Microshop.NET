@@ -57,14 +57,14 @@ services:
       - ReverseProxy__Routes__authentication__Match__Hosts__0=auth.localhost
       - ReverseProxy__Clusters__authentication__Destinations__authentication__Address=http://authsvc
       - ReverseProxy__Routes__admin__Match__Hosts__0=admin.localhost
-      - ReverseProxy__Clusters__admin__Destinations__admin__Address=http://admin
+      - ReverseProxy__Clusters__admin__Destinations__admin__Address=http://admin:8080
       - ReverseProxy__Routes__api__Match__Hosts__0=api.localhost
-      - ReverseProxy__Clusters__api__Destinations__api__Address=http://api
+      - ReverseProxy__Clusters__api__Destinations__api__Address=http://api:8080
       - ReverseProxy__Clusters__index__Destinations__index__Address=http://meilisearch:7700
       - ReverseProxy__Routes__index__Match__Hosts__0=index.localhost
     restart: always
     ports:
-      - 80:80
+      - 80:8080
   products:
     container_name: products
     hostname: products
@@ -79,7 +79,7 @@ services:
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
     restart: always
     ports:
-      - 5001:80
+      - 5001:8080
   indexing:
     container_name: indexing
     hostname: indexing
@@ -97,7 +97,7 @@ services:
       - Indexing__IndexingIntervalInSeconds=3600
     restart: always
     ports:
-      - 5003:80
+      - 5003:8080
   pricing:
     container_name: pricing
     hostname: pricing
@@ -112,7 +112,7 @@ services:
       - Servicebus__ManagementPassword=${SERVICEBUS_MANAGEMENT_PASSWORD}
     restart: always
     ports:
-      - 5002:80
+      - 5002:8080
   authentication-service:
     container_name: authentication-service
     hostname: authsvc
@@ -130,7 +130,7 @@ services:
       - ADMIN_KEY=${ADMIN_KEY}
     restart: always
     ports:
-      - 5004:80
+      - 5004:8080
   api:
     container_name: api
     hostname: api
@@ -147,7 +147,7 @@ services:
       - Authentication__Issuer=http://localhost:5000/auth
     restart: always
     ports:
-      - 5005:80
+      - 5005:8080
   admin:
     container_name: admin
     hostname: admin
@@ -160,7 +160,7 @@ services:
     environment:
       - Authentication__BaseUrl=http://authsvc
       - UserManagement__BaseUrl=http://authcore:3567
-      - DataManagement__BaseUrl=http://api
+      - DataManagement__BaseUrl=http://api:8080
     restart: always
     ports:
       - 5006:8080
