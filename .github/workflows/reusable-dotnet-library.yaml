@@ -1,4 +1,4 @@
-name: "[Reusable] Build and deploy a .NET library to NuGet"
+name: "[Reusable] Build and publish a .NET library to NuGet"
 concurrency: ci-${{ inputs.service-path }}
 
 on:
