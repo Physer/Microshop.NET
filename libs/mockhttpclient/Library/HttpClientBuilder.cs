@@ -12,7 +12,7 @@ public abstract class HttpClientBuilder<T> where T : class, new()
     {
         _statusCode = HttpStatusCode.OK;
         _responseContent = new { };
-        _headers = Array.Empty<KeyValuePair<string, string>>();
+        _headers = [];
     }
 
     public T WithResponseHavingStatusCode(HttpStatusCode statusCode)
@@ -39,12 +39,8 @@ public abstract class HttpClientBuilder<T> where T : class, new()
     protected HttpClient BuildHttpClient(IEnumerable<FakeHttpMessage?>? httpMessages = null)
     {
         if (httpMessages is null || httpMessages?.Any() == false)
-        {
-            httpMessages = new List<FakeHttpMessage?>
-            {
-                new(_statusCode, _responseContent, _headers)
-            };
-        }
+            httpMessages = [new(_statusCode, _responseContent, _headers)];
+
         FakeHttpMessageHandler fakeHttpMessageHandler = new(httpMessages!);
         return new(fakeHttpMessageHandler) { BaseAddress = new Uri("http://microshop.local") };
     }

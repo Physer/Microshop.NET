@@ -5,20 +5,14 @@ namespace Microshop.MockHttpClient;
 /// <summary>
 /// A fake HTTP message handler for injecting your own HTTP messages as a response when mocking the .NET HTTP Client
 /// </summary>
-internal sealed class FakeHttpMessageHandler : HttpMessageHandler
+/// <remarks>
+/// Create a fake HTTP message handler with one or more fake HTTP messages
+/// </remarks>
+/// <param name="httpMessages">A collection of fake HTTP messages to return a response for</param>
+internal sealed class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages) : HttpMessageHandler
 {
-    private readonly IEnumerable<FakeHttpMessage?> _httpMessages;
-    private readonly JsonSerializerOptions _serializerOptions;
-
-    /// <summary>
-    /// Create a fake HTTP message handler with one or more fake HTTP messages
-    /// </summary>
-    /// <param name="httpMessages">A collection of fake HTTP messages to return a response for</param>
-    public FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages)
-    {
-        _httpMessages = httpMessages;
-        _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
-    }
+    private readonly IEnumerable<FakeHttpMessage?> _httpMessages = httpMessages;
+    private readonly JsonSerializerOptions _serializerOptions = new(JsonSerializerDefaults.Web);
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -35,7 +29,7 @@ internal sealed class FakeHttpMessageHandler : HttpMessageHandler
             RequestMessage = request
         };
 
-        foreach (var header in currentHttpMessage.Headers ?? Array.Empty<KeyValuePair<string, string>>())
+        foreach (var header in currentHttpMessage.Headers ?? [])
             message.Headers.Add(header.Key, header.Value);
 
         return Task.FromResult(message);
