@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AssemblyName>Microshop.$(MSBuildProjectName)</AssemblyName>
@@ -11,12 +11,12 @@
 		<Copyright>© Alex Schouls</Copyright>
 		<PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
-		<VersionPrefix>1.0.0</VersionPrefix>
+		<VersionPrefix>2.0.0</VersionPrefix>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MassTransit" Version="8.1.1" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.13" />
+		<PackageReference Include="MassTransit" Version="8.2.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.5" />
 	</ItemGroup>
 
 </Project>
