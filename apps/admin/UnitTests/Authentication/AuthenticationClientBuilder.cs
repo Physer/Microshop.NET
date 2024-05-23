@@ -14,7 +14,7 @@ internal class AuthenticationClientBuilder : HttpClientBuilder<AuthenticationCli
     {
         _statusCode = HttpStatusCode.OK;
         _responseContent = new();
-        _headers = Array.Empty<KeyValuePair<string, string>>();
+        _headers = [];
 
         _tokenParser = Substitute.For<ITokenParser>();
     }

@@ -8,11 +8,9 @@ using Xunit;
 namespace IntegrationTests.Pages;
 
 [Collection(nameof(AdminCollectionFixture))]
-public class ManageDataTests
+public class ManageDataTests(AdminFixture fixture)
 {
-    private readonly AdminFixture _fixture;
-
-    public ManageDataTests(AdminFixture fixture) => _fixture = fixture;
+    private readonly AdminFixture _fixture = fixture;
 
     [Fact]
     public async Task ManageDataPage_WithAdminUser_ShowsContent()

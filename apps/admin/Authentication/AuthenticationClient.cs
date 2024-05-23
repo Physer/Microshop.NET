@@ -5,21 +5,13 @@ using System.Text.Json;
 
 namespace Authentication;
 
-internal class AuthenticationClient : IAuthenticationClient
+internal class AuthenticationClient(HttpClient httpClient,
+    ITokenParser tokenParser) : IAuthenticationClient
 {
-    private readonly HttpClient _httpClient;
-    private readonly ITokenParser _tokenParser;
+    private readonly HttpClient _httpClient = httpClient;
+    private readonly ITokenParser _tokenParser = tokenParser;
 
-    private readonly JsonSerializerOptions _serializerOptions;
-
-    public AuthenticationClient(HttpClient httpClient,
-        ITokenParser tokenParser)
-    {
-        _httpClient = httpClient;
-        _tokenParser = tokenParser;
-
-        _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
-    }
+    private readonly JsonSerializerOptions _serializerOptions = new(JsonSerializerDefaults.Web);
 
     public async Task<AuthenticationData> SignInAsync(string username, string password)
     {

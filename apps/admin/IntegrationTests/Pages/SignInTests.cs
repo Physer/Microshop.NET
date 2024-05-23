@@ -8,16 +8,10 @@ using Xunit;
 namespace IntegrationTests.Pages;
 
 [Collection(nameof(AdminCollectionFixture))]
-public class SignInTests
+public class SignInTests(AdminFixture fixture)
 {
-    private readonly AdminFixture _fixture;
-    private readonly string _signInUrl;
-
-    public SignInTests(AdminFixture fixture)
-    {
-        _fixture = fixture;
-        _signInUrl = "/signin";
-    }
+    private readonly AdminFixture _fixture = fixture;
+    private readonly string _signInUrl = "/signin";
 
     [Fact]
     public async Task SignInPage_ForAnonymousUser_ReturnsOk()

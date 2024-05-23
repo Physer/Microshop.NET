@@ -13,8 +13,7 @@ public static class DependencyRegistrator
     {
         var dataGenerationOptionsSection = configuration.GetSection(DataManagementOptions.ConfigurationEntry);
         var dataGenerationOptions = dataGenerationOptionsSection.Get<DataManagementOptions>();
-        if (dataGenerationOptions is null)
-            throw new ArgumentNullException(nameof(dataGenerationOptions), "Invalid data management options");
+        ArgumentNullException.ThrowIfNull(dataGenerationOptions, nameof(dataGenerationOptions));
 
         services.AddHttpClient<IApiClient, ApiClient>(configuration => configuration.BaseAddress = new Uri(dataGenerationOptions.BaseUrl));
     }

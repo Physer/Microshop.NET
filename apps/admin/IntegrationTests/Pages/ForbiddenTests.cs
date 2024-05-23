@@ -7,12 +7,10 @@ using Xunit;
 namespace IntegrationTests.Pages;
 
 [Collection(nameof(AdminCollectionFixture))]
-public class ForbiddenTests
+public class ForbiddenTests(AdminFixture fixture)
 {
-    private readonly AdminFixture _fixture;
+    private readonly AdminFixture _fixture = fixture;
     private const string _forbiddenUrl = "/forbidden";
-
-    public ForbiddenTests(AdminFixture fixture) => _fixture = fixture;
 
     [Fact]
     public async Task ForbiddenPage_ShowsMessage()

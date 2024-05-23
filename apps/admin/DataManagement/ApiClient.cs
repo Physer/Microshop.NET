@@ -6,17 +6,11 @@ using System.Net.Http.Headers;
 
 namespace DataManagement;
 
-internal class ApiClient : IApiClient
+internal class ApiClient(HttpClient httpClient,
+    ITokenRetriever tokenRetriever) : IApiClient
 {
-    private readonly HttpClient _httpClient;
-    private readonly ITokenRetriever _tokenRetriever;
-
-    public ApiClient(HttpClient httpClient,
-        ITokenRetriever tokenRetriever)
-    {
-        _httpClient = httpClient;
-        _tokenRetriever = tokenRetriever;
-    }
+    private readonly HttpClient _httpClient = httpClient;
+    private readonly ITokenRetriever _tokenRetriever = tokenRetriever;
 
     public async Task<HttpResponseMessage> GenerateProductsAsync() => _ = await MakeRequestAsync(HttpMethod.Post, "/data");
 

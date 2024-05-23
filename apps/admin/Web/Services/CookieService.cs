@@ -4,17 +4,11 @@ using System.Security.Claims;
 
 namespace Web.Services;
 
-public class CookieService
+public class CookieService(IHttpContextAccessor httpContextAccessor,
+    ILogger<CookieService> logger)
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<CookieService> _logger;
-
-    public CookieService(IHttpContextAccessor httpContextAccessor,
-        ILogger<CookieService> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
-    }
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly ILogger<CookieService> _logger = logger;
 
     public async Task SignOutAsync()
     {

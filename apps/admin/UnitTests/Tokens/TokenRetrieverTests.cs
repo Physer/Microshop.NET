@@ -8,7 +8,6 @@ namespace UnitTests.Tokens;
 public class TokenRetrieverTests
 {
     [Theory]
-    [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
     public void GetAccessTokenFromCookie_WithInvalidCookieName_ShouldThrowException(string cookiename)

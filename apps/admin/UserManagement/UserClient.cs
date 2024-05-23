@@ -6,16 +6,10 @@ using UserManagement.Models;
 
 namespace UserManagement;
 
-internal class UserClient : IUserClient
+internal class UserClient(HttpClient httpClient) : IUserClient
 {
-    private readonly HttpClient _httpClient;
-    private readonly JsonSerializerOptions _serializerOptions;
-
-    public UserClient(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-        _serializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
-    }
+    private readonly HttpClient _httpClient = httpClient;
+    private readonly JsonSerializerOptions _serializerOptions = new(JsonSerializerDefaults.Web);
 
     public async IAsyncEnumerable<User> GetUsersAsync()
     {

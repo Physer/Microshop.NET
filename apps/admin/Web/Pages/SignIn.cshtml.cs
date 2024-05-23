@@ -12,20 +12,14 @@ namespace Web.Pages;
 
 [AllowAnonymous]
 [BindProperties]
-public class SignInModel : PageModel
+public class SignInModel(IAuthenticationClient authenticationClient,
+    ILogger<SignInModel> logger) : PageModel
 {
     public required string Username { get; set; }
     public required string Password { get; set; }
 
-    private readonly IAuthenticationClient _authenticationClient;
-    private readonly ILogger<SignInModel> _logger;
-
-    public SignInModel(IAuthenticationClient authenticationClient,
-        ILogger<SignInModel> logger)
-    {
-        _authenticationClient = authenticationClient;
-        _logger = logger;
-    }
+    private readonly IAuthenticationClient _authenticationClient = authenticationClient;
+    private readonly ILogger<SignInModel> _logger = logger;
 
     public async Task<IActionResult> OnPostAsync()
     {
@@ -36,11 +30,11 @@ public class SignInModel : PageModel
         {
             _logger.LogInformation("Attempting sign in for user: {username}", Username);
             var authenticationResult = await _authenticationClient.SignInAsync(Username, Password);
-            List<Claim> claims = new()
-            {
-                new(ClaimTypes.Name, Username!)
-            };
-            claims.AddRange(authenticationResult.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            List<Claim> claims =
+            [
+                new(ClaimTypes.Name, Username!),
+                .. authenticationResult.Roles.Select(role => new Claim(ClaimTypes.Role, role)),
+            ];
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             _logger.LogInformation("Setting authorization token in cookie");
             HttpContext.Response.Cookies.Append(Globals.Cookies.AuthorizationTokenCookieName, authenticationResult.AccessToken, Globals.Cookies.DefaultOptions);

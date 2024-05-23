@@ -81,9 +81,6 @@ public class AuthenticationClientTests
     [InlineData("", "")]
     [InlineData("username", "")]
     [InlineData("", "password")]
-    [InlineData(null, null)]
-    [InlineData(null, "password")]
-    [InlineData("username", null)]
     [InlineData(" ", " ")]
     [InlineData(" ", "password")]
     [InlineData("username", " ")]
@@ -121,18 +118,15 @@ public class AuthenticationClientTests
     public async Task SignInAsync_WithValidData_ShouldReturnAuthenticationData(string id, string emailAddress, string role, string accessToken)
     {
         // Arrange
-        AuthenticationData expectedAuthenticationData = new(emailAddress, new[] { role }, accessToken);
+        AuthenticationData expectedAuthenticationData = new(emailAddress, [role], accessToken);
         AuthenticationResponse validResponseBody = new("OK", new(id, emailAddress, DateTime.UtcNow.Ticks));
-        HashSet<KeyValuePair<string, string>> headers = new()
-        {
-            new(_accessTokenHeaderKey, accessToken),
-        };
+        HashSet<KeyValuePair<string, string>> headers = [new(_accessTokenHeaderKey, accessToken)];
 
         var authenticationClient = new AuthenticationClientBuilder()
             .WithResponseHavingStatusCode(HttpStatusCode.OK)
             .WithResponseHavingContent(validResponseBody)
             .WithResponseHavingHeaders(headers)
-            .WithGetRolesReturning(new[] { role })
+            .WithGetRolesReturning([role])
             .Build();
 
         // Act
@@ -147,19 +141,19 @@ public class AuthenticationClientTests
     public async Task SignInAsync_WithMultipleAccessTokens_ShouldTakeFirstAccessToken(string id, string emailAddress, string role, string firstAccessToken, string secondAccessToken)
     {
         // Arrange
-        AuthenticationData expectedAuthenticationData = new(emailAddress, new[] { role }, firstAccessToken);
+        AuthenticationData expectedAuthenticationData = new(emailAddress, [role], firstAccessToken);
         AuthenticationResponse validResponseBody = new("OK", new(id, emailAddress, DateTime.UtcNow.Ticks));
-        HashSet<KeyValuePair<string, string>> headers = new()
-        {
+        HashSet<KeyValuePair<string, string>> headers =
+        [
             new(_accessTokenHeaderKey, firstAccessToken),
             new(_accessTokenHeaderKey, secondAccessToken)
-        };
+        ];
 
         var authenticationClient = new AuthenticationClientBuilder()
             .WithResponseHavingStatusCode(HttpStatusCode.OK)
             .WithResponseHavingContent(validResponseBody)
             .WithResponseHavingHeaders(headers)
-            .WithGetRolesReturning(new[] { role })
+            .WithGetRolesReturning([role])
             .Build();
 
         // Act

@@ -6,12 +6,10 @@ using Xunit;
 namespace IntegrationTests.Pages;
 
 [Collection(nameof(AdminCollectionFixture))]
-public class IndexTests
+public class IndexTests(AdminFixture fixture)
 {
-    private readonly AdminFixture _fixture;
+    private readonly AdminFixture _fixture = fixture;
     private const string _signInUrl = "/signin";
-
-    public IndexTests(AdminFixture fixture) => _fixture = fixture;
 
     [Theory]
     [InlineData("/")]

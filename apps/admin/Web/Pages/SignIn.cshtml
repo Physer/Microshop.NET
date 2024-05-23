@@ -23,12 +23,12 @@
                     </div>
                     <input id="signInButton" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit" value="Sign in" />
                     @if (ModelState is not null && ModelState.ErrorCount > 0)
+                {
+                    foreach (var error in ModelState.Values.SelectMany(value => value.Errors))
                     {
-                        foreach (var error in ModelState.Values.SelectMany(value => value.Errors))
-                        {
-                            <div id="errorAlert" class="alert alert-danger" role="alert">@error.ErrorMessage</div>
-                        }
+                        <div id="errorAlert" class="alert alert-danger" role="alert">@error.ErrorMessage</div>
                     }
+                }
                 </form>
             </div>
         </div>

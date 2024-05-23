@@ -8,7 +8,7 @@ internal class UserClientBuilder : HttpClientBuilder<UserClientBuilder>
 {
     private readonly HashSet<FakeHttpMessage> _fakeHttpMessages;
 
-    public UserClientBuilder() => _fakeHttpMessages = new();
+    public UserClientBuilder() => _fakeHttpMessages = [];
 
     public UserClientBuilder WithGetUserDataAsyncReturning(object getUsersResponse)
     {

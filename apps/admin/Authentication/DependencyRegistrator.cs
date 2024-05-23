@@ -13,8 +13,7 @@ public static class DependencyRegistrator
     {
         var authenticationOptionsSection = configuration.GetSection(AuthenticationOptions.ConfigurationEntry);
         var authenticationOptions = authenticationOptionsSection.Get<AuthenticationOptions>();
-        if (authenticationOptions is null)
-            throw new ArgumentNullException(nameof(authenticationOptions), "Invalid authentication options");
+        ArgumentNullException.ThrowIfNull(authenticationOptions, nameof(authenticationOptions));
 
         services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(configuration => configuration.BaseAddress = new Uri(authenticationOptions.BaseUrl));
         services.AddScoped<ITokenParser, TokenParser>();

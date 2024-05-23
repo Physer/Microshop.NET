@@ -2,11 +2,9 @@
 
 namespace Application.Authentication;
 
-internal class TokenRetriever : ITokenRetriever
+internal class TokenRetriever(IHttpContextAccessor httpContextAccessor) : ITokenRetriever
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public TokenRetriever(IHttpContextAccessor httpContextAccessor) => _httpContextAccessor = httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
     public string GetAccessTokenFromCookie()
     {

@@ -5,11 +5,9 @@ using System.Text.Json;
 
 namespace Authentication;
 
-internal class TokenParser : ITokenParser
+internal class TokenParser(ITokenHandler tokenHandler) : ITokenParser
 {
-    private readonly ITokenHandler _tokenHandler;
-
-    public TokenParser(ITokenHandler tokenHandler) => _tokenHandler = tokenHandler;
+    private readonly ITokenHandler _tokenHandler = tokenHandler;
 
     public IEnumerable<string> GetRoles(string accessToken)
     {

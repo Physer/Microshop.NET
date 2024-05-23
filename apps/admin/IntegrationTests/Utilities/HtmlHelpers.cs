@@ -13,8 +13,7 @@ internal static class HtmlHelpers
 {
     public static async Task<IHtmlDocument> GetDocumentAsync(HttpResponseMessage response)
     {
-        if(response is null || response.RequestMessage is null)
-            throw new ArgumentNullException(nameof(response.RequestMessage));
+        ArgumentNullException.ThrowIfNull(response?.RequestMessage, nameof(response));
 
         var content = await response.Content.ReadAsStringAsync();
         var document = await BrowsingContext.New()

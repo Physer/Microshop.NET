@@ -20,7 +20,7 @@ public class TokenParserTests
     {
         // Arrange
         var expectedErrorMessage = "Invalid role claim";
-        Token emptyClaimsToken = new(Array.Empty<Claim>());
+        Token emptyClaimsToken = new([]);
         var tokenParser = new TokenParserBuilder()
             .WithTokenHandlerReturning(emptyClaimsToken)
             .Build();
@@ -80,10 +80,10 @@ public class TokenParserTests
         MicroshopRoleClaim roleClaim = new()
         {
             AcquiredAt = DateTime.UtcNow.Ticks,
-            Roles = new[] { role }
+            Roles = [role]
         };
         Claim validRoleClaim = new("st-role", JsonSerializer.Serialize(roleClaim, _defaultJsonSerializerOptions));
-        Token token = new(new[] { validRoleClaim });
+        Token token = new([validRoleClaim]);
         var tokenParser = new TokenParserBuilder()
             .WithTokenHandlerReturning(token)
             .Build();

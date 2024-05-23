@@ -6,19 +6,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Web.Pages;
 
 [Authorize(Policy = Globals.Authorization.AdministratorPolicyName)]
-public class ManageDataModel : PageModel
+public class ManageDataModel(IApiClient apiClient,
+    ILogger<ManageDataModel> logger) : PageModel
 {
     public bool? Success { get; set; } = null;
 
-    private readonly IApiClient _apiClient;
-    private readonly ILogger<ManageDataModel> _logger;
-
-    public ManageDataModel(IApiClient apiClient,
-        ILogger<ManageDataModel> logger)
-    {
-        _apiClient = apiClient;
-        _logger = logger;
-    }
+    private readonly IApiClient _apiClient = apiClient;
+    private readonly ILogger<ManageDataModel> _logger = logger;
 
     public async Task OnPostGenerateAsync()
     {

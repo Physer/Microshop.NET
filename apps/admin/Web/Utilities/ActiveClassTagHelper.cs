@@ -5,10 +5,8 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace Web.Utilities;
 
 [HtmlTargetElement(Attributes = "active-link-support")]
-public class ActiveClassTagHelper : AnchorTagHelper
+public class ActiveClassTagHelper(IHtmlGenerator generator) : AnchorTagHelper(generator)
 {
-    public ActiveClassTagHelper(IHtmlGenerator generator) : base(generator) { }
-
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         if (ViewContext?.RouteData?.Values["page"]?.Equals(Page) == false)

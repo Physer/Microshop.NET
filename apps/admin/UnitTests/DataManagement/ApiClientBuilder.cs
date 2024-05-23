@@ -14,7 +14,7 @@ internal class ApiClientBuilder : HttpClientBuilder<ApiClientBuilder>
     public ApiClientBuilder()
     {
         _tokenRetriever = Substitute.For<ITokenRetriever>();
-        _fakeHttpMessages = new();
+        _fakeHttpMessages = [];
     }
 
     public ApiClientBuilder WithTokenRetrieverReturningToken(string accessToken)

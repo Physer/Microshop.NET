@@ -6,6 +6,8 @@ namespace Authentication;
 
 internal static class AuthenticationMapper
 {
+    private static readonly JsonSerializerOptions _defaultJsonSerializerOptions = new(JsonSerializerDefaults.Web);
+
     public static object MapToRequest(string username, string password)
     {
         if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
@@ -29,5 +31,5 @@ internal static class AuthenticationMapper
         };
     }
 
-    public static AuthenticationResponse MapFromResponse(string serializedResponse) => JsonSerializer.Deserialize<AuthenticationResponse>(serializedResponse, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+    public static AuthenticationResponse MapFromResponse(string serializedResponse) => JsonSerializer.Deserialize<AuthenticationResponse>(serializedResponse, _defaultJsonSerializerOptions);
 }

@@ -4,16 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace UnitTests.Tokens;
 
-internal class FakeRequestCookieCollection : IRequestCookieCollection
+internal class FakeRequestCookieCollection(string cookieName, string cookieValue) : IRequestCookieCollection
 {
-    private readonly string _cookieName;
-    private readonly string _cookieValue;
-
-    public FakeRequestCookieCollection(string cookieName, string cookieValue)
-    {
-        _cookieName = cookieName;
-        _cookieValue = cookieValue;
-    }
+    private readonly string _cookieName = cookieName;
+    private readonly string _cookieValue = cookieValue;
 
     public string? this[string key] => throw new NotImplementedException();
 

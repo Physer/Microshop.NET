@@ -1,7 +1,6 @@
-﻿namespace Application.Authentication
+﻿namespace Application.Authentication;
+
+public interface ITokenRetriever
 {
-    public interface ITokenRetriever
-    {
-        string GetAccessTokenFromCookie();
-    }
+    string GetAccessTokenFromCookie();
 }

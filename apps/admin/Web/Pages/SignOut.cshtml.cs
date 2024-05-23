@@ -4,11 +4,9 @@ using Web.Services;
 
 namespace Web.Pages;
 
-public class SignOutModel : PageModel
+public class SignOutModel(CookieService cookieService) : PageModel
 {
-    private readonly CookieService _cookieService;
-
-    public SignOutModel(CookieService cookieService) => _cookieService = cookieService;
+    private readonly CookieService _cookieService = cookieService;
 
     public async Task<IActionResult> OnGetAsync()
     {
