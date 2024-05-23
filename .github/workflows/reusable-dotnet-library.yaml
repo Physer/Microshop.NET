@@ -33,4 +33,4 @@ jobs:
         run: dotnet pack -c Release -o package --no-build
 
       - name: Publish to NuGet registry
-        run: dotnet nuget push "**/package/**/*.nupkg" --api-key ${{ secrets.NUGET_APIKEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "**/package/**/*.nupkg" --api-key ${{ secrets.NUGET_APIKEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
