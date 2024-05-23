@@ -4,8 +4,9 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<AssemblyName>Microshop.$(MSBuildProjectName)</AssemblyName>
-		<RootNamespace>Microshop.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+		<PublicDisplayName>InlineWebApplicationFactory</PublicDisplayName>
+		<AssemblyName>Microshop.$(PublicDisplayName)</AssemblyName>
+		<RootNamespace>Microshop.$(PublicDisplayName.Replace(" ", "_"))</RootNamespace>
 		<Authors>Alex Schouls</Authors>
 		<Description>A library to quickly set up an in-memory web application factory for Integration Testing, including support for Mass Transit's Test harnass.</Description>
 		<Copyright>© Alex Schouls</Copyright>
