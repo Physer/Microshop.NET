@@ -3,15 +3,8 @@ using Microshop.ContainerConfiguration.ContainerConfigurations;
 
 namespace Microshop.ContainerConfiguration;
 
-public class ContainerConfigurationResponse<T> where T : IContainerConfiguration
+public class ContainerConfigurationResponse<T>(IContainer container, T configuration) where T : IContainerConfiguration
 {
-    public ContainerConfigurationResponse(IContainer container,
-        T configuration)
-    {
-        Container = container;
-        Configuration = configuration;
-    }
-
-    public IContainer Container { get; init; }
-    public T Configuration { get; init; }
+    public IContainer Container { get; init; } = container;
+    public T Configuration { get; init; } = configuration;
 }

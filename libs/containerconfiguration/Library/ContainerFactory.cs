@@ -42,7 +42,7 @@ public static class ContainerFactory
         if (AuthenticationServiceContainerConfiguration is null)
             throw new ContainerNotInitializedException(nameof(AuthenticationServiceContainerConfiguration));
 
-        await InitializeMicroshopApiContainerAsync(AuthenticationServiceContainerConfiguration.Container.IpAddress, ServicebusContainerConfiguration.Container.IpAddress, ServicebusContainerConfiguration.Configuration.Username, ServicebusContainerConfiguration.Configuration.Password);
+        await InitializeMicroshopApiContainerAsync(AuthenticationServiceContainerConfiguration.Container.IpAddress, ServicebusContainerConfiguration.Container.IpAddress, ContainerConfigurations.ServicebusContainerConfiguration.Username, ContainerConfigurations.ServicebusContainerConfiguration.Password);
         if (MicroshopApiContainerConfiguration is null)
             throw new ContainerNotInitializedException(nameof(MicroshopApiContainerConfiguration));
     }

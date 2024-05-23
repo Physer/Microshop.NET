@@ -8,8 +8,8 @@ public sealed class AuthenticationServiceConfiguration : IContainerConfiguration
 
     public required string SupertokensContainerIpAddress { get; init; }
     public required int SupertokensContainerPort { get; init; }
-    public string Hostname => "localhost";
-    public string AdminKey => "admin_key";
+    public static string Hostname => "localhost";
+    public static string AdminKey => "admin_key";
 
     public IReadOnlyDictionary<string, string>? EnvironmentVariables => new Dictionary<string, string>
     {
