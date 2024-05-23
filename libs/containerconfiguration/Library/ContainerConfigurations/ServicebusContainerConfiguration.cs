@@ -4,7 +4,7 @@ namespace Microshop.ContainerConfiguration.ContainerConfigurations;
 
 public sealed class ServicebusContainerConfiguration : IContainerConfiguration
 {
-    public static string Hostname => "localhost";
+    public string Hostname => "localhost";
     public static string Username => "guest";
     public static string Password => "guest";
     public int? Port => 5672;

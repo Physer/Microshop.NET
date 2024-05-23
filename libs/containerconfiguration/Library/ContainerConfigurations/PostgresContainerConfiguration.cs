@@ -6,9 +6,9 @@ public sealed class PostgresContainerConfiguration : IContainerConfiguration
 
     public int? Port => 5432;
 
-    public static string Username => "username";
-    public static string Password => "password";
-    public static string Database => "database";
+    public string Username => "username";
+    public string Password => "password";
+    public string Database => "database";
     public string? ContainerIpAddress { get; set; }
     public int? PublicPort { get; set; }
     public string InternalConnectionString => $"postgresql://{Username}:{Password}@{ContainerIpAddress}:{Port}/{Database}";
