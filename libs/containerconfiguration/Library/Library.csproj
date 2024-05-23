@@ -12,7 +12,7 @@
 		<Copyright>© Alex Schouls</Copyright>
 		<PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
-		<VersionPrefix>2.2.1</VersionPrefix>
+		<VersionPrefix>2.2.2</VersionPrefix>
 		<Description>A set of utility methods to quickly set up predefined and custom containers based on TestContainers.NET</Description>
 	</PropertyGroup>
 
