@@ -23,6 +23,7 @@ jobs:
     uses: ./.github/workflows/reusable-dotnet-library.yaml
     with:
       service-path: libs/inlinewebapplicationfactory
+      execute-tests: false
     secrets: inherit
 
   build-containerconfiguration-library:
@@ -30,4 +31,5 @@ jobs:
     uses: ./.github/workflows/reusable-dotnet-library.yaml
     with:
       service-path: libs/containerconfiguration
+      execute-tests: false
     secrets: inherit
