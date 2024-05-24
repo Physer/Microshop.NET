@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
 
+[assembly: InternalsVisibleTo("Tests")]
 namespace Microshop.MockHttpClient;
 
 /// <summary>
@@ -9,7 +11,7 @@ namespace Microshop.MockHttpClient;
 /// Create a fake HTTP message handler with one or more fake HTTP messages
 /// </remarks>
 /// <param name="httpMessages">A collection of fake HTTP messages to return a response for</param>
-internal sealed class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages) : HttpMessageHandler
+internal class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages) : HttpMessageHandler
 {
     private readonly IEnumerable<FakeHttpMessage?> _httpMessages = httpMessages;
     private readonly JsonSerializerOptions _serializerOptions = new(JsonSerializerDefaults.Web);
@@ -20,7 +22,7 @@ internal sealed class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpM
         FakeHttpMessage? currentHttpMessage = (httpMessages.Count > 1
             ? httpMessages.FirstOrDefault(message => message?.RequestUrl?.Equals(request?.RequestUri?.PathAndQuery) == true)
             : httpMessages.FirstOrDefault())
-            ?? throw new FakeHttpMessageException($"Unable to locate a HTTP message for the URI: {request.RequestUri}");
+            ?? throw new FakeHttpMessageException($"Unable to locate a HTTP message for the URI: {request?.RequestUri}");
 
         var serializedContent = JsonSerializer.Serialize(currentHttpMessage.Content, _serializerOptions);
         HttpResponseMessage message = new(currentHttpMessage.StatusCode)
