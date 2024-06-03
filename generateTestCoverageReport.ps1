@@ -1,10 +1,8 @@
-$serviceName = $Args[0]
-if (!$serviceName) {
-  Write-Error 'Please provide a back-end service name as argument'
+$servicePath = $Args[0]
+if (!$servicePath) {
+  Write-Error 'Please provide a back-end service path as argument'
   exit
 }
-
-$servicePath = "./apps/$($serviceName)"
 Push-Location -Path $servicePath
 
 $coveragePath = "./coverage"
