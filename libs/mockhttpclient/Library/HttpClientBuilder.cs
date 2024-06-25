@@ -6,7 +6,7 @@ public abstract class HttpClientBuilder<T> where T : class, new()
 {
     protected HttpStatusCode _statusCode;
     protected object _responseContent;
-    protected IEnumerable<KeyValuePair<string, string>> _headers;
+    protected IEnumerable<KeyValuePair<string, IEnumerable<string>>> _headers;
 
     private const string _baseAddress = "https://microshop.local";
 
@@ -31,7 +31,7 @@ public abstract class HttpClientBuilder<T> where T : class, new()
         return this as T ?? new();
     }
 
-    public T WithResponseHavingHeaders(IEnumerable<KeyValuePair<string, string>> headers)
+    public T WithResponseHavingHeaders(IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
     {
         _headers = headers;
 

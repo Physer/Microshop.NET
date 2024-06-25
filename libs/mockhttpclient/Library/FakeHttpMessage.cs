@@ -11,11 +11,11 @@ namespace Microshop.MockHttpClient;
 /// <param name="statusCode">Custom HTTP status code</param>
 /// <param name="content">Custom response message</param>
 /// <param name="headers">Custom response header</param>
-public class FakeHttpMessage(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, string>> headers)
+public class FakeHttpMessage(HttpStatusCode statusCode, object content, IEnumerable<KeyValuePair<string, IEnumerable<string>>> headers)
 {
     public HttpStatusCode StatusCode { get; init; } = statusCode;
     public object Content { get; init; } = content;
-    public IEnumerable<KeyValuePair<string, string>> Headers { get; init; } = headers;
+    public IEnumerable<KeyValuePair<string, IEnumerable<string>>> Headers { get; init; } = headers;
 
     public string? RequestUrl { get; init; }
     public HttpMethod? HttpMethod { get; init; }

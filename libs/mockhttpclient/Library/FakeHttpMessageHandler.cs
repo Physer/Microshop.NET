@@ -11,16 +11,16 @@ namespace Microshop.MockHttpClient;
 /// Create a fake HTTP message handler with one or more fake HTTP messages
 /// </remarks>
 /// <param name="httpMessages">A collection of fake HTTP messages to return a response for</param>
-internal class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages) : HttpMessageHandler
+internal class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage> httpMessages) : HttpMessageHandler
 {
-    private readonly IEnumerable<FakeHttpMessage?> _httpMessages = httpMessages;
+    private readonly IEnumerable<FakeHttpMessage> _httpMessages = httpMessages;
     private readonly JsonSerializerOptions _serializerOptions = new(JsonSerializerDefaults.Web);
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var enumeratedHttpMessages = _httpMessages.ToList();
         FakeHttpMessage? currentHttpMessage = (enumeratedHttpMessages.Count > 1
-            ? enumeratedHttpMessages.Find(message => message?.RequestUrl?.Equals(request?.RequestUri?.PathAndQuery) == true)
+            ? enumeratedHttpMessages.Find(message => message.RequestUrl?.Equals(request.RequestUri?.ToString()) == true)
             : enumeratedHttpMessages.FirstOrDefault())
             ?? throw new FakeHttpMessageException($"Unable to locate a HTTP message for the URI: {request?.RequestUri}");
 
@@ -31,7 +31,7 @@ internal class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages
             RequestMessage = request
         };
 
-        foreach (var header in currentHttpMessage.Headers ?? [])
+        foreach (var header in currentHttpMessage.Headers)
             message.Headers.Add(header.Key, header.Value);
 
         return Task.FromResult(message);
