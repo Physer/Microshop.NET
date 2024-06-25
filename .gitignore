@@ -5,3 +5,7 @@
 
 # Code-coverage files
 **/coverage/**
+
+# Sonarqube
+
+.sonarqube
