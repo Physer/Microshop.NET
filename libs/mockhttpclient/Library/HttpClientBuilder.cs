@@ -8,7 +8,9 @@ public abstract class HttpClientBuilder<T> where T : class, new()
     protected object _responseContent;
     protected IEnumerable<KeyValuePair<string, string>> _headers;
 
-    public HttpClientBuilder()
+    private const string _baseAddress = "https://microshop.local";
+
+    protected HttpClientBuilder()
     {
         _statusCode = HttpStatusCode.OK;
         _responseContent = new { };
@@ -38,10 +40,10 @@ public abstract class HttpClientBuilder<T> where T : class, new()
 
     protected HttpClient BuildHttpClient(IEnumerable<FakeHttpMessage?>? httpMessages = null)
     {
-        if (httpMessages is null || httpMessages?.Any() == false)
+        if (httpMessages is null || httpMessages.Any())
             httpMessages = [new(_statusCode, _responseContent, _headers)];
 
         FakeHttpMessageHandler fakeHttpMessageHandler = new(httpMessages!);
-        return new(fakeHttpMessageHandler) { BaseAddress = new Uri("http://microshop.local") };
+        return new(fakeHttpMessageHandler) { BaseAddress = new Uri(_baseAddress) };
     }
 }

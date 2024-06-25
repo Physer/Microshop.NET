@@ -18,10 +18,10 @@ internal class FakeHttpMessageHandler(IEnumerable<FakeHttpMessage?> httpMessages
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var httpMessages = _httpMessages.ToList();
-        FakeHttpMessage? currentHttpMessage = (httpMessages.Count > 1
-            ? httpMessages.FirstOrDefault(message => message?.RequestUrl?.Equals(request?.RequestUri?.PathAndQuery) == true)
-            : httpMessages.FirstOrDefault())
+        var enumeratedHttpMessages = _httpMessages.ToList();
+        FakeHttpMessage? currentHttpMessage = (enumeratedHttpMessages.Count > 1
+            ? enumeratedHttpMessages.Find(message => message?.RequestUrl?.Equals(request?.RequestUri?.PathAndQuery) == true)
+            : enumeratedHttpMessages.FirstOrDefault())
             ?? throw new FakeHttpMessageException($"Unable to locate a HTTP message for the URI: {request?.RequestUri}");
 
         var serializedContent = JsonSerializer.Serialize(currentHttpMessage.Content, _serializerOptions);

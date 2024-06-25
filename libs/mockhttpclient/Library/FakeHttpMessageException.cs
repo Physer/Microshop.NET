@@ -3,7 +3,7 @@
 /// <summary>
 /// An exception to indicate it's impossible to mock the specified HTTP call with the fake HTTP message handler
 /// </summary>
-internal sealed class FakeHttpMessageException : Exception
+public sealed class FakeHttpMessageException : Exception
 {
     public FakeHttpMessageException() { }
 
