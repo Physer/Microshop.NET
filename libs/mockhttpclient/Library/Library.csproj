@@ -14,7 +14,7 @@
 		<PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
 		<RootNamespace>Microshop.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-		<VersionPrefix>2.0.0</VersionPrefix>
+		<VersionPrefix>2.0.1</VersionPrefix>
 	</PropertyGroup>
 
 </Project>
