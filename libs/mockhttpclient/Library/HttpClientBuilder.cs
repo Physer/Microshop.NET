@@ -38,7 +38,7 @@ public abstract class HttpClientBuilder<T> where T : class, new()
         return this as T ?? new();
     }
 
-    protected HttpClient BuildHttpClient(IEnumerable<FakeHttpMessage?>? httpMessages = null)
+    public HttpClient BuildHttpClient(IEnumerable<FakeHttpMessage?>? httpMessages = null)
     {
         if (httpMessages is null || httpMessages.Any())
             httpMessages = [new(_statusCode, _responseContent, _headers)];
