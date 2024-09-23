@@ -1,4 +1,4 @@
-﻿namespace Microshop.MockHttpClient;
+﻿namespace Microshop.Library;
 
 /// <summary>
 /// An exception to indicate it's impossible to mock the specified HTTP call with the fake HTTP message handler

@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Microshop.MockHttpClient;
+namespace Microshop.Library;
 
 /// <summary>
 /// A fake HTTP message, to be used in conjuction with the fake HTTP message handler to mock custom HTTP responses in unit tests

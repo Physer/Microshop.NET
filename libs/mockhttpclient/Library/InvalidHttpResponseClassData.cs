@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Net;
 
-namespace Microshop.MockHttpClient;
+namespace Microshop.Library;
 
 public class InvalidHttpResponseClassData : IEnumerable<object[]>
 {

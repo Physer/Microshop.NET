@@ -2,7 +2,7 @@
 using System.Text.Json;
 
 [assembly: InternalsVisibleTo("Tests")]
-namespace Microshop.MockHttpClient;
+namespace Microshop.Library;
 
 /// <summary>
 /// A fake HTTP message handler for injecting your own HTTP messages as a response when mocking the .NET HTTP Client

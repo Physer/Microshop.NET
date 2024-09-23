@@ -1,4 +1,4 @@
-﻿using Microshop.MockHttpClient;
+﻿using Microshop.Library;
 
 namespace Tests.Utilities;
 

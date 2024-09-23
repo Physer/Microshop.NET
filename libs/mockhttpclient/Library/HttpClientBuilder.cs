@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Microshop.MockHttpClient;
+namespace Microshop.Library;
 
 public abstract class HttpClientBuilder<T> where T : class, new()
 {

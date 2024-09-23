@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using Microshop.MockHttpClient;
+using Microshop.Library;
 using NSubstitute;
 using Tests.Builders;
 using Tests.Data;
