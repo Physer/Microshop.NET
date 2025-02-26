@@ -25,7 +25,11 @@ internal class UserClient(HttpClient httpClient) : IUserClient
         var response = await _httpClient.GetAsync("/users");
         var responseContent = await response.Content.ReadAsStringAsync();
         var usersResponse = JsonSerializer.Deserialize<GetUsersResponse>(responseContent, _serializerOptions);
-        return !usersResponse.Equals(default) ? usersResponse : throw new MicroshopApiException("Unable to retrieve users data");
+
+        if (usersResponse is null || usersResponse.Status is null || usersResponse.Users is null)
+            throw new MicroshopApiException("Unable to retrieve users data");
+        
+        return usersResponse;
     }
 
     private async Task<UserRolesResponse> GetUsersInAdminRoleAsync()
@@ -33,6 +37,9 @@ internal class UserClient(HttpClient httpClient) : IUserClient
         var response = await _httpClient.GetAsync("/recipe/role/users?role=admin");
         var responseContent = await response.Content.ReadAsStringAsync();
         var userRolesResponse = JsonSerializer.Deserialize<UserRolesResponse>(responseContent, _serializerOptions);
-        return !userRolesResponse.Equals(default) ? userRolesResponse : throw new MicroshopApiException("Unable to retrieve role data");
+        if(userRolesResponse is null || userRolesResponse.Status is null || userRolesResponse.Users is null)
+            throw new MicroshopApiException("Unable to retrieve role data");
+
+        return userRolesResponse;
     }
 }

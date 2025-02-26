@@ -16,8 +16,8 @@ public class AdminFixture : IAsyncLifetime
 
     public InlineWebApplicationFactory<Program>? ValidApplicationFactory { get; set; }
     public InlineWebApplicationFactory<Program>? ApplicationFactoryWithInvalidAuthenticationService { get; set; }
-    private FakeUser _adminUser;
-    private FakeUser _forbiddenUser;
+    private FakeUser? _adminUser;
+    private FakeUser? _forbiddenUser;
     private string? _adminKey;
 
     public Task DisposeAsync() => Task.CompletedTask;
@@ -63,7 +63,7 @@ public class AdminFixture : IAsyncLifetime
 
     public static async Task<HttpResponseMessage> SendSignInRequestForCustomUserAsync(HttpClient client, string? username, string? password) => await SendSignInRequestAsync(client, new(username, password));
 
-    private static async Task<HttpResponseMessage> SendSignInRequestAsync(HttpClient client, FakeUser userData)
+    private static async Task<HttpResponseMessage> SendSignInRequestAsync(HttpClient client, FakeUser? userData)
     {
         var signInPage = await client.GetAsync("/signin");
         var content = await HtmlHelpers.GetDocumentAsync(signInPage);
@@ -71,8 +71,8 @@ public class AdminFixture : IAsyncLifetime
         var submitButton = content.QuerySelector<IHtmlInputElement>("input[id='signInButton']") ?? throw new Exception("Unable to find the submit button on the sign in form");
         List<KeyValuePair<string, string?>> formValues = new()
         {
-            { new(nameof(SignInModel.Username), userData.Username) },
-            { new(nameof(SignInModel.Password), userData.Password) }
+            { new(nameof(SignInModel.Username), userData?.Username) },
+            { new(nameof(SignInModel.Password), userData?.Password) }
         };
         return await client.SendAsync(form, submitButton, formValues);
     }

@@ -1,3 +1,3 @@
 ﻿namespace Domain;
 
-public record struct User(string EmailAddress, bool IsAdmin, DateTime JoinedAt);
+public record User(string EmailAddress, bool IsAdmin, DateTime JoinedAt);

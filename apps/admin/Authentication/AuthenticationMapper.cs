@@ -31,5 +31,5 @@ internal static class AuthenticationMapper
         };
     }
 
-    public static AuthenticationResponse MapFromResponse(string serializedResponse) => JsonSerializer.Deserialize<AuthenticationResponse>(serializedResponse, _defaultJsonSerializerOptions);
+    public static AuthenticationResponse MapFromResponse(string serializedResponse) => JsonSerializer.Deserialize<AuthenticationResponse>(serializedResponse, _defaultJsonSerializerOptions) ?? throw new AuthenticationException("Unable to map authentication response");
 }

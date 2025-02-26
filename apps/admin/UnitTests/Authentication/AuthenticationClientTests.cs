@@ -63,7 +63,7 @@ public class AuthenticationClientTests
     {
         // Arrange
         var expectedErrorMesssage = "Unable to retrieve the access token";
-        AuthenticationResponse responseBody = new("OK", new());
+        AuthenticationResponse responseBody = new("OK", new(_defaultUsername, "microshop@integrationtests.local", DateTime.UtcNow.Ticks));
         var authenticationClient = new AuthenticationClientBuilder()
             .WithResponseHavingStatusCode(HttpStatusCode.OK)
             .WithResponseHavingContent(responseBody)

@@ -70,6 +70,6 @@ public class UserClientTests
         var userEmails = await users.Select(user => user.EmailAddress).ToListAsync();
 
         (await users.CountAsync()).ShouldBe(validGetUsersResponse.Users.Count());
-        userEmails.ShouldBeEquivalentTo(userResponseEmails);
+        userEmails.ShouldBeEquivalentTo(userResponseEmails.ToList());
     }
 }

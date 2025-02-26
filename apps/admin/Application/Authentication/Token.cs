@@ -2,4 +2,4 @@
 
 namespace Application.Authentication;
 
-public record struct Token(IEnumerable<Claim> Claims);
+public record Token(IEnumerable<Claim> Claims);
