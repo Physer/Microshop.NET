@@ -130,7 +130,7 @@ services:
       - ADMIN_KEY=${ADMIN_KEY}
     restart: always
     ports:
-      - 5004:8080
+      - 5004:80
   api:
     container_name: api
     hostname: api
