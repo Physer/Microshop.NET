@@ -1,7 +1,7 @@
 ﻿using Application.Exceptions;
 using AutoFixture;
 using AutoFixture.Xunit2;
-using FluentAssertions;
+using Shouldly;
 using UserManagement.Models;
 using Xunit;
 
@@ -27,8 +27,8 @@ public class UserClientTests
         var exception = await Record.ExceptionAsync(async () => await userClient.GetUsersAsync().ToListAsync());
 
         // Assert
-        exception.Should().BeOfType<MicroshopApiException>();
-        exception.Message.Should().BeEquivalentTo(expectedErrorMessage);
+        exception.ShouldBeOfType<MicroshopApiException>();
+        exception.Message.ShouldBeEquivalentTo(expectedErrorMessage);
     }
 
     [Theory]
@@ -47,8 +47,8 @@ public class UserClientTests
         var exception = await Record.ExceptionAsync(async () => await userClient.GetUsersAsync().ToListAsync());
 
         // Assert
-        exception.Should().BeOfType<MicroshopApiException>();
-        exception.Message.Should().BeEquivalentTo(expectedErrorMessage);
+        exception.ShouldBeOfType<MicroshopApiException>();
+        exception.Message.ShouldBeEquivalentTo(expectedErrorMessage);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class UserClientTests
         var userResponseEmails = validGetUsersResponse.Users.Select(usersResponse => usersResponse.User.Email);
         var userEmails = await users.Select(user => user.EmailAddress).ToListAsync();
 
-        (await users.CountAsync()).Should().Be(validGetUsersResponse.Users.Count());
-        userEmails.Should().BeEquivalentTo(userResponseEmails);
+        (await users.CountAsync()).ShouldBe(validGetUsersResponse.Users.Count());
+        userEmails.ShouldBeEquivalentTo(userResponseEmails);
     }
 }

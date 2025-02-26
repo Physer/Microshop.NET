@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using IntegrationTests.Utilities;
+﻿using IntegrationTests.Utilities;
+using Shouldly;
 using System.Net;
 using Xunit;
 
@@ -27,8 +27,8 @@ public class IndexTests(AdminFixture fixture)
         var document = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        response.Should().NotBeNull();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        document.Body?.InnerHtml.Should().Contain(expectedContent);
+        response.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        document.Body?.InnerHtml.ShouldContain(expectedContent);
     }
 }

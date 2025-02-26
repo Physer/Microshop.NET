@@ -1,7 +1,7 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using FluentAssertions;
 using IntegrationTests.Utilities;
+using Shouldly;
 using Xunit;
 
 namespace IntegrationTests.Pages;
@@ -25,7 +25,7 @@ public class ForbiddenTests(AdminFixture fixture)
         var content = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        content.Body?.InnerHtml.Should().Contain(expectedErrorMessage);
+        content.Body?.InnerHtml.ShouldContain(expectedErrorMessage);
     }
 
     [Fact]
@@ -43,6 +43,6 @@ public class ForbiddenTests(AdminFixture fixture)
         var response = await client.SendAsync(form, submitButton);
 
         // Assert
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo("/signout");
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo("/signout");
     }
 }

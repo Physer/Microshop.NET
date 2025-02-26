@@ -1,6 +1,6 @@
 ﻿using Application.Exceptions;
-using FluentAssertions;
 using Microshop.MockHttpClient;
+using Shouldly;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -34,7 +34,7 @@ public class ApiClientTests
         var exception = await Record.ExceptionAsync(() => apiClient?.MakeRequestAsync(_defaultHttpMethod, _defaultRequestUrl));
 
         // Assert
-        exception.Should().BeOfType<MicroshopApiException>();
+        exception.ShouldBeOfType<MicroshopApiException>();
     }
 
     [Fact]
@@ -53,9 +53,9 @@ public class ApiClientTests
         var response = await apiClient.MakeRequestAsync(_defaultHttpMethod, _defaultRequestUrl);
 
         // Assert
-        response.Should().NotBeNull();
-        response.StatusCode.Should().Be(statusCode);
-        (await response.Content.ReadFromJsonAsync<MockHttpResponse>()).Should().BeEquivalentTo(expectedResponse);
+        response.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(statusCode);
+        (await response.Content.ReadFromJsonAsync<MockHttpResponse>()).ShouldBeEquivalentTo(expectedResponse);
     }
 
     [Fact]
@@ -72,9 +72,9 @@ public class ApiClientTests
         var response = await apiClient.GenerateProductsAsync();
 
         // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.Method.Should().BeEquivalentTo(expectedHttpMethod);
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(expectedRequestUrl);
+        response.ShouldNotBeNull();
+        response.RequestMessage?.Method.ShouldBeEquivalentTo(expectedHttpMethod);
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo(expectedRequestUrl);
     }
 
     [Fact]
@@ -91,9 +91,9 @@ public class ApiClientTests
         var response = await apiClient.ClearDataAsync();
 
         // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.Method.Should().BeEquivalentTo(expectedHttpMethod);
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(expectedRequestUrl);
+        response.ShouldNotBeNull();
+        response.RequestMessage?.Method.ShouldBeEquivalentTo(expectedHttpMethod);
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo(expectedRequestUrl);
 
     }
 }

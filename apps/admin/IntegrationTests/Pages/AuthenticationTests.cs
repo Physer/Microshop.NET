@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using IntegrationTests.Data;
+﻿using IntegrationTests.Data;
+using Shouldly;
 using System.Net;
 using Xunit;
 
@@ -22,9 +22,9 @@ public class AuthenticationTests(AdminFixture fixture)
         var response = await client.GetAsync(url);
 
         // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo("/signin");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.ShouldNotBeNull();
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo("/signin");
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Theory]
@@ -40,8 +40,8 @@ public class AuthenticationTests(AdminFixture fixture)
         var response = await client.GetAsync(url);
 
         // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo("/forbidden");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.ShouldNotBeNull();
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo("/forbidden");
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 }

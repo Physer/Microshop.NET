@@ -2,8 +2,8 @@
 using Application.Exceptions;
 using Authentication.Models;
 using AutoFixture.Xunit2;
-using FluentAssertions;
 using Microshop.MockHttpClient;
+using Shouldly;
 using System.Net;
 using System.Text.Json;
 using Xunit;
@@ -37,8 +37,8 @@ public class AuthenticationClientTests
         var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
-        exception.Should().BeOfType<AuthenticationException>();
-        exception.Message.Should().BeEquivalentTo(expectedErrorMesssage);
+        exception.ShouldBeOfType<AuthenticationException>();
+        exception.Message.ShouldBeEquivalentTo(expectedErrorMesssage);
     }
 
     [Fact]
@@ -54,8 +54,8 @@ public class AuthenticationClientTests
         var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
-        exception.Should().BeOfType<AuthenticationException>();
-        exception.Message.Should().BeEquivalentTo(expectedErrorMesssage);
+        exception.ShouldBeOfType<AuthenticationException>();
+        exception.Message.ShouldBeEquivalentTo(expectedErrorMesssage);
     }
 
     [Fact]
@@ -73,8 +73,8 @@ public class AuthenticationClientTests
         var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
-        exception.Should().BeOfType<AuthenticationException>();
-        exception.Message.Should().BeEquivalentTo(expectedErrorMesssage);
+        exception.ShouldBeOfType<AuthenticationException>();
+        exception.Message.ShouldBeEquivalentTo(expectedErrorMesssage);
     }
 
     [Theory]
@@ -93,7 +93,7 @@ public class AuthenticationClientTests
         var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(username, password));
 
         // Assert
-        exception.Should().BeOfType<AuthenticationException>();
+        exception.ShouldBeOfType<AuthenticationException>();
     }
 
     [Theory]
@@ -110,7 +110,7 @@ public class AuthenticationClientTests
         var exception = await Record.ExceptionAsync(() => authenticationClient.SignInAsync(_defaultUsername, _defaultPassword));
 
         // Assert
-        exception.Should().BeOfType<JsonException>();
+        exception.ShouldBeOfType<JsonException>();
     }
 
     [Theory]
@@ -133,7 +133,7 @@ public class AuthenticationClientTests
         var authenticationData = await authenticationClient.SignInAsync(_defaultUsername, _defaultPassword);
 
         // Assert
-        authenticationData.Should().BeEquivalentTo(expectedAuthenticationData);
+        authenticationData.ShouldBeEquivalentTo(expectedAuthenticationData);
     }
 
     [Theory]
@@ -160,6 +160,6 @@ public class AuthenticationClientTests
         var authenticationData = await authenticationClient.SignInAsync(_defaultUsername, _defaultPassword);
 
         // Assert
-        authenticationData.Should().BeEquivalentTo(expectedAuthenticationData);
+        authenticationData.ShouldBeEquivalentTo(expectedAuthenticationData);
     }
 }

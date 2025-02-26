@@ -1,7 +1,7 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using FluentAssertions;
 using IntegrationTests.Utilities;
+using Shouldly;
 using System.Net;
 using Xunit;
 
@@ -24,9 +24,9 @@ public class SignInTests(AdminFixture fixture)
         var response = await client.GetAsync(_signInUrl);
 
         // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo(_signInUrl);
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.ShouldNotBeNull();
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo(_signInUrl);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class SignInTests(AdminFixture fixture)
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 
         // Assert
-        errorAlert?.InnerHtml.Should().Be(expectedErrorMessage);
+        errorAlert?.InnerHtml.ShouldBe(expectedErrorMessage);
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class SignInTests(AdminFixture fixture)
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        responseContent.Url.Should().Be(expectedResponseUrl);
+        responseContent.Url.ShouldBe(expectedResponseUrl);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class SignInTests(AdminFixture fixture)
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        responseContent.Url.Should().Be(expectedResponseUrl);
+        responseContent.Url.ShouldBe(expectedResponseUrl);
     }
 
     [Theory]
@@ -100,7 +100,7 @@ public class SignInTests(AdminFixture fixture)
         var responseContent = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        responseContent.Url.Should().Be(expectedUrl);
+        responseContent.Url.ShouldBe(expectedUrl);
     }
 
     [Fact]
@@ -117,6 +117,6 @@ public class SignInTests(AdminFixture fixture)
         var errorAlert = responseContent.QuerySelector<IHtmlDivElement>("div[id='errorAlert']");
 
         // Assert
-        errorAlert?.InnerHtml.Should().Be(expectedErrorMessage);
+        errorAlert?.InnerHtml.ShouldBe(expectedErrorMessage);
     }
 }

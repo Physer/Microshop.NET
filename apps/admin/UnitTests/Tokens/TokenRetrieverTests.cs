@@ -1,6 +1,6 @@
 ﻿using Application;
 using AutoFixture.Xunit2;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace UnitTests.Tokens;
@@ -21,8 +21,8 @@ public class TokenRetrieverTests
         var exception = Record.Exception(tokenRetriever.GetAccessTokenFromCookie);
 
         // Assert
-        exception.Should().NotBeNull();
-        exception.Should().BeOfType<UnauthorizedAccessException>();
+        exception.ShouldNotBeNull();
+        exception.ShouldBeOfType<UnauthorizedAccessException>();
     }
 
     [Theory]
@@ -38,8 +38,8 @@ public class TokenRetrieverTests
         var exception = Record.Exception(tokenRetriever.GetAccessTokenFromCookie);
 
         // Assert
-        exception.Should().NotBeNull();
-        exception.Should().BeOfType<UnauthorizedAccessException>();
+        exception.ShouldNotBeNull();
+        exception.ShouldBeOfType<UnauthorizedAccessException>();
     }
 
     [Theory]
@@ -56,7 +56,7 @@ public class TokenRetrieverTests
         var result = tokenRetriever.GetAccessTokenFromCookie();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Should().Be(accessToken);
+        result.ShouldNotBeNull();
+        result.ShouldBe(accessToken);
     }
 }

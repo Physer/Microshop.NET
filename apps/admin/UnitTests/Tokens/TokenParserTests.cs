@@ -2,7 +2,7 @@
 using Application.Exceptions;
 using Authentication.Models;
 using AutoFixture.Xunit2;
-using FluentAssertions;
+using Shouldly;
 using System.Security.Claims;
 using System.Text.Json;
 using Xunit;
@@ -29,8 +29,8 @@ public class TokenParserTests
         var exception = Record.Exception(() => tokenParser.GetRoles(string.Empty));
 
         // Assert
-        exception.Should().BeOfType<AuthenticationException>();
-        exception.Message.Should().BeEquivalentTo(expectedErrorMessage);
+        exception.ShouldBeOfType<AuthenticationException>();
+        exception.Message.ShouldBeEquivalentTo(expectedErrorMessage);
     }
 
     [Theory]
@@ -39,7 +39,7 @@ public class TokenParserTests
     {
         // Arrange
         var expectedErrorMessage = "Invalid role claim";
-        HashSet<Claim> claims = claimData.Select(data => new Claim(data.Key, data.Value)).ToHashSet();
+        HashSet<Claim> claims = [.. claimData.Select(data => new Claim(data.Key, data.Value))];
         Token token = new(claims);
         var tokenParser = new TokenParserBuilder()
             .WithTokenHandlerReturning(token)
@@ -49,8 +49,8 @@ public class TokenParserTests
         var exception = Record.Exception(() => tokenParser.GetRoles(string.Empty));
 
         // Assert
-        exception.Should().BeOfType<AuthenticationException>();
-        exception.Message.Should().BeEquivalentTo(expectedErrorMessage);
+        exception.ShouldBeOfType<AuthenticationException>();
+        exception.Message.ShouldBeEquivalentTo(expectedErrorMessage);
     }
 
     [Theory]
@@ -59,7 +59,7 @@ public class TokenParserTests
     {
         // Arrange
         var validKey = "st-role";
-        HashSet<Claim> claims = claimValues.Select(value => new Claim(validKey, JsonSerializer.Serialize(value, _defaultJsonSerializerOptions))).ToHashSet();
+        HashSet<Claim> claims = [.. claimValues.Select(value => new Claim(validKey, JsonSerializer.Serialize(value, _defaultJsonSerializerOptions)))];
         Token token = new(claims);
         var tokenParser = new TokenParserBuilder()
             .WithTokenHandlerReturning(token)
@@ -69,7 +69,7 @@ public class TokenParserTests
         var exception = Record.Exception(() => tokenParser.GetRoles(string.Empty));
 
         // Assert
-        exception.Should().BeOfType<JsonException>();
+        exception.ShouldBeOfType<JsonException>();
     }
 
     [Fact]
@@ -89,10 +89,10 @@ public class TokenParserTests
             .Build();
 
         // Act
-        var getRolesResult = tokenParser.GetRoles(string.Empty);
+        var getRolesResult = tokenParser.GetRoles(string.Empty).ToList();
 
         // Assert
-        getRolesResult.Should().Contain(role);
-        getRolesResult.Should().HaveCount(1);
+        getRolesResult.ShouldContain(role);
+        getRolesResult.Count.ShouldBe(1);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using FluentAssertions;
 using IntegrationTests.Utilities;
+using Shouldly;
 using System.Net;
 using Xunit;
 
@@ -28,11 +28,11 @@ public class ManageDataTests(AdminFixture fixture)
         var document = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        response.Should().NotBeNull();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        document.Body?.InnerHtml.Should().Contain(expectedHeader);
-        document.Body?.InnerHtml.Should().Contain(expectedGenerateDataContent);
-        document.Body?.InnerHtml.Should().Contain(expectedClearDataContent);
+        response.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        document.Body?.InnerHtml.ShouldContain(expectedHeader);
+        document.Body?.InnerHtml.ShouldContain(expectedGenerateDataContent);
+        document.Body?.InnerHtml.ShouldContain(expectedClearDataContent);
     }
 
     [Theory]
@@ -48,8 +48,8 @@ public class ManageDataTests(AdminFixture fixture)
         var response = await client.PostAsync($"/ManageData?Handler={handler}", default);
 
         // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo("/signin");
+        response.ShouldNotBeNull();
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo("/signin");
     }
 
     [Theory]
@@ -66,8 +66,8 @@ public class ManageDataTests(AdminFixture fixture)
         var response = await client.PostAsync($"/ManageData?Handler={handler}", default);
 
         // Assert
-        response.Should().NotBeNull();
-        response.RequestMessage?.RequestUri?.PathAndQuery.Should().BeEquivalentTo("/forbidden");
+        response.ShouldNotBeNull();
+        response.RequestMessage?.RequestUri?.PathAndQuery.ShouldBeEquivalentTo("/forbidden");
     }
 
     [Fact]
@@ -89,9 +89,9 @@ public class ManageDataTests(AdminFixture fixture)
         var document = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        response.Should().NotBeNull();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        document?.Body?.InnerHtml.Should().Contain(expectedMessage);
+        response.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        document?.Body?.InnerHtml.ShouldContain(expectedMessage);
     }
 
     [Fact]
@@ -113,8 +113,8 @@ public class ManageDataTests(AdminFixture fixture)
         var document = await HtmlHelpers.GetDocumentAsync(response);
 
         // Assert
-        response.Should().NotBeNull();
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        document?.Body?.InnerHtml.Should().Contain(expectedMessage);
+        response.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        document?.Body?.InnerHtml.ShouldContain(expectedMessage);
     }
 }
