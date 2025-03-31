@@ -1,9 +1,0 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as build-env
-ARG SERVICE_NAME
-
-WORKDIR /src
-COPY apps/${SERVICE_NAME} .
-RUN dotnet publish Web -c Release -o /publish
-
-FROM httpd:latest
-COPY --from=build-env /publish/wwwroot /usr/local/apache2/htdocs/

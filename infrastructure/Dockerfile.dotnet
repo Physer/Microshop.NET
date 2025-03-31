@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build-env
 ARG SERVICE_NAME
 ARG PROJECT_NAME=API
 
@@ -6,7 +6,7 @@ WORKDIR /src
 COPY apps/${SERVICE_NAME} .
 RUN dotnet publish ${PROJECT_NAME} -c Release -o /publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 as runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 ARG PROJECT_NAME=API
 ENV PROJECT_NAME=$PROJECT_NAME
 

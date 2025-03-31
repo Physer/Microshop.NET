@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PublicDisplayName>ContainerConfiguration</PublicDisplayName>
@@ -13,11 +13,12 @@
 		<PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
 		<VersionPrefix>2.2.2</VersionPrefix>
-		<Description>A set of utility methods to quickly set up predefined and custom containers based on TestContainers.NET</Description>
+		<Description>A set of utility methods to quickly set up predefined and custom containers
+			based on TestContainers.NET</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Testcontainers" Version="3.8.0" />
+		<PackageReference Include="Testcontainers" Version="3.8.0" />
 	</ItemGroup>
 
 </Project>

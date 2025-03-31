@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<PublicDisplayName>InlineWebApplicationFactory</PublicDisplayName>
 		<AssemblyName>Microshop.$(PublicDisplayName)</AssemblyName>
 		<RootNamespace>Microshop.$(PublicDisplayName.Replace(" ", "_"))</RootNamespace>
 		<Authors>Alex Schouls</Authors>
-		<Description>A library to quickly set up an in-memory web application factory for Integration Testing, including support for Mass Transit's Test harnass.</Description>
+		<Description>A library to quickly set up an in-memory web application factory for
+			Integration Testing, including support for Mass Transit's Test harnass.</Description>
 		<Copyright>© Alex Schouls</Copyright>
 		<PackageProjectUrl>https://github.com/Physer/Microshop.NET</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Physer/Microshop.NET</RepositoryUrl>
