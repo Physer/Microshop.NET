@@ -1,6 +1,10 @@
 name: Deploy services receiving incoming traffic
 concurrency: traffic
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   workflow_dispatch:
   push:

@@ -1,6 +1,10 @@
 name: Deploy generic resources
 concurrency: generic
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   workflow_dispatch:
   push:

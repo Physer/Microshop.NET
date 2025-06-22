@@ -1,6 +1,10 @@
 name: Deploy Pricing service
 concurrency: pricing
 
+permissions:
+  id-token: write
+  contents: read
+
 on:
   workflow_dispatch:
   push:
