@@ -16,7 +16,7 @@ module "gateway_app" {
   application_name             = "gateway"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-gateway:main"
-  resource_group_id            = data.azurerm_resource_group.rg_microshop.id
+  resource_group_name          = azurerm_resource_group.rg_microshop.name
   ingress_enabled              = true
   allow_external_traffic       = true
   location                     = data.azurerm_resource_group.rg_microshop.location

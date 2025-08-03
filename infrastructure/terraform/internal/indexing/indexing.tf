@@ -50,8 +50,8 @@ module "indexing_app" {
   application_name             = "indexing"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-indexing:main"
-  resource_group_id            = data.azurerm_resource_group.rg_microshop.id
+  resource_group_name          = data.azurerm_resource_group.rg_microshop.name
   secrets                      = local.indexing_secrets
   appsettings                  = local.indexing_appsettings
-  location = data.azurerm_resource_group.rg_microshop.location
+  location                     = data.azurerm_resource_group.rg_microshop.location
 }

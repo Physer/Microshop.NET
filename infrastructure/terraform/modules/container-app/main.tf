@@ -1,55 +1,54 @@
 terraform {
   required_providers {
-    azapi = {
-      source = "Azure/azapi"
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "4.38.1"
     }
   }
 }
 
-resource "azapi_resource" "microshop_container_app" {
-  type      = "Microsoft.App/containerApps@2022-11-01-preview"
-  name      = "ca-${var.application_name}"
-  location  = var.location
-  parent_id = var.resource_group_id
-  response_export_values = [
-    "name",
-    "properties.configuration.ingress.fqdn",
-    "properties.customDomainVerificationId",
-    "id"
-  ]
-  body = jsonencode({
-    properties = {
-      configuration = {
-        activeRevisionsMode = "Single",
-        ingress = !var.ingress_enabled ? null : {
-          allowInsecure = false,
-          external      = var.allow_external_traffic
-          targetPort    = var.port,
-          exposedPort   = var.transport == "Tcp" ? var.port : 0,
-          traffic = [{
-            latestRevision = true,
-            weight         = 100
-          }]
-          transport = var.transport
-        }
-        secrets = var.secrets
+resource "azurerm_container_app" "microshop_container_app" {
+  name                         = "ca-${var.application_name}"
+  container_app_environment_id = var.container_app_environment_id
+  resource_group_name          = var.resource_group_name
+  revision_mode                = "Single"
+  dynamic "secret" {
+    for_each = var.secrets
+    content {
+      name  = secret.value["name"]
+      value = secret.value["value"]
+    }
+  }
+  dynamic "ingress" {
+    for_each = var.ingress_enabled ? [1] : []
+    content {
+      allow_insecure_connections = false
+      external_enabled           = var.allow_external_traffic
+      target_port                = var.port
+      exposed_port               = var.transport == "tcp" ? var.port : null
+      transport                  = var.transport
+      traffic_weight {
+        latest_revision = true
+        percentage      = 100
       }
-      environmentId = var.container_app_environment_id,
-      template = {
-        containers = [{
-          image = var.image_name,
-          name  = "ca-${var.application_name}-container",
-          resources = {
-            cpu    = 0.25,
-            memory = "0.5Gi",
-          }
-          env = var.appsettings
-        }]
-        scale = {
-          maxReplicas = var.scale_max
-          minReplicas = var.scale_min
+    }
+  }
+  template {
+    container {
+      name   = "ca-${var.application_name}-container"
+      image  = var.image_name
+      cpu    = 0.25
+      memory = "0.5Gi"
+      dynamic "env" {
+        for_each = var.appsettings
+        content {
+          name        = env.value["name"]
+          value       = env.value["value"]
+          secret_name = env.value["secretRef"]
         }
       }
     }
-  })
+    min_replicas = var.scale_min
+    max_replicas = var.scale_max
+  }
 }

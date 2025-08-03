@@ -66,7 +66,7 @@ module "authentication_database" {
   port                         = 5432
   transport                    = "Tcp"
   ingress_enabled              = true
-  resource_group_id            = data.azurerm_resource_group.rg_microshop.id
+  resource_group_name          = azurerm_resource_group.rg_microshop.name
   secrets                      = local.authentication_database_secrets
   appsettings                  = local.authentication_database_appsettings
   location                     = data.azurerm_resource_group.rg_microshop.location
@@ -77,7 +77,7 @@ module "authentication_core" {
   application_name             = "authentication-core"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "registry.supertokens.io/supertokens/supertokens-postgresql:${var.supertokens_core_docker_image_version}"
-  resource_group_id            = data.azurerm_resource_group.rg_microshop.id
+  resource_group_name          = azurerm_resource_group.rg_microshop.name
   port                         = 3567
   ingress_enabled              = true
   secrets                      = local.authentication_core_secrets
@@ -90,7 +90,7 @@ module "authentication_service" {
   application_name             = "authentication-svc"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-authentication:main"
-  resource_group_id            = data.azurerm_resource_group.rg_microshop.id
+  resource_group_name          = azurerm_resource_group.rg_microshop.name
   ingress_enabled              = true
   secrets                      = local.authentication_service_secrets
   appsettings                  = local.authentication_service_appsettings

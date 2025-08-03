@@ -46,7 +46,7 @@ module "products_app" {
   application_name             = "products"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-products:main"
-  resource_group_id            = data.azurerm_resource_group.rg_microshop.id
+  resource_group_name          = azurerm_resource_group.rg_microshop.name
   secrets                      = local.products_secrets
   appsettings                  = local.products_appsettings
   location                     = data.azurerm_resource_group.rg_microshop.location

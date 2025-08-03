@@ -1,21 +1,21 @@
 output "name" {
   description = "The name of the container app"
-  value       = jsondecode(azapi_resource.microshop_container_app.output).name
+  value       = azurerm_container_app.microshop_container_app.name
 }
 
 output "fqdn" {
   description = "The FQDN of the container app"
-  value       = try(jsondecode(azapi_resource.microshop_container_app.output).properties.configuration.ingress.fqdn, null)
+  value       = azurerm_container_app.microshop_container_app.latest_revision_fqdn
 }
 
 output "id" {
   description = "The ID of the container app"
-  value       = jsondecode(azapi_resource.microshop_container_app.output).id
+  value       = azurerm_container_app.microshop_container_app.id
 }
 
 output "custom_domain_verification_id" {
   description = "The Custom Domain Verification ID to be used in DNS providers"
-  value       = jsondecode(azapi_resource.microshop_container_app.output).properties.customDomainVerificationId
+  value       = azurerm_container_app.microshop_container_app.custom_domain_verification_id
 }
 
 output "application_name" {

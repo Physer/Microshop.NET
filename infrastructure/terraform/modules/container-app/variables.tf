@@ -6,7 +6,7 @@ variable "container_app_environment_id" {
   type = string
 }
 
-variable "resource_group_id" {
+variable "resource_group_name" {
   type = string
 }
 
@@ -48,7 +48,7 @@ variable "port" {
 
 variable "transport" {
   type    = string
-  default = "Auto"
+  default = "auto"
 }
 
 variable "scale_max" {

@@ -4,13 +4,9 @@ terraform {
       source  = "hashicorp/random"
       version = ">= 3.7.2"
     }
-    azapi = {
-      source  = "Azure/azapi"
-      version = ">= 2.4.0"
-    }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.69.0"
+      version = "4.38.1"
     }
   }
   backend "azurerm" {
