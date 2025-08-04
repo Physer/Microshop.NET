@@ -1,25 +1,25 @@
-resource "cloudflare_record" "cname_record" {
+resource "cloudflare_dns_record" "cname_record" {
   for_each = var.application_names
   zone_id  = var.zone_id
   name     = var.environment == "production" ? each.key : "${var.environment}-${each.key}"
-  value    = var.application_fqdn
+  content  = var.application_fqdn
   type     = "CNAME"
   ttl      = 3600
 }
 
-resource "cloudflare_record" "txt_record" {
+resource "cloudflare_dns_record" "txt_record" {
   for_each = var.application_names
   zone_id  = var.zone_id
   name     = var.environment == "production" ? "asuid.${each.key}" : "asuid.${var.environment}-${each.key}"
-  value    = var.domain_identifier
+  content  = var.domain_identifier
   type     = "TXT"
   ttl      = 3600
 }
 
 resource "time_sleep" "wait_for_dns" {
   depends_on = [
-    cloudflare_record.cname_record,
-    cloudflare_record.txt_record
+    cloudflare_dns_record.cname_record,
+    cloudflare_dns_record.txt_record
   ]
   create_duration = "30s"
   triggers = {
