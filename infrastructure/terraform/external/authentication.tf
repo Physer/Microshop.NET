@@ -64,7 +64,7 @@ module "authentication_database" {
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "postgres:${var.postgres_docker_image_version}"
   port                         = 5432
-  transport                    = "Tcp"
+  transport                    = "tcp"
   ingress_enabled              = true
   resource_group_name          = data.azurerm_resource_group.rg_microshop.name
   secrets                      = local.authentication_database_secrets
