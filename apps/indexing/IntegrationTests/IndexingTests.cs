@@ -11,6 +11,7 @@ namespace IntegrationTests;
 public class IndexingTests : IClassFixture<IndexingTestsFixture>
 {
     private readonly IndexingTestsFixture _fixture;
+    private const int _indexingDelayInMiliseconds = 1000;
 
     public IndexingTests(IndexingTestsFixture fixture) => _fixture = fixture;
 
@@ -27,6 +28,7 @@ public class IndexingTests : IClassFixture<IndexingTestsFixture>
         await testHarness.Stop();
 
         // Assert
+        await Task.Delay(_indexingDelayInMiliseconds);
         var containerLogs = await _fixture.MeilisearchContainer!.GetLogsAsync();
         containerLogs.Should().NotBeNull();
         containerLogs.Stderr.Should().Contain($"indexed_documents: {products.Count()}");
@@ -45,6 +47,7 @@ public class IndexingTests : IClassFixture<IndexingTestsFixture>
         await testHarness.Stop();
 
         // Assert
+        await Task.Delay(_indexingDelayInMiliseconds);
         var containerLogs = await _fixture.MeilisearchContainer!.GetLogsAsync();
         containerLogs.Should().NotBeNull();
         containerLogs.Stderr.Should().Contain($"indexed_documents: {prices.Count()}");
