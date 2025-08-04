@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "4.38.1"
-    }
-  }
-}
-
 resource "azurerm_container_app" "microshop_container_app" {
   name                         = "ca-${var.application_name}"
   container_app_environment_id = var.container_app_environment_id

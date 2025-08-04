@@ -1,14 +1,3 @@
-terraform {
-  required_providers {
-    cloudflare = {
-      source = "cloudflare/cloudflare"
-    }
-    azapi = {
-      source = "Azure/azapi"
-    }
-  }
-}
-
 resource "cloudflare_record" "cname_record" {
   for_each = var.application_names
   zone_id  = var.zone_id
@@ -42,7 +31,7 @@ resource "azapi_update_resource" "container_app_hostname" {
   depends_on  = [time_sleep.wait_for_dns]
   type        = "Microsoft.App/containerApps@2023-04-01-preview"
   resource_id = var.container_app_id
-  body = jsonencode({
+  body = {
     properties = {
       configuration = {
         secrets = var.secrets
@@ -54,7 +43,7 @@ resource "azapi_update_resource" "container_app_hostname" {
         }
       }
     }
-  })
+  }
 }
 
 resource "azapi_resource" "managed_tls_certificate" {
@@ -64,11 +53,11 @@ resource "azapi_resource" "managed_tls_certificate" {
   name       = "${var.container_environment_name}-${each.key}"
   parent_id  = var.container_environment_id
   location   = var.location
-  body = jsonencode({
+  body = {
     properties = {
       domainControlValidation = "CNAME"
       subjectName             = var.environment == "production" ? "${each.key}.microshop.rocks" : "${var.environment}-${each.key}.microshop.rocks"
-  } })
+  } }
 }
 
 resource "azapi_update_resource" "container_app_hostname_binding" {
@@ -78,7 +67,7 @@ resource "azapi_update_resource" "container_app_hostname_binding" {
   ]
   type        = "Microsoft.App/containerApps@2023-04-01-preview"
   resource_id = var.container_app_id
-  body = jsonencode({
+  body = {
     properties = {
       configuration = {
         secrets = var.secrets
@@ -91,5 +80,5 @@ resource "azapi_update_resource" "container_app_hostname_binding" {
         }
       }
     }
-  })
+  }
 }
