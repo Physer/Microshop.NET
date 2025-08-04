@@ -37,7 +37,7 @@ module "rabbitmq_app" {
   application_name             = "rabbitmq"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "masstransit/rabbitmq:${var.rabbitmq_docker_image_version}"
-  resource_group_name          = azurerm_resource_group.rg_microshop.name
+  resource_group_name          = data.azurerm_resource_group.rg_microshop.name
   port                         = 5672
   transport                    = "tcp"
   secrets                      = local.rabbitmq_secrets
@@ -51,7 +51,7 @@ module "meilisearch_app" {
   application_name             = "meilisearch"
   container_app_environment_id = azurerm_container_app_environment.cae_microshop.id
   image_name                   = "getmeili/meilisearch:${var.meilisearch_docker_image_version}"
-  resource_group_name          = azurerm_resource_group.rg_microshop.name
+  resource_group_name          = data.azurerm_resource_group.rg_microshop.name
   port                         = 7700
   secrets                      = local.meilisearch_secrets
   appsettings                  = local.meilisearch_appsettings

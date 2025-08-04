@@ -12,7 +12,7 @@ module "admin_app" {
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-admin:main"
   ingress_enabled              = true
-  resource_group_name          = azurerm_resource_group.rg_microshop.name
+  resource_group_name          = data.azurerm_resource_group.rg_microshop.name
   location                     = data.azurerm_resource_group.rg_microshop.location
   appsettings                  = local.admin_appsettings
 }
