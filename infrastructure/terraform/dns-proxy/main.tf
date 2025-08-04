@@ -1,29 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = ">= 4.34.0"
-    }
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = ">= 5.6.0"
-    }
-  }
-  backend "azurerm" {
-    key = "terraform.tfstate"
-  }
-}
-
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
-}
-
-provider "azurerm" {
-  features {
-
-  }
-}
-
 data "azurerm_container_app" "ca_gateway" {
   resource_group_name = "rg-microshop-${var.environment}"
   name                = "ca-gateway"
