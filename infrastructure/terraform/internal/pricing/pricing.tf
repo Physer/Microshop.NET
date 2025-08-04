@@ -41,7 +41,7 @@ module "pricing_app" {
   application_name             = "pricing"
   container_app_environment_id = data.azurerm_container_app_environment.cae_microshop.id
   image_name                   = "physer/microshop-pricing:main"
-  resource_group_name          = azurerm_resource_group.rg_microshop.name
+  resource_group_name          = data.azurerm_resource_group.rg_microshop.name
   secrets                      = local.pricing_secrets
   appsettings                  = local.pricing_appsettings
   location                     = data.azurerm_resource_group.rg_microshop.location
