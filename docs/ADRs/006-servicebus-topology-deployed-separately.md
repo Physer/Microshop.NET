@@ -2,7 +2,7 @@
 
 ## Status
 
-Superseded by [api-endpoints-for-entity-operations](api-endpoints-for-entity-operations.md)
+Superseded by [007-api-endpoints-for-entity-operations](007-api-endpoints-for-entity-operations.md)
 
 ## Context
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Superseded by [deploying-azure-container-apps](deploying-azure-container-apps.md)
+Superseded by [011-deploying-azure-container-apps](011-deploying-azure-container-apps.md)
 
 ## Context
 
