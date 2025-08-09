@@ -19,5 +19,6 @@ To always guarantee the presence of all our queues, exchanges and their bindings
 This means that every service should be able to deploy their topology quickly and separately, stateless and ephemeral.
 Pipelines have to be adjusted to cater for topology-only deployments as well as regular publisher/consumer deployments.
 For more information about this situation, see:
+
 * [MassTransit's documentation](https://masstransit.io/documentation/configuration/topology/deploy)
 * [Chris' answer on the issue](https://stackoverflow.com/a/70427605/1784012)
