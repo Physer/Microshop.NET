@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Superseded by [013-azurerm-for-container-apps-in-terraform](013-azurerm-for-container-apps-in-terraform.md)
 
 ## Context
 
