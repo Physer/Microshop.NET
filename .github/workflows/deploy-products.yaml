@@ -7,16 +7,11 @@ permissions:
 
 on:
   workflow_run:
-    workflows: ["Build and publish the Products service"]
+    workflows:
+      ["Build and publish the Products service", "Deploy generic resources"]
     types:
       - completed
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "infrastructure/terraform/internal/products/**"
-      - "infrastructure/terraform/modules/**"
 
 jobs:
   provision-products:

@@ -13,6 +13,11 @@ on:
     paths:
       - "infrastructure/terraform/generic/**"
       - "infrastructure/terraform/modules/**"
+      - "infrastructure/terraform/internal/indexing/**"
+      - "infrastructure/terraform/internal/pricing/**"
+      - "infrastructure/terraform/internal/products/**"
+      - "infrastructure/terraform/external/**"
+      - "infrastructure/terraform/dns-proxy/**"
 
 jobs:
   provision-generic-resources:

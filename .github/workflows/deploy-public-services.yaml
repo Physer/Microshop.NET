@@ -13,17 +13,11 @@ on:
         "Build and publish the Authentication service",
         "Build and publish the Gateway service",
         "Build and publish the Admin portal",
+        "Deploy generic resources",
       ]
     types:
       - completed
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "infrastructure/terraform/external/**"
-      - "infrastructure/terraform/dns-proxy/**"
-      - "infrastructure/terraform/modules/**"
 
 jobs:
   provision-public-services:

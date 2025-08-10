@@ -7,16 +7,11 @@ permissions:
 
 on:
   workflow_run:
-    workflows: ["Build and publish the Pricing service"]
+    workflows:
+      ["Build and publish the Pricing service", "Deploy generic resources"]
     types:
       - completed
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "infrastructure/terraform/internal/pricing/**"
-      - "infrastructure/terraform/modules/**"
 
 jobs:
   provision-pricing:
