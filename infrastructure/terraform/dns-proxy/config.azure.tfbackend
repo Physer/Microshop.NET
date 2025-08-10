@@ -1,4 +1,4 @@
 resource_group_name  = "rg-tfstate"
 storage_account_name = "stmicroshopnetstate"
-container_name       = "external-application-provisioning"
-key                  = "proxy.tfstate"
+container_name       = "dns-provisioning"
+key                  = "dns.tfstate"

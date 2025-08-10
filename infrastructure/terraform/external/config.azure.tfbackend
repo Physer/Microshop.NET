@@ -1,3 +1,4 @@
 resource_group_name  = "rg-tfstate"
 storage_account_name = "stmicroshopnetstate"
 container_name       = "external-application-provisioning"
+key                  = "public-services.tfstate"
