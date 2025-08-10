@@ -10,7 +10,7 @@ terraform {
     }
   }
   backend "azurerm" {
-    key = "terraform.tfstate"
+
   }
 }
 
@@ -19,5 +19,7 @@ provider "cloudflare" {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+
+  }
 }
