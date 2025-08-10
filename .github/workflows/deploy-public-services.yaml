@@ -1,0 +1,50 @@
+name: Deploy public services
+concurrency: public
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_run:
+    workflows:
+      [
+        "Build and publish the API",
+        "Build and publish the Authentication service",
+        "Build and publish the Gateway service",
+        "Build and publish the Admin portal",
+      ]
+    types:
+      - completed
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "infrastructure/terraform/external/**"
+      - "infrastructure/terraform/dns-proxy/**"
+      - "infrastructure/terraform/modules/**"
+
+jobs:
+  provision-public-services:
+    name: Deploy the public services
+    uses: ./.github/workflows/reusable-provision.yaml
+    with:
+      environment: ${{ vars.ENVIRONMENT }}
+      infrastructure-path: external
+      service-name: public-services
+      application-names: ${{ vars.APPLICATION_NAMES }}
+      supertokens-core-docker-image-version: ${{ vars.DOCKER_SUPERTOKENS_CORE_VERSION }}
+      postgres-docker-image-version: ${{ vars.DOCKER_POSTGRES_VERSION }}
+    secrets: inherit
+
+  proxy-records:
+    name: Proxy DNS records for the public services
+    needs: provision-public-services
+    uses: ./.github/workflows/reusable-provision.yaml
+    with:
+      environment: ${{ vars.ENVIRONMENT }}
+      infrastructure-path: dns-proxy
+      service-name: dns-proxy
+      application-names: ${{ vars.APPLICATION_NAMES }}
+    secrets: inherit

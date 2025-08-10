@@ -1,4 +1,4 @@
-name: Deploy Indexing service
+name: Deploy the Indexing service
 concurrency: indexing
 
 permissions:
@@ -6,28 +6,21 @@ permissions:
   contents: read
 
 on:
+  workflow_run:
+    workflows: ["Build and publish the Indexing service"]
+    types:
+      - completed
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - ".github/workflows/**"
       - "infrastructure/terraform/internal/indexing/**"
       - "infrastructure/terraform/modules/**"
-      - "apps/indexing/**"
 
 jobs:
-  build-publish-indexing:
-    name: Build and publish the Indexing service
-    uses: ./.github/workflows/reusable-dotnet-service.yaml
-    with:
-      service-name: indexing
-      service-path: apps/indexing
-    secrets: inherit
-
   provision-indexing:
     name: Deploy the Indexing service
-    needs: build-publish-indexing
     uses: ./.github/workflows/reusable-provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}

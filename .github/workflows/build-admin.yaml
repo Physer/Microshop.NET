@@ -1,0 +1,25 @@
+name: Build and publish the Admin portal
+concurrency: admin
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/admin/**"
+
+jobs:
+  build-publish-admin-portal:
+    name: Build and publish the Admin portal
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
+    with:
+      service-name: admin
+      service-path: apps/admin
+      project-name: Web
+      execute-tests: false
+    secrets: inherit

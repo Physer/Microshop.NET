@@ -1,0 +1,23 @@
+name: Build and publish the Products service
+concurrency: products
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/products/**"
+
+jobs:
+  build-publish-products:
+    name: Build and publish the Products service
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
+    with:
+      service-name: products
+      service-path: apps/products
+    secrets: inherit

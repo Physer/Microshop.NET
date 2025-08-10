@@ -1,0 +1,23 @@
+name: Build and publish the Pricing service
+concurrency: pricing
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/pricing/**"
+
+jobs:
+  build-publish-pricing:
+    name: Build and publish the Pricing service
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
+    with:
+      service-name: pricing
+      service-path: apps/pricing
+    secrets: inherit

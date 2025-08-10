@@ -1,4 +1,4 @@
-name: Deploy Products service
+name: Deploy the Products service
 concurrency: products
 
 permissions:
@@ -6,28 +6,21 @@ permissions:
   contents: read
 
 on:
+  workflow_run:
+    workflows: ["Build and publish the Products service"]
+    types:
+      - completed
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - ".github/workflows/**"
       - "infrastructure/terraform/internal/products/**"
       - "infrastructure/terraform/modules/**"
-      - "apps/products/**"
 
 jobs:
-  build-publish-products:
-    name: Build and publish the Products service
-    uses: ./.github/workflows/reusable-dotnet-service.yaml
-    with:
-      service-name: products
-      service-path: apps/products
-    secrets: inherit
-
   provision-products:
     name: Deploy the Products service
-    needs: build-publish-products
     uses: ./.github/workflows/reusable-provision.yaml
     with:
       environment: ${{ vars.ENVIRONMENT }}

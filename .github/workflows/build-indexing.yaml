@@ -1,0 +1,23 @@
+name: Build and publish the Indexing service
+concurrency: indexing
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/indexing/**"
+
+jobs:
+  build-publish-indexing:
+    name: Build and publish the Indexing service
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
+    with:
+      service-name: indexing
+      service-path: apps/indexing
+    secrets: inherit

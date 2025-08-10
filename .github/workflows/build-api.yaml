@@ -1,0 +1,23 @@
+name: Build and publish the API service
+concurrency: api
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/api/**"
+
+jobs:
+  build-publish-api:
+    name: Build and publish the API
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
+    with:
+      service-name: api
+      service-path: apps/api
+    secrets: inherit

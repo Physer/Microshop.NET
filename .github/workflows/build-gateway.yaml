@@ -1,0 +1,24 @@
+name: Build and publish the Gateway service
+concurrency: gateway
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/gateway/**"
+
+jobs:
+  build-publish-gateway:
+    name: Build and publish the Gateway
+    uses: ./.github/workflows/reusable-dotnet-service.yaml
+    with:
+      service-name: gateway
+      service-path: apps/gateway
+      execute-tests: false
+    secrets: inherit

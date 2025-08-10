@@ -1,0 +1,20 @@
+name: Build and publish the Authentication service
+concurrency: authentication
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/authentication/**"
+
+jobs:
+  build-publish-authentication:
+    name: Build and publish the Authentication service
+    uses: ./.github/workflows/reusable-authentication-service.yaml
+    secrets: inherit
