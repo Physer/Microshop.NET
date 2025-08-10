@@ -20,12 +20,7 @@ module "gateway_app" {
   ingress_enabled              = true
   allow_external_traffic       = true
   location                     = data.azurerm_resource_group.rg_microshop.location
-}
-
-module "gateway_app_settings" {
-  source           = "../modules/container-app-settings"
-  container_app_id = module.gateway_app.id
-  appsettings      = local.gateway_appsettings
+  appsettings                  = local.gateway_appsettings
 }
 
 module "gateway_domain_settings" {
