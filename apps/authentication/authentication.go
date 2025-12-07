@@ -54,9 +54,9 @@ func main() {
 					Functions: func(originalImplementation epmodels.RecipeInterface) epmodels.RecipeInterface {
 						originalSignUp := *originalImplementation.SignUp
 
-						(*originalImplementation.SignUp) = func(email, password string, userContext supertokens.UserContext) (epmodels.SignUpResponse, error) {
+						(*originalImplementation.SignUp) = func(tenantId string, email string, password string, userContext supertokens.UserContext) (epmodels.SignUpResponse, error) {
 
-							response, err := originalSignUp(email, password, userContext)
+							response, err := originalSignUp(tenantId, email, password, userContext)
 							if err != nil {
 								return epmodels.SignUpResponse{}, err
 							}

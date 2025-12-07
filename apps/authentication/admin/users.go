@@ -32,7 +32,7 @@ func CreateDashboardUser(supertokensCoreUrl string) *http.Response {
 
 func AddRoleToUser(userId string, roleName string) bool {
 	fmt.Printf("Adding role %s to user %s \n", roleName, userId)
-	response, err := userroles.AddRoleToUser(userId, roleName, nil)
+	response, err := userroles.AddRoleToUser("public", userId, roleName, nil)
 	if err != nil {
 		panic(err.Error())
 	}
