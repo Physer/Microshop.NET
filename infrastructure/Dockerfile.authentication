@@ -1,4 +1,4 @@
-FROM golang:bookworm AS build-stage
+FROM golang:trixie AS build-stage
 
 WORKDIR /app
 COPY apps/authentication/go.mod apps/authentication/go.sum ./
